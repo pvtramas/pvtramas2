@@ -451,6 +451,7 @@ const dashboard = {
             status: 'init',
             logs: [],
             isSwapping: false,
+            modalCC: 0, nowCC: 0, modalLocked: false,
         }));
     },
 
@@ -578,6 +579,64 @@ const dashboard = {
             chalk.gray('Vol:') + chalk.magenta(`$${sumVol.toFixed(0)}`);
         out.write(fullSpan(sesText, widths) + '\n');
         out.write(sep(widths, '-', '+', '-', '+') + '\n');
+
+        // ===== REKAP =====
+        const hasRekap = this.accounts.some(a => a.modalCC > 0);
+        if (hasRekap) {
+            const RK = { name: 7, modal: 9, now: 9, loss: 9, rwd: 8, net: 9, mRwd: 9 };
+            const rkWidths = [RK.name, RK.modal, RK.now, RK.loss, RK.rwd, RK.net, RK.mRwd];
+
+            out.write('\n');
+            out.write(sep(rkWidths, '-', '+', '-', '+') + '\n');
+            out.write(fullSpan(' ' + chalk.white.bold('REKAP') + chalk.gray('  (CC value: real CC + USDCx via quote)'), rkWidths) + '\n');
+            out.write(sep(rkWidths, '-', '+', '+', '+') + '\n');
+
+            out.write(row(
+                [padR('Akun', RK.name), padR('Modal', RK.modal), padR('Now', RK.now),
+                 padR('Loss', RK.loss), padR('Rwd', RK.rwd), padR('Net', RK.net), padR('Monthly', RK.mRwd)],
+                Array(7).fill(gray)
+            ) + '\n');
+            out.write(sep(rkWidths, '-', '+', '+', '+') + '\n');
+
+            let tModal = 0, tNow = 0, tLoss = 0, tRwd = 0, tNet = 0, tMRwd = 0;
+            for (const a of this.accounts) {
+                if (!(a.modalCC > 0)) continue;
+                const modal = a.modalCC;
+                const nowCC = a.nowCC || 0;
+                const loss = modal - nowCC;
+                const rwdVal = a.diffReward || 0;
+                const mRwd = a.monthReward || 0;
+                const net = rwdVal - loss;
+
+                tModal += modal; tNow += nowCC; tLoss += loss;
+                tRwd += rwdVal; tNet += net; tMRwd += mRwd;
+
+                const lossStr = `${loss >= 0 ? '-' : '+'}${Math.abs(loss).toFixed(2)}`;
+                const rwdStr = `+${rwdVal.toFixed(2)}`;
+                const mRwdStr = `+${mRwd.toFixed(2)}`;
+                const netStr = net >= 0 ? `+${net.toFixed(2)}` : `${net.toFixed(2)}`;
+
+                out.write(row(
+                    [padR(a.name, RK.name), padR(modal.toFixed(2), RK.modal), padR(nowCC.toFixed(2), RK.now),
+                     padR(lossStr, RK.loss), padR(rwdStr, RK.rwd), padR(netStr, RK.net), padR(mRwdStr, RK.mRwd)],
+                    [chalk.cyan, chalk.white, chalk.white, chalk.red, chalk.yellow,
+                     net >= 0 ? chalk.green : chalk.red, chalk.magenta]
+                ) + '\n');
+            }
+
+            out.write(sep(rkWidths, '-', '+', '+', '+') + '\n');
+            const tLossStr = `${tLoss >= 0 ? '-' : '+'}${Math.abs(tLoss).toFixed(2)}`;
+            const tRwdStr = `+${tRwd.toFixed(2)}`;
+            const tMRwdStr = `+${tMRwd.toFixed(2)}`;
+            const tNetStr = tNet >= 0 ? `+${tNet.toFixed(2)}` : `${tNet.toFixed(2)}`;
+            out.write(row(
+                [padR('TOTAL', RK.name), padR(tModal.toFixed(2), RK.modal), padR(tNow.toFixed(2), RK.now),
+                 padR(tLossStr, RK.loss), padR(tRwdStr, RK.rwd), padR(tNetStr, RK.net), padR(tMRwdStr, RK.mRwd)],
+                [chalk.white.bold, chalk.white.bold, chalk.white.bold, chalk.red, chalk.yellow,
+                 tNet >= 0 ? chalk.green.bold : chalk.red.bold, chalk.magenta.bold]
+            ) + '\n');
+            out.write(sep(rkWidths, '-', '+', '-', '+') + '\n');
+        }
     },
 
     startAutoRefresh() {
@@ -790,6 +849,28 @@ function getInstrumentAdminId(holdings, assetKey) {
     return '';
 }
 
+// Cache: asset -> CC rate (how many CC per 1 unit of asset)
+const _rateCache = {};
+
+async function estimateTotalCCValue(swapApi, cc, usdcx) {
+    let total = cc;
+    if (usdcx > 0.01) {
+        if (_rateCache['USDCX']) {
+            total += usdcx * _rateCache['USDCX'];
+        } else {
+            try {
+                const q = await swapApi.getQuote('CC', 'USDCX', 'CC', '0x0', usdcx);
+                if (q?.receiveAmount) {
+                    const recv = parseFloat(q.receiveAmount);
+                    _rateCache['USDCX'] = recv / usdcx;
+                    total += recv;
+                }
+            } catch { /* skip */ }
+        }
+    }
+    return total;
+}
+
 async function refreshAccountData(ctx, persistedState) {
     const { session, walletApi, swapApi, log, index } = ctx;
     const { holdings = {} } = await session.withRetry(
@@ -818,6 +899,23 @@ async function refreshAccountData(ctx, persistedState) {
     } catch { /* skip */ }
 
     dashboard.update(index, { cc, usdcx, ...rewardUpdate });
+
+    // Estimate total CC value (real CC + USDCx via quote/cache)
+    try {
+        const a = dashboard.accounts[index];
+        if (!a.isSwapping) {
+            const nowCC = await estimateTotalCCValue(swapApi, cc, usdcx);
+            if (nowCC > 0) {
+                if (!a.modalLocked) {
+                    // Modal not locked yet -> sync both
+                    dashboard.update(index, { modalCC: nowCC, nowCC });
+                } else {
+                    dashboard.update(index, { nowCC });
+                }
+            }
+        }
+    } catch { /* skip */ }
+
     return { holdings, cc, usdcx, ...rewardUpdate };
 }
 
@@ -852,6 +950,20 @@ async function executeSwap(ctx, { fromAsset, toAsset, amount, fromLabel, toLabel
         log(`[quote] ${parseFloat(amount).toFixed(4)} ${fromLabel} -> ${toLabel}`);
         const quote = await swapApi.getQuote('CC', fromAsset, 'CC', toAsset, amount);
         log(`[quote] send=${parseFloat(quote.sendAmount).toFixed(2)} recv=${parseFloat(quote.receiveAmount).toFixed(4)} rate=${parseFloat(quote.rate).toFixed(4)}`);
+
+        // Cache rate from real quote (more accurate than periodic test quotes)
+        try {
+            const send = parseFloat(quote.sendAmount), recv = parseFloat(quote.receiveAmount);
+            if (send > 0 && recv > 0) {
+                if (toAsset === '0x0') {
+                    // X -> CC: rate = how many CC per 1 X
+                    _rateCache[fromAsset] = recv / send;
+                } else if (fromAsset === '0x0') {
+                    // CC -> X: inverse = how many CC per 1 X
+                    _rateCache[toAsset] = send / recv;
+                }
+            }
+        } catch { /* skip */ }
 
         let orderId = generateOrderId();
         let order;
@@ -1082,6 +1194,15 @@ async function runRoundTrip(ctx, persistedStateRef) {
     let state = persistedStateRef.value;
     let consecutiveFailures = 0;
     const MAX_CONSECUTIVE_FAILURES = 5;
+
+    // Lock modal CC value at start (so REKAP shows real loss/profit)
+    {
+        const a = dashboard.accounts[index];
+        if (a.modalCC > 0 && !a.modalLocked) {
+            dashboard.update(index, { modalLocked: true });
+            log(`[rekap] modal locked at ${a.modalCC.toFixed(2)} CC`);
+        }
+    }
 
     while (state.totalTxCount < maxSwaps) {
         // 1) Calculate next swap time (wall-clock anchored)
