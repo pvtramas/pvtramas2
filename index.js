@@ -54,6 +54,7 @@ const DEFAULT_CONFIG = {
         reward_landed_threshold: 100,
         usdcx_dust_reserve: 0.0001,
         min_usdcx_for_swap: 1,
+        min_ceth_for_recovery: 0.0005,
     },
     retry: {
         rate_limit_initial_delay_minutes: 61,
@@ -103,7 +104,7 @@ const EXCHANGE = config.api.exchange_url;
 const STATE_DIR = config.state_dir || './state';
 if (!existsSync(STATE_DIR)) mkdirSync(STATE_DIR, { recursive: true });
 
-const ASSET_TO_INSTRUMENT = { '0x0': 'Amulet', 'USDCX': 'USDCx' };
+const ASSET_TO_INSTRUMENT = { '0x0': 'Amulet', 'USDCX': 'USDCx', 'CETH': 'cETH' };
 
 const PAIR_CC = { chain: 'CC', asset: '0x0', label: 'CC' };
 const PAIR_USDCX = { chain: 'CC', asset: 'USDCX', label: 'USDCx' };
@@ -438,7 +439,7 @@ const dashboard = {
         this.accounts = accountConfigs.map((acc, i) => ({
             name: acc.name || `Acc ${i + 1}`,
             startTime: Date.now(),
-            cc: 0, usdcx: 0,
+            cc: 0, usdcx: 0, ceth: 0,
             totalSwaps: 0,
             lastDirection: '',
             nextSwapAt: 0,
@@ -502,8 +503,8 @@ const dashboard = {
             return padR(result + '..', w);
         };
 
-        const C = { acc: 7, status: 28, cc: 9, usdcx: 9, swaps: 6, next: 8, reward: 8, up: 7 };
-        const widths = [C.acc, C.status, C.cc, C.usdcx, C.swaps, C.next, C.reward, C.up];
+        const C = { acc: 7, status: 26, cc: 9, usdcx: 9, ceth: 9, swaps: 6, next: 8, reward: 8, up: 7 };
+        const widths = [C.acc, C.status, C.cc, C.usdcx, C.ceth, C.swaps, C.next, C.reward, C.up];
 
         const sep = (w, ch, l, m, r) => {
             let line = l;
@@ -538,8 +539,8 @@ const dashboard = {
 
         out.write(row(
             [padR('Akun', C.acc), padR('Status', C.status), padR('CC', C.cc), padR('USDCx', C.usdcx),
-             padR('Swap', C.swaps), padR('Next', C.next), padR('Reward', C.reward), padR('Up', C.up)],
-            Array(8).fill(gray)
+             padR('cETH', C.ceth), padR('Swap', C.swaps), padR('Next', C.next), padR('Reward', C.reward), padR('Up', C.up)],
+            Array(9).fill(gray)
         ) + '\n');
         out.write(sep(widths, '-', '+', '+', '+') + '\n');
 
@@ -547,7 +548,8 @@ const dashboard = {
             const a = this.accounts[i];
             const up = formatUptime(a.startTime);
             const dirCh = a.lastDirection === 'CC_TO_USDCX' ? '>' :
-                          a.lastDirection === 'USDCX_TO_CC' ? '<' : '-';
+                          a.lastDirection === 'USDCX_TO_CC' ? '<' :
+                          a.lastDirection === 'CETH_TO_USDCX' ? 'r' : '-';
             const swapStr = `${a.totalSwaps}${dirCh}`;
             const rwd = a.diffReward || 0;
             const rwdStr = rwd > 0 ? `+${rwd.toFixed(2)}` : rwd < 0 ? rwd.toFixed(2) : '-';
@@ -559,12 +561,16 @@ const dashboard = {
             }
 
             const rwdColor = rwd > 0 ? chalk.yellow : rwd < 0 ? chalk.red : chalk.gray;
+            const cethStr = (a.ceth || 0) > 0 ? (a.ceth).toFixed(6) : '-';
+            const cethColor = (a.ceth || 0) > 0 ? chalk.hex('#627EEA') : chalk.gray;
 
             out.write(row(
                 [padR(a.name, C.acc), trunc(a.status, C.status), padR(a.cc.toFixed(2), C.cc),
-                 padR(a.usdcx.toFixed(4), C.usdcx), padR(swapStr, C.swaps), padR(nextStr, C.next),
+                 padR(a.usdcx.toFixed(4), C.usdcx), padR(cethStr, C.ceth),
+                 padR(swapStr, C.swaps), padR(nextStr, C.next),
                  padR(rwdStr, C.reward), padR(up, C.up)],
-                [chalk.cyan, chalk.white, chalk.green.bold, chalk.yellow, chalk.white.bold, chalk.magenta, rwdColor, chalk.gray]
+                [chalk.cyan, chalk.white, chalk.green.bold, chalk.yellow, cethColor,
+                 chalk.white.bold, chalk.magenta, rwdColor, chalk.gray]
             ) + '\n');
         }
 
@@ -832,16 +838,21 @@ async function acceptPendingOffers(ctx) {
 // ---------- Refresh Account Data ----------------------------------------
 
 function parseHoldings(holdings) {
-    let cc = 0, usdcx = 0;
+    let cc = 0, usdcx = 0, ceth = 0;
     for (const [tok, info] of Object.entries(holdings || {})) {
         if (tok === 'Amulet' || tok === 'CC (Amulet)' || tok === 'CC') cc = info.balance || 0;
         if (tok === 'USDCx' || tok === 'USDCX') usdcx = info.balance || 0;
+        if (tok === 'CETH' || tok === 'cETH') ceth = info.balance || 0;
     }
-    return { cc, usdcx };
+    return { cc, usdcx, ceth };
 }
 
 function getInstrumentAdminId(holdings, assetKey) {
-    const nameMap = { '0x0': ['Amulet', 'CC (Amulet)', 'CC'], 'USDCX': ['USDCx', 'USDCX'] };
+    const nameMap = {
+        '0x0': ['Amulet', 'CC (Amulet)', 'CC'],
+        'USDCX': ['USDCx', 'USDCX'],
+        'CETH': ['cETH', 'CETH'],
+    };
     const names = nameMap[assetKey] || [assetKey];
     for (const n of names) {
         if (holdings?.[n]?.instrument_admin_id) return holdings[n].instrument_admin_id;
@@ -852,8 +863,9 @@ function getInstrumentAdminId(holdings, assetKey) {
 // Cache: asset -> CC rate (how many CC per 1 unit of asset)
 const _rateCache = {};
 
-async function estimateTotalCCValue(swapApi, cc, usdcx) {
+async function estimateTotalCCValue(swapApi, cc, usdcx, ceth = 0) {
     let total = cc;
+    // USDCx -> CC
     if (usdcx > 0.01) {
         if (_rateCache['USDCX']) {
             total += usdcx * _rateCache['USDCX'];
@@ -868,6 +880,21 @@ async function estimateTotalCCValue(swapApi, cc, usdcx) {
             } catch { /* skip */ }
         }
     }
+    // cETH -> CC (via cached rate or quote)
+    if (ceth > 0.00001) {
+        if (_rateCache['CETH']) {
+            total += ceth * _rateCache['CETH'];
+        } else {
+            try {
+                const q = await swapApi.getQuote('CC', 'CETH', 'CC', '0x0', ceth);
+                if (q?.receiveAmount) {
+                    const recv = parseFloat(q.receiveAmount);
+                    _rateCache['CETH'] = recv / ceth;
+                    total += recv;
+                }
+            } catch { /* skip */ }
+        }
+    }
     return total;
 }
 
@@ -876,7 +903,7 @@ async function refreshAccountData(ctx, persistedState) {
     const { holdings = {} } = await session.withRetry(
         () => walletApi.getBalance(session.walletToken), 'wallet', walletApi, swapApi, log
     );
-    const { cc, usdcx } = parseHoldings(holdings);
+    const { cc, usdcx, ceth } = parseHoldings(holdings);
 
     let rewardUpdate = {};
     try {
@@ -898,13 +925,13 @@ async function refreshAccountData(ctx, persistedState) {
         }
     } catch { /* skip */ }
 
-    dashboard.update(index, { cc, usdcx, ...rewardUpdate });
+    dashboard.update(index, { cc, usdcx, ceth, ...rewardUpdate });
 
-    // Estimate total CC value (real CC + USDCx via quote/cache)
+    // Estimate total CC value (real CC + USDCx + cETH via quote/cache)
     try {
         const a = dashboard.accounts[index];
         if (!a.isSwapping) {
-            const nowCC = await estimateTotalCCValue(swapApi, cc, usdcx);
+            const nowCC = await estimateTotalCCValue(swapApi, cc, usdcx, ceth);
             if (nowCC > 0) {
                 if (!a.modalLocked) {
                     // Modal not locked yet -> sync both
@@ -916,7 +943,7 @@ async function refreshAccountData(ctx, persistedState) {
         }
     } catch { /* skip */ }
 
-    return { holdings, cc, usdcx, ...rewardUpdate };
+    return { holdings, cc, usdcx, ceth, ...rewardUpdate };
 }
 
 // ---------- Background Refresh ------------------------------------------
@@ -1203,6 +1230,72 @@ async function runRoundTrip(ctx, persistedStateRef) {
             log(`[rekap] modal locked at ${a.modalCC.toFixed(2)} CC`);
         }
     }
+
+    // ===== RECOVERY: cETH leftover (from old triangular bot) =====
+    // If account has cETH balance, swap cETH -> USDCx first (NOT cETH -> CC).
+    // This counts as 1 TX in the rate-limit window. Next swap will be USDCx -> CC.
+    const minCethRecovery = sw.min_ceth_for_recovery ?? 0.0005;
+    try {
+        const refreshedInit = await refreshAccountData(ctx, state).catch(() => null);
+        const cethInit = refreshedInit?.ceth ?? 0;
+        const holdingsInit = refreshedInit?.holdings || {};
+
+        if (cethInit >= minCethRecovery) {
+            // Respect rate-limit: only do recovery if it's been long enough since last swap
+            const sinceLast = state.lastSwapTimestamp === 0
+                ? Infinity
+                : Date.now() - state.lastSwapTimestamp;
+            const requiredWait = intervalMs + bufferMs;
+
+            if (sinceLast >= requiredWait) {
+                log(`[recovery] cETH=${cethInit.toFixed(8)} -> USDCx (leftover from old bot)`);
+                dashboard.update(index, { status: 'cETH->USDCx (recovery)', isSwapping: true });
+                await resolveActiveOrder(ctx);
+
+                const recResult = await executeSwap(ctx, {
+                    fromAsset: 'CETH', toAsset: 'USDCX',
+                    amount: cethInit,
+                    fromLabel: 'cETH', toLabel: 'USDCx',
+                    instrumentAdminId: getInstrumentAdminId(holdingsInit, 'CETH'),
+                });
+
+                dashboard.update(index, { isSwapping: false });
+
+                if (recResult && !recResult.error) {
+                    state.lastSwapTimestamp = Date.now();
+                    state.lastDirection = 'CETH_TO_USDCX'; // Next will be USDCX_TO_CC (alternation logic)
+                    state.totalTxCount += 1;
+
+                    if (state.rewardBaseline.txns == null) {
+                        const a = dashboard.accounts[index];
+                        state.rewardBaseline = { txns: a.monthTxns, reward: a.monthReward };
+                    }
+                    saveState(session.partyId, state);
+                    persistedStateRef.value = state;
+
+                    dashboard.update(index, {
+                        totalSwaps: state.totalTxCount,
+                        lastDirection: 'CETH_TO_USDCX',
+                    });
+                    log(`[recovery] cETH->USDCx OK, recv=${parseFloat(recResult.receiveAmount).toFixed(4)} USDCx`);
+
+                    // Refresh after recovery
+                    await sleep(3);
+                    try { await acceptPendingOffers(ctx); } catch { /* ignore */ }
+                    await refreshAccountData(ctx, state).catch(() => null);
+                } else {
+                    log(`[recovery] cETH->USDCx failed: ${recResult?.message || 'unknown'} (will retry next interval)`);
+                    // Don't update timestamp, will try again on next loop iteration
+                }
+            } else {
+                const remaining = Math.ceil((requiredWait - sinceLast) / 1000);
+                log(`[recovery] cETH detected (${cethInit.toFixed(8)}) but waiting rate-limit window (${formatDuration(remaining)})`);
+            }
+        }
+    } catch (e) {
+        log(`[recovery] cETH check error: ${formatError(e)}`);
+    }
+    // ===== END RECOVERY =====
 
     while (state.totalTxCount < maxSwaps) {
         // 1) Calculate next swap time (wall-clock anchored)
