@@ -1,0 +1,1751 @@
+<!doctype html>
+<html lang="id">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kantor Empat Agent</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one column. Compact masthead, a wide side-view office stage, then a dock with narration, a 6-step track and the playback controls. */
+:root{
+  /* page */
+  --bg:#E2E9EC; --ink:#15202A; --muted:#52626E; --panel:#FFFFFF; --rule:#C6D2D8;
+  --accent:#E3A21A; --accent-soft:#F7DFA6; --accent-ink:#15202A; --focus:#2F6FDB; --btn:#15202A; --btn-ink:#FFFFFF; --btn-2:#FFFFFF; --btn-2-ink:#15202A;
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  /* room */
+  --ceil:#EDF2F3; --ceil-line:#CFDCE0; --wall:#CFE0E5; --wall-low:#BDD2D9; --wall-trim:#A6BFC8;
+  --floor:#C8945E; --floor-line:#B07F4F; --base:#7C5B3F; --shade:#1A2630; --shade-op:.15;
+  --sky-top:#77C0EA; --sky-bot:#D2EEF8; --sun:#FFD25E; --cloud:#FFFFFF; --cloud-op:.95; --skyline:#9DC2D2;
+  --win-lit:#FFE29A; --win-lit-op:0; --star-op:0; --frame:#F7FAFB; --sill:#DFEAEE; --sunbeam-op:.22; --sunbeam:#FFF6D6;
+  --desk:#E6D3B3; --desk-edge:#C8AC84; --desk-leg:#4A5864; --drawer:#D8C29D; --drawer-line:#BBA27C;
+  --chair:#2D3B47; --chair-2:#425666; --metal:#8D9BA6; --cab:#9EB3BD; --cab-line:#7E96A2;
+  --mon:#25303A; --scr:#F2F8FA; --scr-line:#B6C9D1; --scr-dim:#DCE7EB; --scr-glow-op:.06;
+  --plant:#3E9A68; --plant-2:#2B7A50; --pot:#56707E;
+  --board:#FBFDFD; --board-edge:#AABCC4; --note-1:#FFE07A; --note-2:#9FE0C6; --note-3:#F7B4A2; --board-ink:#41525E;
+  --clock-face:#FFFFFF; --clock-rim:#2D3A45; --clock-hand:#1D2832;
+  --cable:#7E95A1; --cable-op:.6; --hub:#394B58; --led:#59D18A; --link-ink:#5D707C;
+  --tube:#FFFFFF; --tube-op:.45; --tube-edge:#88AAB7; --chute:#394B58; --chute-ink:#FFFFFF;
+  --pkt:#F4B32C; --pkt-glow:#FFD36E; --rev:#D8473A; --ok:#24995A; --chat:#2F6FDB; --callout:#FFFFFF; --callout-edge:#15202A; --callout-ink:#15202A; --callout-dim:#E4ECEF;
+  --paper:#FFFFFF; --paper-line:#B4C1C8; --folder:#F2B134; --folder-2:#D18F22; --res:#3C79D6; --res-2:#2A5DAE; --env:#F8F4EA; --env-line:#C3B79C;
+  --bubble:#FFFFFF; --bubble-edge:#15202A; --bubble-ink:#15202A; --tag:#FFFFFF; --tag-ink:#15202A;
+  --lamp:#3B4955; --lamp-shade:#E9A23B; --lamp-on:0; --glow:#FFD992; --night-op:0;
+  --mouth:#7A2E2E; --eye:#1B1F24; --blush:#F08A7E;
+  /* cast (identical in both themes) */
+  --a1:#2F6FDB; --a2:#17A08B; --a3:#E66A36; --a4:#7357B3;
+  --skin1:#F2C9A4; --skin1b:#DDAA82; --hair1:#2A1D15; --top1:#2B4A7C; --top1b:#203A63; --pants1:#2E3440; --shoe1:#1B1D22; --set1:#20272F; --shirt1:#F4F7FA;
+  --skin2:#C68A5E; --skin2b:#A86F47; --hair2:#191314; --top2:#1F9C8A; --top2b:#177C6E; --pants2:#33395A; --shoe2:#2A1D1B; --glass2:#8C2F3D; --shirt2:#FFFFFF;
+  --skin3:#8A5636; --skin3b:#6E4126; --hair3:#120D0B; --top3:#E66A36; --top3b:#C4552A; --pants3:#3B5F8C; --shoe3:#F2F2F2; --cap3:#263646; --cap3b:#1A2633; --mug3:#F2B134;
+  --skin4:#EBB78E; --skin4b:#D29872; --hijab4:#7357B3; --hijab4b:#5C4495; --top4:#E2B24C; --top4b:#C59533; --pants4:#3A3346; --shoe4:#2B2430;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D151C; --ink:#E3EBEF; --muted:#9AAAB5; --panel:#16212B; --rule:#2A3946;
+    --accent:#F0B43A; --accent-soft:#4A3A16; --accent-ink:#0D151C; --focus:#79A8FF; --btn:#E3EBEF; --btn-ink:#0D151C; --btn-2:#16212B; --btn-2-ink:#E3EBEF;
+    --ceil:#15212C; --ceil-line:#24323F; --wall:#1F3040; --wall-low:#1A2937; --wall-trim:#2C4153;
+    --floor:#5B4231; --floor-line:#4A3427; --base:#2C2018; --shade:#000000; --shade-op:.32;
+    --sky-top:#08132A; --sky-bot:#1F3561; --sun:#F1EBC9; --cloud:#3A4E70; --cloud-op:.55; --skyline:#14213A;
+    --win-lit:#FFD27A; --win-lit-op:.9; --star-op:.9; --frame:#2D4152; --sill:#263848; --sunbeam-op:0; --sunbeam:#FFF6D6;
+    --desk:#8F7B5F; --desk-edge:#6F5D46; --desk-leg:#25303A; --drawer:#7C6A51; --drawer-line:#64543F;
+    --chair:#2A3A47; --chair-2:#3B4E5D; --metal:#5E6D78; --cab:#3A4E5C; --cab-line:#2D3E4A;
+    --mon:#10171D; --scr:#173E4E; --scr-line:#5592A8; --scr-dim:#22566A; --scr-glow-op:.1;
+    --plant:#2F7C55; --plant-2:#225E40; --pot:#33454F;
+    --board:#C9D3D8; --board-edge:#5D707C; --note-1:#D9BC5C; --note-2:#7FBBA3; --note-3:#CF9282; --board-ink:#2B3A44;
+    --clock-face:#D6DEE2; --clock-rim:#0F171E; --clock-hand:#111A21;
+    --cable:#5E7D8E; --cable-op:.75; --hub:#0F1A22; --led:#62E89A; --link-ink:#8EA6B4;
+    --tube:#9FD6EA; --tube-op:.22; --tube-edge:#4F7889; --chute:#0F1A22; --chute-ink:#D7E2E8;
+    --pkt:#FFC145; --pkt-glow:#FFD36E; --rev:#F0604F; --ok:#3CC173; --chat:#79A8FF; --callout:#F2F6F8; --callout-edge:#05090C; --callout-ink:#15202A; --callout-dim:#D3DEE4;
+    --paper:#F3F6F8; --paper-line:#9FB0B9; --env:#EDE7D8; --env-line:#A89B80;
+    --bubble:#F7FAFB; --bubble-edge:#0D151C; --bubble-ink:#15202A; --tag:#F2F6F8; --tag-ink:#15202A;
+    --lamp:#1B252E; --lamp-shade:#F0B04A; --lamp-on:1; --glow:#FFD58A; --night-op:.18;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D151C; --ink:#E3EBEF; --muted:#9AAAB5; --panel:#16212B; --rule:#2A3946;
+  --accent:#F0B43A; --accent-soft:#4A3A16; --accent-ink:#0D151C; --focus:#79A8FF; --btn:#E3EBEF; --btn-ink:#0D151C; --btn-2:#16212B; --btn-2-ink:#E3EBEF;
+  --ceil:#15212C; --ceil-line:#24323F; --wall:#1F3040; --wall-low:#1A2937; --wall-trim:#2C4153;
+  --floor:#5B4231; --floor-line:#4A3427; --base:#2C2018; --shade:#000000; --shade-op:.32;
+  --sky-top:#08132A; --sky-bot:#1F3561; --sun:#F1EBC9; --cloud:#3A4E70; --cloud-op:.55; --skyline:#14213A;
+  --win-lit:#FFD27A; --win-lit-op:.9; --star-op:.9; --frame:#2D4152; --sill:#263848; --sunbeam-op:0; --sunbeam:#FFF6D6;
+  --desk:#8F7B5F; --desk-edge:#6F5D46; --desk-leg:#25303A; --drawer:#7C6A51; --drawer-line:#64543F;
+  --chair:#2A3A47; --chair-2:#3B4E5D; --metal:#5E6D78; --cab:#3A4E5C; --cab-line:#2D3E4A;
+  --mon:#10171D; --scr:#173E4E; --scr-line:#5592A8; --scr-dim:#22566A; --scr-glow-op:.1;
+  --plant:#2F7C55; --plant-2:#225E40; --pot:#33454F;
+  --board:#C9D3D8; --board-edge:#5D707C; --note-1:#D9BC5C; --note-2:#7FBBA3; --note-3:#CF9282; --board-ink:#2B3A44;
+  --clock-face:#D6DEE2; --clock-rim:#0F171E; --clock-hand:#111A21;
+  --cable:#5E7D8E; --cable-op:.75; --hub:#0F1A22; --led:#62E89A; --link-ink:#8EA6B4;
+  --tube:#9FD6EA; --tube-op:.22; --tube-edge:#4F7889; --chute:#0F1A22; --chute-ink:#D7E2E8;
+  --pkt:#FFC145; --pkt-glow:#FFD36E; --rev:#F0604F; --ok:#3CC173; --chat:#79A8FF; --callout:#F2F6F8; --callout-edge:#05090C; --callout-ink:#15202A; --callout-dim:#D3DEE4;
+  --paper:#F3F6F8; --paper-line:#9FB0B9; --env:#EDE7D8; --env-line:#A89B80;
+  --bubble:#F7FAFB; --bubble-edge:#0D151C; --bubble-ink:#15202A; --tag:#F2F6F8; --tag-ink:#15202A;
+  --lamp:#1B252E; --lamp-shade:#F0B04A; --lamp-on:1; --glow:#FFD58A; --night-op:.18;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;margin:0}
+.page{max-width:1240px;margin-inline:auto;padding-inline:16px;padding-block:12px 14px;display:flex;flex-direction:column;gap:10px}
+.masthead{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:18px;row-gap:2px}
+.masthead h1{font-family:var(--f-display);font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.01em;margin:0;line-height:1.1;text-wrap:balance;display:flex;align-items:center;gap:10px}
+.masthead h1 svg{width:30px;height:20px;flex:none}
+.sub{margin:0;color:var(--muted);min-width:0;flex:1 1 320px}
+.stage{margin:0;position:relative;border-radius:14px;overflow:hidden;background:var(--wall);box-shadow:0 1px 0 var(--rule),0 10px 30px -18px var(--shade)}
+.stage svg{display:block;width:100%;height:auto;aspect-ratio:1600/760}
+.stage.cam svg{aspect-ratio:1/1}
+.dock{display:grid;gap:10px}
+.narr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 18px}
+.caption{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:2px 12px;min-width:0;flex:1 1 420px}
+.cap-step{font-family:var(--f-mono);font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:3px 8px;border-radius:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cap-text{font-size:16px;font-weight:700;min-width:0}
+.cap-beat{grid-column:2;font-size:14px;color:var(--muted);min-width:0;min-height:1.45em}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.controls button,.speed button{font:inherit;font-weight:700;font-size:14px;border:1.5px solid var(--btn);border-radius:8px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;min-height:38px}
+#btn-play{background:var(--btn);color:var(--btn-ink);min-width:104px;justify-content:center}
+#btn-restart{background:var(--btn-2);color:var(--btn-2-ink)}
+.speed{display:inline-flex}
+.speed button{background:var(--btn-2);color:var(--btn-2-ink);font-family:var(--f-mono);padding:7px 11px;font-variant-numeric:tabular-nums}
+.speed button:first-child{border-radius:8px 0 0 8px}
+.speed button:last-child{border-radius:0 8px 8px 0;margin-left:-1.5px}
+.speed button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+button svg{width:14px;height:14px;fill:currentColor;flex:none}
+button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.track{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.track button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:7px;width:100%;position:relative;padding:7px 9px 10px;border-radius:8px;background:var(--panel);color:var(--muted);font-size:13px;font-weight:600;overflow:hidden;border:1px solid var(--rule)}
+.track button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.track .no{font-family:var(--f-mono);font-weight:700;font-size:12px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--bg);color:var(--ink);flex:none;font-variant-numeric:tabular-nums}
+.track .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.track .bar{position:absolute;left:0;bottom:0;height:4px;width:100%;background:var(--accent);transform-origin:left center;transform:scaleX(0)}
+.track button.done .bar{transform:scaleX(1);opacity:.45}
+.track button.now{color:var(--ink);border-color:var(--ink)}
+.track button.now .no{background:var(--accent);color:var(--accent-ink)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 18px}
+.legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted)}
+.legend li{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.legend svg{width:30px;height:8px;flex:none;overflow:visible}
+.legend line{stroke-width:3.5;stroke-linecap:round}
+.lg-task{stroke:var(--pkt)} .lg-chat{stroke:var(--chat);stroke-dasharray:.5 6} .lg-rev{stroke:var(--rev);stroke-dasharray:7 5} .lg-final{stroke:var(--ok)}
+.static-steps{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding-inline:18px;padding-block:12px 14px}
+.static-steps h2{font-family:var(--f-display);font-size:18px;margin:0 0 6px}
+.static-steps ol{margin:0;padding-left:22px;display:grid;gap:4px;max-width:70ch}
+.hint{margin:0;color:var(--muted);font-size:13px}
+.hint kbd{font-family:var(--f-mono);font-size:12px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel);color:var(--ink)}
+@media (max-width:720px){
+  .track .lbl{display:none}
+  .track button{justify-content:center;padding:7px 4px 10px}
+  .cap-text{font-size:15px}
+  .caption{grid-template-columns:minmax(0,1fr)}
+  .cap-step{justify-self:start}
+  .cap-beat{grid-column:1}
+  .controls{width:100%}
+  #btn-play{flex:1}
+}
+/* scene paint */
+#scene text{font-family:var(--f-body)}
+.k-ceil{fill:var(--ceil)} .k-ceil-line{fill:var(--ceil-line)} .k-wall{fill:var(--wall)} .k-wall-low{fill:var(--wall-low)} .k-trim{fill:var(--wall-trim)}
+.k-floor{fill:var(--floor)} .k-floor-line{stroke:var(--floor-line);stroke-width:2;fill:none} .k-base{fill:var(--base)}
+.k-shade{fill:var(--shade);opacity:var(--shade-op)}
+.k-frame{fill:var(--frame)} .k-sill{fill:var(--sill)} .k-sun{fill:var(--sun)} .k-cloud{fill:var(--cloud);opacity:var(--cloud-op)} .k-skyline{fill:var(--skyline)}
+.k-winlit{fill:var(--win-lit);opacity:var(--win-lit-op)} .k-star{fill:var(--sun);opacity:var(--star-op)} .k-beam{fill:var(--sunbeam);opacity:var(--sunbeam-op)}
+.k-desk{fill:var(--desk)} .k-desk-edge{fill:var(--desk-edge)} .k-leg{fill:var(--desk-leg)} .k-drawer{fill:var(--drawer)} .k-drawer-line{stroke:var(--drawer-line);stroke-width:2;fill:none}
+.k-chair{fill:var(--chair)} .k-chair2{fill:var(--chair-2)} .k-chair-s{stroke:var(--chair);fill:none;stroke-linecap:round} .k-metal{fill:var(--metal)}
+.k-cab{fill:var(--cab)} .k-cab-line{stroke:var(--cab-line);stroke-width:2;fill:none}
+.k-mon{fill:var(--mon)} .k-scr{fill:var(--scr)} .k-scr-line{fill:var(--scr-line)} .k-scr-dim{fill:var(--scr-dim)} .k-scr-glow{fill:var(--glow);opacity:var(--scr-glow-op)}
+.k-plant{fill:var(--plant)} .k-plant2{fill:var(--plant-2)} .k-pot{fill:var(--pot)}
+.k-board{fill:var(--board);stroke:var(--board-edge);stroke-width:4} .k-n1{fill:var(--note-1)} .k-n2{fill:var(--note-2)} .k-n3{fill:var(--note-3)} .k-board-ink{fill:var(--board-ink)} .k-board-s{stroke:var(--board-ink);fill:none;stroke-width:2;stroke-linecap:round}
+.k-clock{fill:var(--clock-face);stroke:var(--clock-rim);stroke-width:6} .k-clock-hand{stroke:var(--clock-hand);stroke-linecap:round} .k-clock-tick{stroke:var(--clock-rim);stroke-width:3;stroke-linecap:round}
+.k-cable{stroke:var(--cable);opacity:var(--cable-op);fill:none;stroke-width:4;stroke-linecap:round}
+.k-cable-chat{stroke:var(--chat);opacity:.55;fill:none;stroke-width:3.5;stroke-dasharray:1 9;stroke-linecap:round}
+.k-cable-rev{stroke:var(--rev);opacity:.45;fill:none;stroke-width:3;stroke-dasharray:10 8;stroke-linecap:round}
+.k-tray{stroke:var(--tube-edge);fill:none;stroke-width:14;stroke-linecap:round;stroke-linejoin:round;opacity:.55}
+.k-cable-final{stroke:var(--ok);opacity:.5;fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.k-hub{fill:var(--hub)} .k-led{fill:var(--led)} .k-link-ink{fill:var(--link-ink)}
+.k-pkt{fill:var(--pkt)} .k-pkt-glow{fill:var(--pkt-glow)}
+.k-hot{stroke:var(--pkt);fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.k-hot-chat{stroke:var(--chat);fill:none;stroke-width:5;stroke-linecap:round}
+.k-hot-rev{stroke:var(--rev);fill:none;stroke-width:6;stroke-linecap:round}
+.k-hot-final{stroke:var(--ok);fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.k-chat{fill:var(--chat)}
+.k-callout{fill:var(--callout);stroke:var(--callout-edge);stroke-width:2.5;stroke-linejoin:round}
+.k-callout-ink{fill:var(--callout-ink)} .k-callout-dim{fill:var(--callout-dim)}
+.k-chute{fill:var(--chute)} .k-chute-ink{fill:var(--chute-ink)}
+.k-paper{fill:var(--paper)} .k-paper-line{fill:var(--paper-line)} .k-paper-s{stroke:var(--paper-line);fill:none;stroke-width:1.5}
+.k-folder{fill:var(--folder)} .k-folder2{fill:var(--folder-2)} .k-res{fill:var(--res)} .k-res2{fill:var(--res-2)} .k-env{fill:var(--env)} .k-env-s{stroke:var(--env-line);fill:none;stroke-width:1.6}
+.k-rev{fill:var(--rev)} .k-rev-s{stroke:var(--rev);fill:none} .k-ok{fill:var(--ok)} .k-ok-s{stroke:var(--ok);fill:none}
+.k-bubble{fill:var(--bubble);stroke:var(--bubble-edge);stroke-width:3;stroke-linejoin:round} .k-bubble-ink{fill:var(--bubble-ink)}
+.k-tag{fill:var(--tag)} .k-tag-ink{fill:var(--tag-ink)}
+.k-lamp{fill:var(--lamp)} .k-lamp-s{stroke:var(--lamp);fill:none;stroke-width:5;stroke-linecap:round} .k-lamp-shade{fill:var(--lamp-shade)} .k-glow{fill:var(--glow);opacity:calc(var(--lamp-on) * .34)} .k-bulb{fill:var(--glow);opacity:var(--lamp-on)}
+.k-night{fill:var(--shade);opacity:var(--night-op)}
+.k-mouth{fill:var(--mouth);stroke:var(--mouth);stroke-width:1.4;stroke-linejoin:round} .k-eye{fill:var(--eye)} .k-blush{fill:var(--blush);opacity:.32}
+.k-ink{fill:var(--ink)}
+.limb{fill:none;stroke-linecap:round}
+.back{filter:brightness(.84)}
+/* cast paint */
+.c1 .skin{fill:var(--skin1)} .c1 .skin-s{stroke:var(--skin1)} .c1 .skinb{fill:var(--skin1b)} .c1 .hair{fill:var(--hair1)} .c1 .hair-s{stroke:var(--hair1)} .c1 .top{fill:var(--top1)} .c1 .top-s{stroke:var(--top1)} .c1 .topb{fill:var(--top1b)} .c1 .fore-s{stroke:var(--top1)} .c1 .pants-s{stroke:var(--pants1)} .c1 .pants{fill:var(--pants1)} .c1 .shoe{fill:var(--shoe1)} .c1 .shirt{fill:var(--shirt1)}
+.c2 .skin{fill:var(--skin2)} .c2 .skin-s{stroke:var(--skin2)} .c2 .skinb{fill:var(--skin2b)} .c2 .hair{fill:var(--hair2)} .c2 .hair-s{stroke:var(--hair2)} .c2 .top{fill:var(--top2)} .c2 .top-s{stroke:var(--top2)} .c2 .topb{fill:var(--top2b)} .c2 .fore-s{stroke:var(--skin2)} .c2 .pants-s{stroke:var(--pants2)} .c2 .pants{fill:var(--pants2)} .c2 .shoe{fill:var(--shoe2)} .c2 .shirt{fill:var(--shirt2)}
+.c3 .skin{fill:var(--skin3)} .c3 .skin-s{stroke:var(--skin3)} .c3 .skinb{fill:var(--skin3b)} .c3 .hair{fill:var(--hair3)} .c3 .hair-s{stroke:var(--hair3)} .c3 .top{fill:var(--top3)} .c3 .top-s{stroke:var(--top3)} .c3 .topb{fill:var(--top3b)} .c3 .fore-s{stroke:var(--top3)} .c3 .pants-s{stroke:var(--pants3)} .c3 .pants{fill:var(--pants3)} .c3 .shoe{fill:var(--shoe3)} .c3 .shirt{fill:var(--top3b)}
+.c4 .skin{fill:var(--skin4)} .c4 .skin-s{stroke:var(--skin4)} .c4 .skinb{fill:var(--skin4b)} .c4 .hair{fill:var(--hijab4)} .c4 .hair-s{stroke:var(--hijab4b)} .c4 .top{fill:var(--top4)} .c4 .top-s{stroke:var(--top4)} .c4 .topb{fill:var(--top4b)} .c4 .fore-s{stroke:var(--top4)} .c4 .pants-s{stroke:var(--pants4)} .c4 .pants{fill:var(--pants4)} .c4 .shoe{fill:var(--shoe4)} .c4 .shirt{fill:var(--paper)}
+.c1 .shoe,.c2 .shoe,.c4 .shoe{stroke:none} .c3 .shoe{stroke:var(--pants3);stroke-width:1.5}
+.k-set{fill:var(--set1)} .k-set-s{stroke:var(--set1);fill:none} .k-glass{stroke:var(--glass2);fill:var(--paper);fill-opacity:.18} .k-glass-s{stroke:var(--glass2);fill:none}
+.k-cap{fill:var(--cap3)} .k-capb{fill:var(--cap3b)} .k-hijab{fill:var(--hijab4)} .k-hijabb{fill:var(--hijab4b)} .k-mug{fill:var(--mug3)} .k-steam{stroke:var(--paper-line);fill:none;stroke-width:3;stroke-linecap:round;opacity:.7}
+.k-a1{fill:var(--a1)} .k-a2{fill:var(--a2)} .k-a3{fill:var(--a3)} .k-a4{fill:var(--a4)} .k-pk{fill:var(--pkt)}
+@media (prefers-reduced-motion: reduce){ .track .bar{transition:none} }
+</style>
+<div class="page">
+  <header class="masthead">
+    <h1><svg viewBox="0 0 30 20" aria-hidden="true"><path d="M4 10 L12 4 L19 15 L26 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/><circle cx="4" cy="10" r="3.4" class="k-a1"/><circle cx="12" cy="4" r="3.4" class="k-a2"/><circle cx="19" cy="15" r="3.4" class="k-a3"/><circle cx="26" cy="9" r="3.4" class="k-a4"/></svg>Kantor Empat Agent</h1>
+    <p class="sub">Empat agent bekerja seperti satu tim kantor: tugas mengalir dari Agent 1 ke 2, 3, dan 4, lalu kembali.</p>
+  </header>
+  <figure class="stage" id="stage">
+    <svg id="scene" viewBox="0 10 1600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="scene-desc">
+      <desc id="scene-desc">Kantor tampak samping dengan empat meja berderet. Agent 1 sampai Agent 4 duduk di meja masing-masing dan terhubung kabel jaringan. Mereka saling mengantar berkas, berdiskusi, merevisi, lalu bertemu di tengah ruangan untuk merayakan hasil akhir.</desc>
+    </svg>
+  </figure>
+  <section class="dock" aria-label="Narasi dan kontrol">
+    <div class="narr">
+      <p class="caption"><span class="cap-step" id="cap-step" aria-live="polite">Langkah 1 dari 6</span><span class="cap-text" id="cap-text" aria-live="polite">Permintaan baru masuk. Agent 1 membacanya, berpikir, lalu menulis brief.</span><span class="cap-beat" id="cap-beat">Amplop jatuh dari kotak MASUK ke meja Agent 1.</span></p>
+      <div class="controls">
+        <button type="button" id="btn-play" aria-label="Pause"><svg viewBox="0 0 14 14" aria-hidden="true" id="ico-play"><rect x="2" y="1.5" width="3.6" height="11" rx="1"/><rect x="8.4" y="1.5" width="3.6" height="11" rx="1"/></svg><span id="play-label">Pause</span></button>
+        <button type="button" id="btn-restart"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.6a5.4 5.4 0 1 1-5.1 3.7l1.7.6A3.6 3.6 0 1 0 7 3.4V5.6L3.6 2.6 7 -.4z"/></svg>Ulangi</button>
+        <div class="speed" role="group" aria-label="Kecepatan">
+          <button type="button" id="btn-speed-1" aria-pressed="true">1x</button>
+          <button type="button" id="btn-speed-2" aria-pressed="false">2x</button>
+        </div>
+      </div>
+    </div>
+    <ol class="track" id="track" aria-label="Enam langkah alur kerja"></ol>
+    <div class="foot">
+      <ul class="legend" aria-label="Arti kabel jaringan">
+        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-task" x1="2" y1="4" x2="28" y2="4"/></svg>Tugas maju</li>
+        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-chat" x1="2" y1="4" x2="28" y2="4"/></svg>Diskusi</li>
+        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-rev" x1="2" y1="4" x2="28" y2="4"/></svg>Revisi</li>
+        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-final" x1="2" y1="4" x2="28" y2="4"/></svg>Hasil akhir</li>
+      </ul>
+      <p class="hint"><kbd>Spasi</kbd> untuk jeda atau lanjut. Klik langkah untuk melompat.</p>
+    </div>
+  </section>
+  <section class="static-steps" id="static-steps" hidden>
+    <h2>Alur dalam enam langkah</h2>
+    <ol id="static-list"></ol>
+  </section>
+</div>
+<script>
+(() => {
+'use strict';
+/* ---------- basics ---------- */
+const NS = 'http://www.w3.org/2000/svg';
+const L = 32;                         // loop length in seconds
+const SX = [215, 580, 945, 1310];     // hip x of each seated agent
+const svg = document.getElementById('scene');
+const $ = (id) => document.getElementById(id);
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function grp(cls, parent, html) {
+  const g = el('g', cls ? { class: cls } : null, parent);
+  if (html) g.innerHTML = html;
+  return g;
+}
+const clamp = (v, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
+const lerp = (a, b, k) => a + (b - a) * k;
+const frac = (x) => x - Math.floor(x);
+const D2R = Math.PI / 180;
+const R2D = 180 / Math.PI;
+const E = {
+  lin: (x) => x,
+  io: (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2),
+  o: (x) => 1 - Math.pow(1 - x, 3),
+  i: (x) => x * x * x,
+  s: (x) => -(Math.cos(Math.PI * x) - 1) / 2,
+  back: (x) => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+  wlk: (x) => { const r = 0.22, v = 1 / (1 - r); if (x < r) return v * x * x / (2 * r); if (x > 1 - r) return 1 - v * (1 - x) * (1 - x) / (2 * r); return v * (x - r / 2); },
+};
+// window of time: 0 before a, ramps to 1 by a+fade, holds, back to 0 by b
+function win(t, a, b, fade = 0.15) {
+  if (t < a || t > b) return 0;
+  return Math.min(clamp((t - a) / fade), clamp((b - t) / fade));
+}
+const span = (t, a, b) => clamp((t - a) / (b - a));
+function rot(p, deg) { const a = deg * D2R, c = Math.cos(a), s = Math.sin(a); return [p[0] * c - p[1] * s, p[0] * s + p[1] * c]; }
+// two-bone IK. Angles measured from "pointing down", positive = forward (+x).
+function ik(sx, sy, tx, ty, a, b, bend) {
+  let dx = tx - sx, dy = ty - sy, d = Math.hypot(dx, dy);
+  const mx = a + b - 0.5, mn = Math.abs(a - b) + 1;
+  if (d > mx) { dx *= mx / d; dy *= mx / d; d = mx; }
+  if (d < mn) { if (d < 0.001) { dx = 0; dy = mn; } else { dx *= mn / d; dy *= mn / d; } d = mn; }
+  const phi = Math.atan2(dx, dy);
+  const al = Math.acos(clamp((a * a + d * d - b * b) / (2 * a * d), -1, 1));
+  const t1 = phi + bend * al;
+  const jx = a * Math.sin(t1), jy = a * Math.cos(t1);
+  const t2 = Math.atan2(dx - jx, dy - jy);
+  return [t1, t2 - t1, sx + dx, sy + dy];
+}
+const setT = (e, v) => { if (e._t !== v) { e.setAttribute('transform', v); e._t = v; } };
+const setA = (e, k, v) => e.setAttribute(k, v);
+const f1 = (n) => Math.round(n * 10) / 10;
+const f2 = (n) => Math.round(n * 100) / 100;
+
+/* ---------- defs & layers ---------- */
+const defs = el('defs', null, svg);
+defs.innerHTML = `
+<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky-top)"/><stop offset="1" style="stop-color:var(--sky-bot)"/></linearGradient>
+<linearGradient id="gBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sunbeam);stop-opacity:1"/><stop offset="1" style="stop-color:var(--sunbeam);stop-opacity:0"/></linearGradient>
+<radialGradient id="gPkt"><stop offset="0" style="stop-color:var(--pkt-glow);stop-opacity:.95"/><stop offset="1" style="stop-color:var(--pkt-glow);stop-opacity:0"/></radialGradient>
+<linearGradient id="gLampCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--glow);stop-opacity:.95"/><stop offset="1" style="stop-color:var(--glow);stop-opacity:.25"/></linearGradient>
+<clipPath id="cWin"><rect x="624" y="89" width="272" height="142"/></clipPath>
+<clipPath id="cSkull"><circle r="31"/></clipPath>
+<clipPath id="cFace4"><circle r="27.5"/></clipPath>
+${SX.map((x, i) => `<clipPath id="cScr${i}"><rect x="${x + 105}" y="409" width="106" height="74" rx="2"/></clipPath>`).join('')}`;
+
+const Lbg = grp('', svg), Lshadow = grp('', svg), Ltube = grp('', svg), Lnet = grp('', svg), Lchair = grp('', svg),
+  Lfurn = grp('', svg), Ldesk = grp('', svg), Lchars = grp('', svg), Lhand = grp('', svg), Lfront = grp('', svg),
+  Lfx = grp('', svg), Lui = grp('', svg);
+
+/* ---------- room ---------- */
+(function room() {
+  let floorLines = '';
+  [648, 680, 718, 762].forEach((y, k) => {
+    floorLines += `<path class="k-floor-line" d="M-1000 ${y} H2600"/>`;
+    const step = 210 + k * 40;
+    for (let x = -60 + k * 77; x < 1650; x += step) floorLines += `<path class="k-floor-line" d="M${x} ${y} v${[32, 38, 44, 50][k] || 40}"/>`;
+  });
+  let stars = '';
+  [[640, 100], [668, 132], [700, 104], [735, 146], [790, 98], [812, 150], [872, 110], [886, 140], [652, 160], [742, 120]].forEach(([x, y], i) => {
+    stars += `<circle class="k-star" cx="${x}" cy="${y}" r="${i % 3 ? 1.6 : 2.2}"/>`;
+  });
+  let sky = '';
+  [[624, 190, 30, 41], [656, 176, 26, 55], [684, 198, 36, 33], [722, 168, 22, 63], [746, 186, 40, 45], [788, 172, 28, 59], [818, 194, 34, 37], [854, 180, 42, 51]].forEach(([x, y, w, h]) => {
+    sky += `<rect class="k-skyline" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
+    for (let wy = y + 8; wy < 226; wy += 12) for (let wx = x + 5; wx < x + w - 6; wx += 9) if ((wx * 7 + wy * 3) % 5 < 2) sky += `<rect class="k-winlit" x="${wx}" y="${wy}" width="4" height="5"/>`;
+  });
+  let ticks = '';
+  for (let k = 0; k < 12; k++) { const a = k * 30 * D2R, r1 = k % 3 ? 32 : 28; ticks += `<line class="k-clock-tick" x1="${f1(Math.sin(a) * r1)}" y1="${f1(-Math.cos(a) * r1)}" x2="${f1(Math.sin(a) * 35)}" y2="${f1(-Math.cos(a) * 35)}"/>`; }
+  let books = '';
+  [[968, 26, 'k-a1'], [982, 34, 'k-folder'], [996, 30, 'k-a2'], [1009, 22, 'k-res'], [1020, 36, 'k-a4'], [1034, 28, 'k-a3'], [1047, 31, 'k-cab']].forEach(([x, h, c]) => {
+    books += `<rect class="${c}" x="${x}" y="${200 - h}" width="12" height="${h}" rx="1.5"/>`;
+  });
+  Lbg.innerHTML = `
+  <rect class="k-ceil" x="-1000" y="-1200" width="3600" height="1236"/>
+  <rect class="k-ceil-line" x="-1000" y="34" width="3600" height="4"/>
+  <rect class="k-wall" x="-1000" y="38" width="3600" height="582"/>
+  <rect class="k-wall-low" x="-1000" y="470" width="3600" height="150"/>
+  <rect class="k-trim" x="-1000" y="466" width="3600" height="6"/>
+  <rect class="k-base" x="-1000" y="604" width="3600" height="16"/>
+  <rect class="k-floor" x="-1000" y="620" width="3600" height="1400"/>
+  ${floorLines}
+  <polygon points="630,240 892,240 1090,700 840,700" fill="url(#gBeam)" class="k-beam"/>
+  <g>
+    <rect class="k-shade" x="618" y="84" width="296" height="166" rx="6"/>
+    <rect class="k-frame" x="612" y="77" width="296" height="166" rx="6"/>
+    <g clip-path="url(#cWin)">
+      <rect x="624" y="89" width="272" height="142" fill="url(#gSky)"/>
+      ${stars}
+      <circle class="k-sun" id="sun" cx="846" cy="126" r="19"/>
+      <g id="clouds"><g class="k-cloud"><ellipse cx="0" cy="0" rx="26" ry="10"/><ellipse cx="14" cy="-7" rx="15" ry="11"/><ellipse cx="-12" cy="-4" rx="12" ry="8"/></g><g class="k-cloud" transform="translate(150,30) scale(.7)"><ellipse cx="0" cy="0" rx="26" ry="10"/><ellipse cx="14" cy="-7" rx="15" ry="11"/><ellipse cx="-12" cy="-4" rx="12" ry="8"/></g></g>
+      ${sky}
+    </g>
+    <rect class="k-frame" x="757" y="89" width="6" height="142"/>
+    <rect class="k-frame" x="624" y="155" width="272" height="5"/>
+    <rect class="k-sill" x="602" y="238" width="316" height="11" rx="3"/>
+  </g>
+  <g transform="translate(505,160)">
+    <circle class="k-shade" cx="5" cy="6" r="42"/>
+    <circle class="k-clock" r="40"/>
+    ${ticks}
+    <line id="hHour" class="k-clock-hand" x1="0" y1="4" x2="0" y2="-19" stroke-width="5.5"/>
+    <line id="hMin" class="k-clock-hand" x1="0" y1="5" x2="0" y2="-29" stroke-width="3.5"/>
+    <line id="hSec" class="k-rev-s" x1="0" y1="7" x2="0" y2="-31" stroke-width="1.6"/>
+    <circle r="3.6" class="k-rev"/>
+  </g>
+  <g>
+    <rect class="k-shade" x="964" y="206" width="200" height="8" rx="2"/>
+    <rect class="k-desk-edge" x="958" y="200" width="204" height="8" rx="2"/>
+    <rect class="k-leg" x="980" y="208" width="6" height="14"/><rect class="k-leg" x="1134" y="208" width="6" height="14"/>
+    ${books}
+    <rect class="k-folder2" x="1066" y="176" width="40" height="7" rx="1.5"/><rect class="k-paper" x="1068" y="183" width="36" height="7" rx="1.5"/><rect class="k-res" x="1066" y="190" width="40" height="10" rx="1.5"/>
+    <path class="k-pot" d="M1124 182 h24 l-3 18 h-18 z"/>
+    <g id="shelfPlant"><ellipse class="k-plant" cx="1128" cy="170" rx="7" ry="14" transform="rotate(-28 1136 182)"/><ellipse class="k-plant2" cx="1144" cy="168" rx="7" ry="15" transform="rotate(22 1136 182)"/><ellipse class="k-plant" cx="1136" cy="164" rx="6" ry="16"/></g>
+  </g>
+  <g>
+    <rect class="k-shade" x="1232" y="92" width="228" height="142" rx="4"/>
+    <rect class="k-board" x="1226" y="86" width="226" height="142" rx="4"/>
+    <text class="k-board-ink" x="1252" y="108" font-size="12" font-weight="800" letter-spacing="1.2">RISET</text>
+    <text class="k-board-ink" x="1314" y="108" font-size="12" font-weight="800" letter-spacing="1.2">BANGUN</text>
+    <text class="k-board-ink" x="1400" y="108" font-size="12" font-weight="800" letter-spacing="1.2">CEK</text>
+    <path class="k-board-s" d="M1298 96 v120 M1382 96 v120" opacity=".45"/>
+    <rect class="k-n2" x="1240" y="122" width="24" height="22" rx="2"/><rect class="k-n3" x="1268" y="150" width="24" height="22" rx="2"/>
+    <rect class="k-n2" x="1324" y="150" width="24" height="22" rx="2"/><rect class="k-n3" x="1352" y="178" width="24" height="22" rx="2"/>
+    <rect class="k-n2" x="1392" y="180" width="24" height="22" rx="2"/>
+    <g id="boardNote"><rect class="k-n1" x="-13" y="-12" width="26" height="24" rx="2"/><path class="k-board-s" d="M-7 -3 h14 M-7 3 h9"/></g>
+    <rect class="k-trim" x="1240" y="228" width="198" height="6" rx="2"/>
+  </g>
+  <g>
+    <rect class="k-shade" x="1506" y="118" width="74" height="92" rx="3"/>
+    <rect class="k-desk-edge" x="1500" y="112" width="74" height="92" rx="3"/>
+    <rect class="k-paper" x="1507" y="119" width="60" height="62" rx="1.5"/>
+    <path class="k-plant" d="M1507 181 L1525 154 L1538 168 L1550 150 L1567 181 Z" opacity=".75"/>
+    <circle class="k-a1" cx="1518" cy="138" r="5"/><circle class="k-a2" cx="1531" cy="134" r="5"/><circle class="k-a3" cx="1544" cy="138" r="5"/><circle class="k-a4" cx="1557" cy="134" r="5"/>
+    <text class="k-paper" x="1537" y="196" text-anchor="middle" font-size="9.5" font-weight="800" letter-spacing="1.2">TIM KAMI</text>
+  </g>
+  <g>
+    <rect class="k-shade" x="46" y="110" width="78" height="96" rx="4"/>
+    <rect class="k-paper" x="40" y="104" width="78" height="96" rx="4"/>
+    <path class="k-rev" d="M40 108 a4 4 0 0 1 4 -4 h70 a4 4 0 0 1 4 4 v18 h-78 z"/>
+    <text x="79" y="121" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="1.5" class="k-paper">OKT</text>
+    ${Array.from({ length: 20 }, (_, k) => `<rect class="k-paper-line" x="${48 + (k % 5) * 14}" y="${136 + Math.floor(k / 5) * 14}" width="8" height="6" rx="1"/>`).join('')}
+    <circle class="k-rev-s" cx="80" cy="153" r="8" stroke-width="2.5"/>
+  </g>
+  <g>
+    <rect class="k-shade" x="30" y="522" width="100" height="120" rx="4"/>
+    <rect class="k-cab" x="24" y="516" width="100" height="124" rx="4"/>
+    <path class="k-cab-line" d="M24 556 h100 M24 598 h100"/>
+    <rect class="k-leg" x="60" y="532" width="28" height="5" rx="2.5"/><rect class="k-leg" x="60" y="574" width="28" height="5" rx="2.5"/><rect class="k-leg" x="60" y="616" width="28" height="5" rx="2.5"/>
+    <rect class="k-paper" x="56" y="541" width="36" height="9" rx="1"/>
+    <text x="74" y="548.5" text-anchor="middle" font-size="8" font-weight="800" letter-spacing="1" class="k-board-ink">ARSIP</text>
+  </g>
+  <g>
+    <path class="k-shade" d="M482 641 h52 l14 8 h-60 z"/>
+    <g id="floorPlant">
+      <path class="k-plant2" d="M503 594 C 470 560 462 520 470 490 C 486 520 498 556 503 594 Z"/>
+      <path class="k-plant" d="M503 594 C 530 556 548 520 540 486 C 522 516 508 552 503 594 Z"/>
+      <path class="k-plant" d="M503 594 C 486 548 490 490 506 460 C 516 494 512 548 503 594 Z"/>
+      <path class="k-plant2" d="M503 594 C 520 570 552 556 566 540 C 540 540 516 560 503 594 Z"/>
+      <path class="k-plant2" d="M503 594 C 486 572 456 560 440 548 C 466 546 488 562 503 594 Z"/>
+    </g>
+    <path class="k-pot" d="M483 588 h40 l-6 52 h-28 z"/>
+    <rect class="k-trim" x="481" y="586" width="44" height="7" rx="2"/>
+  </g>`;
+})();
+
+/* ---------- network links between the four desks ----------
+   kind: task (amber, work moves forward), chat (blue, dotted), rev (red, dashed), final (green, the 4 -> 1 ceiling run) */
+const HUB = SX.map((x) => [x + 158, 300]);
+const L41 = `M${HUB[3][0]} 300 V74 Q${HUB[3][0]} 62 ${HUB[3][0] - 12} 62 H${HUB[0][0] + 12} Q${HUB[0][0]} 62 ${HUB[0][0]} 74 V300`;
+const LINKS = {
+  l12: { d: `M${HUB[0][0]} 300 C ${HUB[0][0] + 80} 346, ${HUB[1][0] - 80} 346, ${HUB[1][0]} 300`, cls: 'k-cable', kind: 'task' },
+  l23: { d: `M${HUB[1][0]} 300 C ${HUB[1][0] + 80} 346, ${HUB[2][0] - 80} 346, ${HUB[2][0]} 300`, cls: 'k-cable', kind: 'task' },
+  l34: { d: `M${HUB[2][0]} 300 C ${HUB[2][0] + 80} 346, ${HUB[3][0] - 80} 346, ${HUB[3][0]} 300`, cls: 'k-cable', kind: 'task' },
+  l23c: { d: `M${HUB[1][0]} 300 C ${HUB[1][0] + 70} 232, ${HUB[2][0] - 70} 232, ${HUB[2][0]} 300`, cls: 'k-cable-chat', kind: 'chat' },
+  l43r: { d: `M${HUB[3][0]} 300 C ${HUB[3][0] - 70} 232, ${HUB[2][0] + 70} 232, ${HUB[2][0]} 300`, cls: 'k-cable-rev', kind: 'rev' },
+  l41: { d: L41, cls: 'k-cable-final', kind: 'final' },
+};
+const HOT = { task: 'k-hot', chat: 'k-hot-chat', rev: 'k-hot-rev', final: 'k-hot-final' };
+const PK = { task: 'k-pkt', chat: 'k-chat', rev: 'k-rev', final: 'k-ok' };
+(function network() {
+  // the 4 -> 1 run hangs from the ceiling in a cable tray
+  el('path', { class: 'k-tray', d: L41 }, Ltube);
+  [560, 800, 1040, 1280].forEach((x) => {
+    el('rect', { class: 'k-hub', x: x - 4, y: 37, width: 8, height: 20, rx: 2 }, Ltube);
+    el('rect', { class: 'k-hub', x: x - 10, y: 54, width: 20, height: 5, rx: 2.5 }, Ltube);
+  });
+  for (const k in LINKS) {
+    const Lk = LINKS[k];
+    el('path', { class: Lk.cls, d: Lk.d }, Lnet);
+    Lk.hot = el('path', { class: HOT[Lk.kind], d: Lk.d, opacity: 0 }, Lnet);
+    Lk.len = Lk.hot.getTotalLength();
+    Lk.pk = grp('', Lnet, `<circle r="18" fill="url(#gPkt)"/><circle r="6.5" class="${PK[Lk.kind]}"/>`);
+    Lk.pk.setAttribute('opacity', 0);
+  }
+  const label = (x, y, txt, anchor) => { el('text', { class: 'k-link-ink', x, y, 'text-anchor': anchor || 'middle', 'font-size': 14, 'font-weight': 700 }, Lnet).textContent = txt; };
+  label((HUB[1][0] + HUB[2][0]) / 2, 242, 'diskusi');
+  label((HUB[2][0] + HUB[3][0]) / 2, 242, 'revisi');
+  label(990, 90, 'hasil akhir: Agent 4 ke Agent 1', 'start');
+  el('path', { class: 'k-link-ink', d: 'M970 85 l11 -6 v12 z' }, Lnet);
+  HUB.forEach(([x, y], i) => {
+    el('path', { class: 'k-cable', d: `M${x} ${y + 8} V404`, 'stroke-width': 3 }, Lnet);
+    el('rect', { class: 'k-hub', x: x - 15, y: y - 10, width: 30, height: 20, rx: 5 }, Lnet);
+    HUB[i].led = el('circle', { class: 'k-led', cx: x + 7, cy: y, r: 3.2 }, Lnet);
+    el('circle', { class: 'k-led', cx: x - 6, cy: y, r: 2, opacity: .45 }, Lnet);
+  });
+})();
+
+/* ---------- the request chute ---------- */
+Lfront.innerHTML = `
+  <g>
+    <rect class="k-shade" x="276" y="34" width="56" height="52" rx="6"/>
+    <rect class="k-chute" x="272" y="30" width="56" height="52" rx="6"/>
+    <text class="k-chute-ink" x="300" y="58" text-anchor="middle" font-size="12" font-weight="800" letter-spacing="1.2">MASUK</text>
+    <rect class="k-pk" x="282" y="74" width="36" height="4" rx="2" id="chuteLight" opacity=".35"/>
+  </g>`;
+
+/* ---------- desks, monitors, chairs ---------- */
+const CHAIRS = [], SCR = [];
+SX.forEach((x, i) => {
+  const n = i + 1;
+  grp('', Lfurn, `
+    <polygon class="k-shade" points="${x + 34},640 ${x + 252},640 ${x + 304},664 ${x + 72},664"/>
+    <rect class="k-leg" x="${x + 46}" y="516" width="9" height="124"/>
+    <rect class="k-leg" x="${x + 40}" y="634" width="22" height="6" rx="2"/>
+    <rect class="k-drawer" x="${x + 188}" y="516" width="60" height="124" rx="2"/>
+    <path class="k-drawer-line" d="M${x + 188} 556 h60 M${x + 188} 598 h60"/>
+    <rect class="k-leg" x="${x + 207}" y="578" width="22" height="4" rx="2"/><rect class="k-leg" x="${x + 207}" y="619" width="22" height="4" rx="2"/>
+    <rect class="k-a${n}" x="${x + 191}" y="522" width="54" height="18" rx="3"/>
+    <text x="${x + 218}" y="535" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing=".5" class="k-paper">AGENT ${n}</text>
+    <rect class="k-leg" x="${x + 207}" y="544" width="22" height="4" rx="2"/>
+    <rect class="k-desk" x="${x + 38}" y="504" width="214" height="14" rx="3"/>
+    <rect class="k-desk-edge" x="${x + 38}" y="514" width="214" height="4"/>
+    <polygon class="k-glow" points="${x + 214},436 ${x + 240},428 ${x + 268},504 ${x + 160},504" style="fill:url(#gLampCone)"/>
+    <rect class="k-mon" x="${x + 58}" y="499" width="42" height="6" rx="2"/>
+    <rect class="k-metal" x="${x + 154}" y="484" width="9" height="21"/>
+    <rect class="k-metal" x="${x + 136}" y="501" width="45" height="5" rx="2.5"/>
+    <rect class="k-mon" x="${x + 100}" y="404" width="116" height="84" rx="7"/>
+    <rect class="k-scr" x="${x + 105}" y="409" width="106" height="74" rx="2"/>
+    <ellipse class="k-lamp" cx="${x + 240}" cy="503" rx="12" ry="4"/>
+    <path class="k-lamp-s" d="M${x + 240} 502 L${x + 246} 454 L${x + 230} 426"/>
+    <path class="k-lamp-shade" d="M${x + 216} 420 L${x + 238} 414 L${x + 240} 430 L${x + 222} 440 Z"/>
+    <circle class="k-bulb" cx="${x + 229}" cy="436" r="4.5"/>
+    ${n === 4 ? `<g><rect class="k-desk-edge" x="${x + 249}" y="532" width="22" height="34" rx="2"/><rect class="k-paper" x="${x + 252}" y="537" width="16" height="26"/><rect class="k-metal" x="${x + 254}" y="529" width="12" height="6" rx="2"/><path class="k-paper-s" d="M${x + 255} 545 h10 M${x + 255} 551 h8 M${x + 255} 557 h10"/></g>` : ''}
+  `);
+  const scr = el('g', { 'clip-path': `url(#cScr${i})` }, Lfurn);
+  SCR.push(scr);
+  el('rect', { class: 'k-scr-glow', x: x + 105, y: 409, width: 106, height: 74, id: `glow${i}` }, Lfurn);
+  const ch = { base: grp('', Lchair, `
+    <ellipse class="k-shade" cx="0" cy="641" rx="46" ry="5"/>
+    <path class="k-chair-s" stroke-width="6" d="M-34 631 L34 631"/>
+    <circle class="k-chair" cx="-32" cy="636" r="5"/><circle class="k-chair" cx="32" cy="636" r="5"/><circle class="k-chair" cx="0" cy="636" r="5"/>
+    <rect class="k-metal" x="-4" y="574" width="8" height="58"/>`) };
+  ch.top = grp('', Lchair);
+  ch.stem = el('path', { class: 'k-chair-s', 'stroke-width': 7 }, ch.top);
+  ch.back = el('rect', { class: 'k-chair2', y: 446, height: 86, rx: 9.5 }, ch.top);
+  ch.seat = el('rect', { class: 'k-chair2', y: 561, width: 80, height: 14, rx: 7 }, ch.top);
+  CHAIRS.push(ch);
+});
+
+/* ---------- monitor contents ---------- */
+const MON = [];
+(function screens() {
+  // Agent 1: inbox + team status (dots 1-4)
+  {
+    const X = SX[0] + 105, Y = 409, g = SCR[0];
+    g.innerHTML = `
+      <rect class="k-a1" x="${X}" y="${Y}" width="106" height="9"/>
+      ${[0, 1, 2].map((k) => `<circle class="k-scr-line" cx="${X + 12}" cy="${Y + 20 + k * 11}" r="3.5"/><rect class="k-scr-line" x="${X + 20}" y="${Y + 17 + k * 11}" width="${[60, 46, 54][k]}" height="5" rx="2.5"/>`).join('')}
+      <path class="k-scr-line" d="M${X + 18} ${Y + 61} H${X + 88}" stroke="currentColor" style="stroke:var(--scr-line)" stroke-width="2"/>
+      ${[0, 1, 2, 3].map((k) => `<circle class="k-scr-dim" cx="${X + 18 + k * 23}" cy="${Y + 61}" r="6"/><circle class="k-a${k + 1}" id="m1d${k}" cx="${X + 18 + k * 23}" cy="${Y + 61}" r="6" opacity="0"/>`).join('')}
+      <g id="m1note"><rect class="k-pk" x="${X + 8}" y="${Y + 13}" width="90" height="32" rx="5"/><rect class="k-env" x="${X + 15}" y="${Y + 21}" width="20" height="15" rx="1.5"/><path class="k-env-s" d="M${X + 15} ${Y + 21} l10 8 l10 -8"/><rect class="k-paper" x="${X + 41}" y="${Y + 22}" width="48" height="5" rx="2.5"/><rect class="k-paper" x="${X + 41}" y="${Y + 31}" width="32" height="5" rx="2.5"/></g>
+      <g id="m1ping"><rect class="k-ok" x="${X + 8}" y="${Y + 13}" width="90" height="32" rx="5"/><circle class="k-paper" cx="${X + 24}" cy="${Y + 29}" r="9"/><path d="M${X + 19.5} ${Y + 29} l3.2 3.4 l6 -7" style="stroke:var(--ok);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"/><rect class="k-paper" x="${X + 39}" y="${Y + 22}" width="50" height="5" rx="2.5"/><rect class="k-paper" x="${X + 39}" y="${Y + 31}" width="34" height="5" rx="2.5"/></g>`;
+    MON[0] = { note: $('m1note'), ping: $('m1ping'), dots: [0, 1, 2, 3].map((k) => $('m1d' + k)) };
+  }
+  // Agent 2: search + results
+  {
+    const X = SX[1] + 105, Y = 409, g = SCR[1];
+    g.innerHTML = `
+      <rect class="k-a2" x="${X}" y="${Y}" width="106" height="9"/>
+      <rect class="k-scr-dim" x="${X + 8}" y="${Y + 14}" width="90" height="13" rx="6.5"/>
+      <circle cx="${X + 17}" cy="${Y + 20.5}" r="3.6" style="fill:none;stroke:var(--scr-line);stroke-width:2"/>
+      <rect class="k-scr-line" id="m2q" x="${X + 25}" y="${Y + 18}" width="0" height="5" rx="2.5"/>
+      ${[0, 1, 2, 3].map((k) => `<g id="m2r${k}" opacity="0"><rect class="k-a2" x="${X + 8}" y="${Y + 32 + k * 10.5}" width="8" height="8" rx="1.5" opacity=".7"/><rect class="k-scr-line" x="${X + 20}" y="${Y + 32 + k * 10.5}" width="${[70, 56, 64, 48][k]}" height="3.5" rx="1.75"/><rect class="k-scr-dim" x="${X + 20}" y="${Y + 36.5 + k * 10.5}" width="${[50, 62, 40, 58][k]}" height="3" rx="1.5"/></g>`).join('')}
+      <rect id="m2hi" x="${X + 5}" y="${Y + 51}" width="96" height="11" rx="3" style="fill:none;stroke:var(--pkt);stroke-width:2" opacity="0"/>`;
+    MON[1] = { q: $('m2q'), rows: [0, 1, 2, 3].map((k) => $('m2r' + k)), hi: $('m2hi') };
+  }
+  // Agent 3: code + progress bar
+  {
+    const X = SX[2] + 105, Y = 409, g = SCR[2];
+    const cls = ['k-a3', 'k-scr-line', 'k-a2', 'k-scr-line', 'k-a4', 'k-scr-line', 'k-pk', 'k-scr-line', 'k-a1', 'k-scr-line', 'k-a3', 'k-scr-line', 'k-a2', 'k-scr-line'];
+    let lines = '';
+    for (let k = 0; k < 14; k++) {
+      const ind = [0, 8, 8, 16, 16, 8, 0, 8, 16, 16, 8, 0, 8, 8][k];
+      lines += `<rect class="${cls[k]}" x="${X + 8 + ind}" y="${Y + 14 + k * 7}" width="${[30, 44, 26, 38, 22, 50, 28, 40, 34, 20, 46, 24, 36, 30][k]}" height="3.5" rx="1.75"/>`;
+    }
+    g.innerHTML = `
+      <rect class="k-a3" x="${X}" y="${Y}" width="106" height="9"/>
+      <g id="m3code">${lines}</g>
+      <rect class="k-scr" x="${X}" y="${Y + 56}" width="106" height="18"/>
+      <rect class="k-scr-dim" x="${X + 8}" y="${Y + 61}" width="90" height="8" rx="4"/>
+      <rect class="k-pk" id="m3p" x="${X + 8}" y="${Y + 61}" width="0" height="8" rx="4"/>`;
+    MON[2] = { code: $('m3code'), bar: $('m3p') };
+  }
+  // Agent 4: review checklist
+  {
+    const X = SX[3] + 105, Y = 409, g = SCR[3];
+    g.innerHTML = `
+      <rect class="k-a4" x="${X}" y="${Y}" width="106" height="9"/>
+      ${[0, 1, 2, 3].map((k) => `<rect class="k-scr-dim" x="${X + 9}" y="${Y + 15 + k * 13}" width="9" height="9" rx="2"/><rect class="k-scr-line" x="${X + 24}" y="${Y + 17 + k * 13}" width="${[56, 48, 62, 40][k]}" height="5" rx="2.5"/><path id="m4t${k}" d="M${X + 10.5} ${Y + 19.5 + k * 13} l2.6 2.6 l4.6 -5" style="fill:none;stroke:var(--ok);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round" opacity="0"/>`).join('')}
+      <path id="m4x" d="M${X + 10} ${Y + 29} l7 7 M${X + 17} ${Y + 29} l-7 7" style="fill:none;stroke:var(--rev);stroke-width:2.4;stroke-linecap:round" opacity="0"/>
+      <rect id="m4scan" class="k-pk" x="${X + 4}" y="${Y + 14}" width="98" height="2.5" opacity="0"/>`;
+    MON[3] = { ticks: [0, 1, 2, 3].map((k) => $('m4t' + k)), x: $('m4x'), scan: $('m4scan') };
+  }
+  // network-wide approval: every screen shows the green check when Agent 1 approves
+  SX.forEach((x, i) => {
+    const X = x + 105, Y = 409;
+    MON[i].ok = grp('', SCR[i], `<rect class="k-scr" x="${X}" y="${Y}" width="106" height="74"/><rect class="k-ok" x="${X}" y="${Y}" width="106" height="9"/><circle class="k-ok" cx="${X + 53}" cy="${Y + 42}" r="19"/><path d="M${X + 43.5} ${Y + 42} l6.5 6.5 l12.5 -13.5" style="stroke:var(--paper);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"/>`);
+    MON[i].ok.setAttribute('opacity', 0);
+  });
+})();
+
+/* ---------- character rigs ----------
+   Local space faces +x, hip at (0,0). Groups: flip > [leg back] [torso-back: arm back] [torso: body, head] [leg front] [torso-front: arm front]
+*/
+const UA = 46, FA = 44, TH = 62, SH = 58;
+function legMarkup(cls) {
+  return `<g class="${cls}"><g class="thigh"><line class="pants-s limb ln1" x1="0" y1="0" x2="0" y2="${TH}" stroke-width="21"/>
+    <g class="shin" transform="translate(0,${TH})"><line class="pants-s limb ln2" x1="0" y1="0" x2="0" y2="${SH}" stroke-width="17"/>
+    <g class="foot" transform="translate(0,${SH})"><path class="shoe" d="M-10 -5 Q-10 -11 -3 -11 L8 -9 Q23 -6 25 3 L25 7 L-10 7 Z"/></g></g></g></g>`;
+}
+function armMarkup(cls) {
+  return `<g class="${cls}"><g class="ua"><line class="top-s limb ln1" x1="0" y1="0" x2="0" y2="${UA}" stroke-width="16"/>
+    <g class="fa" transform="translate(0,${UA})"><line class="fore-s limb ln2" x1="0" y1="0" x2="0" y2="${FA - 4}" stroke-width="13"/>
+    <g class="hand" transform="translate(0,${FA})"><rect class="skin thumb" x="-3.5" y="2" width="7.5" height="16" rx="3.7" opacity="0"/><circle class="skin" r="8.6"/><path class="skinb" d="M-5 3 q5 4 10 0" opacity=".6"/></g></g></g></g>`;
+}
+const TORSO = 'M-18 -6 C-25 -42 -25 -80 -12 -96 Q0 -103 12 -96 C25 -86 27 -52 22 -6 Z';
+const EXTRA = {
+  1: `<path class="shirt" d="M6 -97 L19 -90 L14 -64 Z"/><path class="topb" d="M4 -96 L12 -70 L6 -40" style="fill:none;stroke:var(--top1b);stroke-width:3"/><circle class="shirt" cx="16" cy="-40" r="2.2"/><circle class="shirt" cx="17" cy="-28" r="2.2"/>`,
+  2: `<path class="shirt" d="M4 -98 L18 -91 L12 -74 Z"/><path d="M14 -88 L18 -50" style="stroke:var(--top2b);stroke-width:3;fill:none"/><rect class="topb" x="-21" y="-30" width="44" height="6" rx="3" opacity=".5"/>`,
+  3: `<path class="topb" d="M-14 -98 Q-34 -92 -27 -70 Q-16 -76 -4 -96 Z"/><path d="M15 -92 L17 -70 M19 -91 L22 -72" style="stroke:var(--paper);stroke-width:2;fill:none;stroke-linecap:round"/><path class="topb" d="M4 -38 h20 l-2 18 h-14 z" opacity=".7"/>`,
+  4: `<rect class="shirt" x="9" y="-66" width="12" height="15" rx="2"/><rect class="k-a4" x="9" y="-66" width="12" height="4" rx="1"/><path d="M6 -96 L13 -66" style="stroke:var(--hijab4b);stroke-width:1.6;fill:none"/>`,
+};
+// symmetric chest details, faded in while a character is seen from the front mid-turn
+const FRONT = {
+  1: `<path class="shirt" d="M-9 -98 L1 -80 L11 -98 Z"/><path d="M-9 -97 L-1 -70 M11 -97 L3 -70" style="fill:none;stroke:var(--top1b);stroke-width:3"/><circle class="shirt" cx="1" cy="-52" r="2.2"/><circle class="shirt" cx="1" cy="-40" r="2.2"/>`,
+  2: `<path class="shirt" d="M-8 -99 L1 -86 L10 -99 Z"/><rect class="topb" x="-21" y="-30" width="44" height="6" rx="3" opacity=".5"/>`,
+  3: `<path class="topb" d="M-15 -98 Q1 -86 17 -98 Q10 -88 1 -86 Q-8 -88 -15 -98 Z"/><path d="M-4 -91 L-5 -72 M6 -91 L7 -72" style="stroke:var(--paper);stroke-width:2;fill:none;stroke-linecap:round"/><path class="topb" d="M-11 -40 h24 l-3 18 h-18 z" opacity=".7"/>`,
+  4: `<path d="M-9 -96 L-2 -66 M11 -96 L4 -66" style="stroke:var(--hijab4b);stroke-width:1.6;fill:none"/><rect class="shirt" x="-5" y="-66" width="12" height="15" rx="2"/><rect class="k-a4" x="-5" y="-66" width="12" height="4" rx="1"/>`,
+};
+function headMarkup(n) {
+  let back = '', acc = '', fringe = '', skull = '<circle class="hair" r="31"/>', faceClip = 'cSkull';
+  if (n === 1) {
+    fringe = `<path class="hair" d="M-27 -12 Q-14 -40 10 -36 Q30 -32 30 -14 Q18 -26 2 -24 Q-14 -24 -27 -12 Z"/>`;
+    acc = `<path class="k-set-s hs-band" d="" stroke-width="4.5"/><rect class="k-set hs-cup" x="-6" y="-8" width="12" height="18" rx="5"/><path class="k-set-s hs-mic" d="" stroke-width="2.6"/><circle class="k-set hs-tip" r="3.4"/>`;
+  } else if (n === 2) {
+    back = `<path class="hair" d="M-35 -6 Q-38 30 -16 30 L18 30 Q30 30 33 6 Q36 -10 30 -16 Z"/>`;
+    fringe = `<path class="hair" d="M-28 -12 Q-24 -36 0 -36 Q26 -35 30 -10 Q16 -22 4 -21 Q-12 -21 -28 -12 Z"/><circle class="hair" cx="-10" cy="-33" r="11"/>`;
+    acc = `<ellipse class="k-glass gl1" rx="7" ry="6.4" stroke-width="2.4"/><ellipse class="k-glass gl2" rx="7" ry="6.4" stroke-width="2.4"/><path class="k-glass-s gl-br" d="" stroke-width="2.2"/>`;
+  } else if (n === 3) {
+    back = `<ellipse class="hair" cx="-6" cy="-6" rx="30" ry="22"/>`;
+    acc = `<path class="k-cap" d="M-33 -9 C-33 -48 33 -48 33 -9 Z"/><path class="k-capb" d="M-33 -12 h66 v4 h-66 z"/><circle class="k-capb" cx="0" cy="-39" r="3"/><ellipse class="k-capb cap-brim" rx="20" ry="5"/>`;
+  } else {
+    back = `<path class="k-hijabb" d="M-30 0 Q-40 34 -30 62 L28 62 Q38 34 30 0 Z"/><path class="k-hijab" d="M-33 -2 Q-38 30 -24 56 Q0 66 24 56 Q38 30 33 -2 Z"/>`;
+    skull = '<circle class="k-hijab" r="33"/>';
+    faceClip = 'cFace4';
+    acc = `<path class="k-hijabb" d="M-20 -24 Q0 -36 20 -24" style="fill:none;stroke:var(--hijab4b);stroke-width:2.5" opacity=".7"/>`;
+  }
+  return `<g class="hb">${back}</g>${skull}
+    <ellipse class="skin face" clip-path="url(#${faceClip})"/>
+    <ellipse class="skin ear e0" rx="5" ry="7.5"/><ellipse class="skin ear e1" rx="5" ry="7.5"/>
+    <ellipse class="k-blush ck0" rx="6" ry="3.5"/><ellipse class="k-blush ck1" rx="6" ry="3.5"/>
+    <ellipse class="k-eye ey0" rx="3.4" ry="4.4"/><ellipse class="k-eye ey1" rx="3.4" ry="4.4"/>
+    <path class="hair-s limb br0" stroke-width="2.8"/><path class="hair-s limb br1" stroke-width="2.8"/>
+    <ellipse class="skinb nose" rx="4.2" ry="4.8"/>
+    <path class="k-mouth mouth"/>
+    <g class="fr">${fringe}</g>${acc}`;
+}
+function buildChar(n) {
+  const root = el('g', { class: `char c${n}` }, Lchars);
+  root.innerHTML = `<g class="flip">
+    ${legMarkup('leg lb back')}
+    <g class="tb">${armMarkup('arm ab back')}</g>
+    <g class="torso"><g class="body"><path class="pants" d="M-20 -18 L22 -18 Q27 4 12 10 L-8 10 Q-23 6 -20 -18 Z"/>
+      <path class="top" d="${TORSO}"/><g class="sd"><path class="topb" d="M-18 -6 C-25 -42 -25 -80 -12 -96 L-6 -97 C-16 -78 -15 -40 -10 -6 Z" opacity=".55"/>${EXTRA[n]}</g><g class="fd" opacity="0">${FRONT[n]}</g>
+      <rect class="skin" x="-6.5" y="-108" width="13" height="16" rx="4"/></g>
+      <g class="head"><g class="hd" transform="translate(0,-32)">${headMarkup(n)}</g></g></g>
+    ${legMarkup('leg lf')}
+    <g class="tf">${armMarkup('arm af')}</g></g>`;
+  const q = (s) => root.querySelector(s);
+  const limbs = (s) => { const g = q(s); return { thigh: g.querySelector('.thigh'), shin: g.querySelector('.shin'), foot: g.querySelector('.foot'), ua: g.querySelector('.ua'), fa: g.querySelector('.fa'), hand: g.querySelector('.hand'), thumb: g.querySelector('.thumb'), l1: g.querySelector('.ln1'), l2: g.querySelector('.ln2') }; };
+  const c = {
+    n, root, flip: q('.flip'), tb: q('.tb'), torso: q('.torso'), tf: q('.tf'), body: q('.body'), head: q('.head'), hd: q('.hd'),
+    lf: limbs('.lf'), lb: limbs('.lb'), af: limbs('.af'), ab: limbs('.ab'),
+    face: q('.face'), ears: [q('.e0'), q('.e1')], cheeks: [q('.ck0'), q('.ck1')], eyes: [q('.ey0'), q('.ey1')], brows: [q('.br0'), q('.br1')],
+    nose: q('.nose'), mouth: q('.mouth'), fr: q('.fr'), hb: q('.hb'), sd: q('.sd'), fd: q('.fd'),
+    R: n === 4 ? 27.5 : 31,
+    hs: n === 1 ? { band: q('.hs-band'), cup: q('.hs-cup'), mic: q('.hs-mic'), tip: q('.hs-tip') } : null,
+    gl: n === 2 ? { l: [q('.gl1'), q('.gl2')], br: q('.gl-br') } : null,
+    brim: n === 3 ? q('.cap-brim') : null,
+    shadow: el('ellipse', { class: 'k-shade', rx: 34, ry: 6 }, Lshadow),
+    hfW: [0, 0], hbW: [0, 0], headW: [0, 0],
+  };
+  c.head = q('.head');
+  // name tag
+  c.tag = grp('', Lui, `<path class="k-tag" d="M-58 -22 h116 a8 8 0 0 1 8 8 v28 a8 8 0 0 1 -8 8 h-116 a8 8 0 0 1 -8 -8 v-28 a8 8 0 0 1 8 -8 z" style="stroke:var(--a${n});stroke-width:3"/>
+    <g class="ptr"><path class="k-tag" d="M-10.5 20 H10.5 L0 30.5 Z"/><path d="M-10 22 L0 30.5 L10 22" style="fill:none;stroke:var(--a${n});stroke-width:3;stroke-linejoin:round;stroke-linecap:round"/></g>
+    <circle class="k-a${n}" cx="-44" cy="0" r="8"/><text class="k-tag-ink" x="-31" y="-1" font-size="19" font-weight="800">Agent ${n}</text>
+    <text class="k-tag-ink" x="-31" y="15" font-size="12.5" font-weight="600" opacity=".75">${['Koordinator', 'Peneliti', 'Pembuat', 'Pemeriksa'][n - 1]}</text>`);
+  c.ptr = c.tag.querySelector('.ptr');
+  return c;
+}
+const CH = [1, 2, 3, 4].map(buildChar);
+
+/* ---------- keyframe tracks (one master clock, t in [0, L)) ---------- */
+function track(kfs) {
+  const ch = {};
+  for (const [t, vals, ease] of kfs) for (const k in vals) (ch[k] || (ch[k] = [])).push([t, vals[k], ease || 'io']);
+  for (const k in ch) ch[k].sort((a, b) => a[0] - b[0]);
+  return ch;
+}
+// A change between two keyframes takes at most CAP seconds and happens right before the later
+// keyframe (the value holds until then), except for walks, sit/stand and other slow eases.
+const CAP = 0.5, UNCAPPED = { wlk: 1, lin: 1, s: 1 };
+function sample(arr, t) {
+  if (t <= arr[0][0]) return arr[0][1];
+  for (let i = 1; i < arr.length; i++) {
+    if (t < arr[i][0]) {
+      const a = arr[i - 1], b = arr[i];
+      let t0 = a[0];
+      if (!UNCAPPED[b[2]] && b[0] - t0 > CAP) t0 = b[0] - CAP;
+      if (t <= t0) return a[1];
+      const k = E[b[2]]((t - t0) / (b[0] - t0));
+      if (Array.isArray(a[1])) return [lerp(a[1][0], b[1][0], k), lerp(a[1][1], b[1][1], k)];
+      return lerp(a[1], b[1], k);
+    }
+  }
+  return arr[arr.length - 1][1];
+}
+// hand targets in body space (x forward, y up is negative), relative to the hip
+const TYPE = { hf: [74, -66], hb: [60, -66] };
+const LAP = { hf: [42, -34], hb: [34, -32] };
+const HANG = { hf: [8, 2], hb: [-2, 2] };
+const READ = { hf: [48, -100], hb: [40, -97] };
+const WAIT = { hf: [-18, -26], hb: [-14, -28] };
+const base = (x, o) => ({ x, fy: 640, sit: 1, f: 1, lean: 8, hy: 90, tilt: 0, wk: 0, ...TYPE, typ: 0.4, talk: 0, smile: 0.25, brow: 0, jump: 0, swF: 1, swB: 1, nod: 0, wr: 0, thumb: 0, cheer: 0, sq: 0, ...o });
+// building blocks
+function walk(t0, t1, x0, x1, fyA, fyB, ta, tb) {
+  return [[t0, { x: x0, wk: 0 }], [t0 + 0.22, { wk: 1 }], [t1 - 0.24, { wk: 1 }], [t1, { x: x1 }, 'wlk'], [t1, { wk: 0 }],
+    [ta, { fy: fyA }], [tb, { fy: fyB }, 's']];
+}
+const stand = (t0, sx, d = 0.45) => [[t0, { sit: 1, x: sx }], [t0 + d, { sit: 0, x: sx + 12 }, 'lin']];
+const sitDown = (t0, sx, d = 0.45) => [[t0, { sit: 0, x: sx + 12 }], [t0 + d, { sit: 1, x: sx }, 'lin']];
+const turn = (t0, a, b, d = 0.3) => [[t0, { f: a }], [t0 + d, { f: b }]];
+const talk = (t0, t1, v = 1) => [[t0, { talk: 0 }], [t0 + 0.08, { talk: v }], [t1 - 0.08, { talk: v }], [t1, { talk: 0 }]];
+const nod = (t0, t1) => [[t0, { nod: 0 }], [t0 + 0.06, { nod: 1 }], [t1 - 0.06, { nod: 1 }], [t1, { nod: 0 }]];
+// windup + overhand throw with the back hand (paper planes)
+const toss = (t) => [[t - 0.12, { hf: [42, -58], hb: [-36, -140], lean: -6, tilt: -6 }], [t, { hb: [74, -128], lean: 14, tilt: 0 }, 'i'], [t + 0.28, { hb: [72, -76], lean: 12 }, 'o']];
+// a desk stamp: grab at t-0.2, raise, slam at t, lift, put back
+const slam = (t) => [[t - 0.2, { hf: [48, -76], lean: 10 }], [t - 0.08, { hf: [70, -124], lean: 2, tilt: 4 }, 'o'], [t, { hf: [86, -82], lean: 16, tilt: 10 }, 'i'],
+  [t + 0.12, { hf: [70, -100], lean: 10 }, 'o'], [t + 0.24, { hf: [48, -76] }]];
+// arms-up cheer with a crouch before each hop
+function cheer(t0, b) {
+  return [
+    [t0, { hf: [20, -160], hb: [4, -156], hy: 16, smile: 1, cheer: 1, lean: 0, tilt: -6, brow: 0.6 }, 'back'],
+    [t0 + 0.02, { jump: 0 }], [t0 + 0.12, { jump: -7 }], [t0 + 0.26, { jump: 17 }, 'o'], [t0 + 0.4, { jump: 0 }, 'i'],
+    [t0 + 0.45, { jump: -5 }], [t0 + 0.55, { jump: 12 }, 'o'], [t0 + 0.67, { jump: 0 }, 'i'],
+    [t0 + 0.3, { hf: [30, -150], hb: [-4, -162] }], [t0 + 0.55, { hf: [16, -162], hb: [8, -150] }],
+    [t0 + 0.92, { ...HANG, ...b, cheer: 0, hy: 90, tilt: 0, brow: 0, lean: 4, smile: 0.7 }],
+  ];
+}
+const highFive = (t) => [[t - 0.25, { hf: [50, -118], hy: 90 }, 'o'], [t - 0.12, { hf: [30, -158], lean: -2 }, 'o'], [t, { hf: [86, -144], lean: 13 }, 'i'], [t + 0.12, { hf: [60, -146], lean: 5 }, 'o']];
+const clap = (t0, n) => { const k = []; for (let i = 0; i < n; i++) k.push([t0 + i * 0.16, { hf: [52, -94], hb: [32, -88] }], [t0 + i * 0.16 + 0.08, { hf: [44, -90], hb: [40, -90] }, 'i']); return k; };
+
+const B1 = base(215, { typ: 0.55, smile: 0.3 });
+const B2 = base(580, { typ: 0.35, tilt: 2, smile: 0.2 });
+const B3 = base(945, { typ: 0.6, lean: 10, smile: 0.2 });
+const B4 = base(1310, { typ: 0.4, tilt: 2, smile: 0.2 });
+const MEET = [680, 850]; // where Agent 1 and Agent 4 meet in step 6
+
+/* Agent 1, Koordinator */
+const K1 = [
+  [0, B1],
+  // 1. the envelope lands: notice, grab, open, read, write the brief
+  [0.35, { typ: 0.55, tilt: 0, brow: 0 }], [0.55, { typ: 0, tilt: 12, brow: 0.7 }, 'o'],
+  [0.62, { ...TYPE }], [0.9, { hf: [86, -60], hb: [62, -64], lean: 14 }], [0.98, { hf: [86, -60] }],
+  [1.25, { ...READ, lean: 5, tilt: 5, brow: 0 }], [1.9, { ...READ, tilt: 7 }],
+  [2.1, { hf: [56, -62], hb: [50, -62], lean: 10, tilt: 8 }],
+  [2.3, { hf: [84, -64], hb: [70, -64], lean: 12, tilt: 12 }],
+  [2.3, { wr: 0 }], [2.38, { wr: 1 }], [2.8, { wr: 1 }], [2.86, { wr: 0 }],
+  [2.86, { hf: [84, -64], hb: [70, -64] }],
+  [3.02, { hf: [40, -78], hb: [40, -36], lean: 8, tilt: 2, smile: 0.55 }],
+  // 2. carry the brief to Agent 2
+  [3.02, { swF: 1 }], [3.08, { swF: 0 }],
+  ...stand(3.05, 215),
+  [3.5, { hf: [34, -64], hb: [-2, 2], lean: 4, tilt: 0 }],
+  ...walk(3.5, 4.8, 227, 405, 640, 690, 3.55, 4.2),
+  [4.85, { hf: [34, -64] }], [5.12, { hf: [96, -64], lean: 9 }, 'o'], [5.3, { hf: [96, -64] }],
+  [5.5, { ...HANG, lean: 3 }], [5.5, { swF: 0 }], [5.55, { swF: 1 }],
+  ...talk(4.7, 5.35), [4.7, { smile: 0.55 }], [4.9, { smile: 0.85 }],
+  ...turn(5.5, 1, -1),
+  ...walk(5.8, 7.1, 405, 227, 690, 640, 6.45, 7.1),
+  ...turn(7.12, -1, 1),
+  ...sitDown(7.4, 215),
+  [7.55, { ...HANG, lean: 4 }], [7.9, { ...LAP, lean: 8, smile: 0.3 }], [8.15, { ...TYPE }],
+  [8.15, { typ: 0 }], [8.35, { typ: 0.5 }],
+  // 6. the ping from Agent 4 arrives: get up and go meet her
+  [23.3, { typ: 0.5, ...TYPE, lean: 8, tilt: 0, brow: 0, smile: 0.3 }], [23.45, { typ: 0, brow: 0.8, tilt: -4, smile: 0.75 }, 'o'],
+  [23.62, { hf: [40, -70], hb: [30, -60], lean: 6 }],
+  ...stand(23.6, 215),
+  [24.05, { hf: [30, -60], hb: [-2, 2], lean: 4, tilt: 0, brow: 0 }],
+  ...walk(24.05, 26.1, 227, MEET[0], 640, 690, 24.1, 24.9),
+  [26.15, { hf: [30, -60] }], [26.36, { hf: [84, -64], lean: 9 }, 'o'], [26.5, { hf: [84, -64] }],
+  [26.75, { ...READ, lean: 3, tilt: 6 }], ...nod(26.85, 27.15),
+  [27.12, { ...READ, hy: 90 }], [27.34, { hb: [16, -62], hf: [60, -104], tilt: 0, smile: 1, lean: 4, hy: 62 }, 'back'],
+  [27.33, { thumb: 0 }], [27.35, { thumb: 1 }], [27.78, { thumb: 1 }], [27.8, { thumb: 0 }],
+  ...talk(27.15, 27.9),
+  [27.72, { hb: [8, -40] }], [28.14, { hb: [8, -40] }],
+  ...highFive(28.1),
+  // the cheer ends with the report at his chest; it moves to the near hand for the walk back
+  ...cheer(28.25, { hf: [44, -70], hb: [28, -64] }),
+  [29.36, { hf: [34, -64], hb: [-2, 2] }],
+  [29.36, { swF: 1 }], [29.42, { swF: 0 }],
+  ...turn(29.2, 1, -1, 0.28),
+  ...walk(29.45, 31.4, MEET[0], 227, 690, 640, 30.6, 31.4),
+  ...turn(31.36, -1, 1, 0.26),
+  ...sitDown(31.53, 215, 0.44),
+  [31.6, { hf: [34, -64], hb: [-2, 2], lean: 4 }], [31.8, { hf: [80, -58], hb: [42, -50], lean: 12 }], [32, { ...TYPE, lean: 8, smile: 0.3 }],
+  [31.86, { swF: 0 }], [31.9, { swF: 1 }],
+  [31.9, { typ: 0 }], [32, { typ: 0.55 }],
+];
+
+/* Agent 2, Peneliti */
+const K2 = [
+  [0, B2],
+  // 2. Agent 1 arrives: swivel round, take the brief
+  [4.3, { hy: 90, typ: 0.35 }], [4.42, { hy: -25, typ: 0 }, 'o'],
+  [4.42, { hy: -25, ...TYPE }], ...turn(4.45, 1, -1), [4.75, { hy: 90, ...LAP }],
+  [4.95, { hf: [82, -64], lean: 12 }, 'o'], [5.2, { hf: [82, -64] }], [5.42, { hf: [36, -72], hb: [30, -56], lean: 8 }],
+  [4.9, { smile: 0.2 }], [5.1, { smile: 0.8 }],
+  ...talk(5.3, 5.95),
+  ...turn(5.8, -1, 1),
+  [6.1, { hf: [36, -72], hb: [30, -56] }],
+  // 3. read the brief, search, fold the findings into a plane and throw it to Agent 3
+  [6.3, { hf: [52, -98], hb: [40, -96], tilt: 8, lean: 6, smile: 0.25 }],
+  [6.45, { hf: [52, -98] }], [6.57, { hf: [42, -104] }], [6.72, { hf: [52, -98], hb: [40, -96] }],
+  [6.95, { hf: [52, -98] }], [7.1, { hf: [86, -62], hb: [72, -62], tilt: 4, lean: 12 }],
+  [7.22, { ...TYPE, lean: 8 }], [7.22, { typ: 0, tilt: 0 }], [7.3, { typ: 0.85 }], [7.72, { typ: 0.85 }], [7.78, { typ: 0 }],
+  [7.3, { sq: 0 }], [7.42, { sq: 0.4 }], [7.72, { sq: 0.4 }], [7.8, { sq: 0 }],
+  [7.8, { ...TYPE }], [7.92, { hf: [50, -84], hb: [44, -82] }], [8.04, { hf: [46, -90], hb: [48, -86] }], [8.16, { hf: [44, -80], hb: [50, -88] }],
+  ...toss(8.42),
+  [9.0, { ...LAP, lean: 8 }],
+  [9.15, { hy: 90 }], [9.35, { hy: 72 }],
+  [9.8, { smile: 0.3 }], [9.95, { smile: 0.6 }],
+  ...talk(9.9, 10.65),
+  [9.9, { ...LAP }], [10.1, { hf: [58, -94] }, 'o'], [10.5, { hf: [58, -94] }], [10.75, { ...TYPE, hy: 90 }],
+  [10.75, { typ: 0 }], [10.95, { typ: 0.35 }],
+  // 6. stand up and cheer with the team
+  [27.28, { typ: 0.35, ...TYPE, tilt: 2, smile: 0.4 }], [27.32, { typ: 0 }],
+  ...stand(27.3, 580),
+  [27.75, { hf: [44, -90], hb: [40, -90], lean: 2, smile: 0.9, hy: 70, tilt: 0 }],
+  ...clap(27.8, 2),
+  ...cheer(28.3, {}),
+  ...sitDown(29.25, 580),
+  [29.75, { ...LAP, lean: 8 }], [30.0, { ...TYPE, smile: 0.2, tilt: 2 }], [30.0, { typ: 0 }], [30.2, { typ: 0.35 }],
+];
+
+/* Agent 3, Pembuat */
+const K3 = [
+  [0, B3],
+  // a coffee break while Agent 1 hands over the brief
+  [5.85, { ...TYPE, typ: 0.6 }], [5.95, { typ: 0 }],
+  [6.15, { hf: [88, -66], lean: 14 }], [6.25, { hf: [88, -66] }],
+  [6.55, { hf: [42, -110], lean: 4, tilt: -12 }], [6.85, { hf: [42, -110], tilt: -14 }],
+  [7.1, { hf: [88, -66], lean: 14, tilt: 0 }], [7.2, { hf: [88, -66] }],
+  [7.4, { ...TYPE, lean: 10 }], [7.45, { typ: 0.6 }],
+  // 3. catch the plane from Agent 2 and talk it through
+  [8.35, { hy: 90, typ: 0.6 }], [8.5, { hy: -30, typ: 0, brow: 0.8 }, 'o'],
+  [8.5, { hy: -30, ...TYPE }], ...turn(8.5, 1, -1), [8.8, { hy: 90, ...LAP }],
+  [9.0, { hf: [56, -146], tilt: -12, lean: 4 }, 'o'], [9.12, { hf: [56, -146] }],
+  [9.35, { hf: [46, -90], tilt: 0, lean: 8, brow: 0.6 }],
+  ...talk(9.2, 9.85),
+  [9.95, { brow: 0 }], ...nod(10.4, 10.7),
+  ...turn(10.7, -1, 1),
+  [11.0, { hf: [46, -90] }], [11.12, { hf: [86, -62] }],
+  // 4. build fast, then walk the report over to Agent 4
+  [11.22, { ...TYPE }], [11.22, { typ: 0 }], [11.3, { typ: 1.3, lean: 14, tilt: 3, sq: 0.3 }], [12.15, { typ: 1.3, sq: 0.3 }], [12.22, { typ: 0, sq: 0 }],
+  [12.25, { ...TYPE }], [12.38, { hf: [86, -62], hb: [70, -64] }], [12.45, { hf: [86, -62] }],
+  [12.45, { swF: 1 }], [12.5, { swF: 0 }],
+  ...stand(12.45, 945),
+  [12.9, { hf: [34, -64], hb: [-2, 2], lean: 4, tilt: 0, smile: 0.7 }],
+  ...walk(12.9, 14.0, 957, 1150, 640, 690, 12.95, 13.6),
+  [14.05, { hf: [34, -64] }], [14.28, { hf: [96, -64], lean: 9 }, 'o'], [14.42, { hf: [96, -64] }],
+  ...talk(13.85, 14.45),
+  [14.62, { ...WAIT, lean: 2 }], [14.6, { swF: 0 }], [14.65, { swF: 1 }],
+  [14.7, { tilt: 0 }], [15.0, { tilt: 10 }],
+  // 5. startled by the REVISI stamp, takes the report back, fixes it, sends it again
+  [16.52, { jump: 0, brow: 0, smile: 0.5 }], [16.62, { jump: 6, brow: 1, smile: -0.4 }, 'o'], [16.82, { jump: 0 }],
+  [17.35, { ...WAIT, tilt: 10 }], [17.52, { hf: [96, -64], hb: [-2, 2], tilt: 0, lean: 9 }, 'o'], [17.64, { hf: [96, -64] }], [17.88, { hf: [34, -64], lean: 3 }],
+  [17.85, { swF: 1 }], [17.9, { swF: 0 }],
+  ...talk(18.05, 18.75), [18.0, { brow: 0.3, smile: 0.35 }],
+  ...turn(17.95, 1, -1),
+  ...walk(18.25, 19.35, 1150, 957, 690, 640, 18.8, 19.35),
+  ...turn(19.35, -1, 1),
+  ...sitDown(19.62, 945, 0.42),
+  [19.95, { hf: [34, -64], hb: [-2, 2] }], [20.1, { hf: [86, -62], hb: [60, -66], lean: 12 }], [20.2, { ...TYPE }],
+  [20.2, { typ: 0 }], [20.27, { typ: 1.7, lean: 16, sq: 0.5, brow: 0.6 }], [20.85, { typ: 1.7 }], [20.9, { typ: 0, sq: 0, brow: 0 }],
+  [20.9, { ...TYPE }], [21.03, { hf: [52, -84], hb: [44, -82], lean: 8 }], [21.18, { hf: [44, -80], hb: [50, -88] }],
+  ...toss(21.44),
+  [22.0, { ...TYPE, lean: 10 }], [22.0, { typ: 0 }], [22.2, { typ: 0.6 }],
+  [22.55, { smile: 0.3 }], [22.7, { smile: 1 }],
+  // 6. stand, turn to the group and cheer
+  [27.32, { typ: 0.6, ...TYPE, smile: 0.6 }], [27.36, { typ: 0 }],
+  ...stand(27.35, 945),
+  [27.8, { hf: [40, -80], hb: [36, -76], lean: 3, smile: 0.9, tilt: 0 }],
+  ...turn(27.8, 1, -1),
+  ...clap(28.1, 1),
+  ...cheer(28.35, {}),
+  ...turn(29.3, -1, 1),
+  ...sitDown(29.6, 945),
+  [30.1, { ...LAP, lean: 10 }], [30.35, { ...TYPE, smile: 0.2 }], [30.35, { typ: 0 }], [30.55, { typ: 0.6 }],
+];
+
+/* Agent 4, Pemeriksa */
+const K4 = [
+  [0, B4],
+  // 4. Agent 3 arrives with the report
+  [13.45, { hy: 90, typ: 0.4 }], [13.6, { hy: -25, typ: 0 }, 'o'],
+  [13.6, { hy: -25, ...TYPE }], ...turn(13.62, 1, -1), [13.95, { hy: 90, ...LAP }],
+  [14.12, { hf: [66, -62], lean: 13 }, 'o'], [14.35, { hf: [66, -62] }], [14.58, { hf: [38, -72], hb: [30, -56], lean: 8 }],
+  ...talk(14.45, 15.1),
+  ...turn(14.8, -1, 1),
+  [15.1, { hf: [38, -72] }], [15.25, { hf: [84, -62], hb: [64, -64], lean: 12 }],
+  // 5. magnifier, a problem, REVISI stamp, hand it back
+  [15.35, { hf: [100, -60], lean: 16 }], [15.4, { hf: [100, -60] }],
+  [15.6, { hf: [80, -80], tilt: 14, lean: 18, sq: 1 }],
+  [15.8, { hf: [96, -78] }], [15.98, { hf: [78, -79] }], [16.12, { hf: [92, -80] }],
+  [16.1, { brow: 0, sq: 1, smile: 0.2 }], [16.2, { brow: 1, sq: 0, smile: -0.5 }, 'o'],
+  [16.24, { hf: [100, -60], tilt: 6 }],
+  ...slam(16.52),
+  [16.9, { hf: [86, -62], tilt: 2 }],
+  ...turn(16.95, 1, -1),
+  [17.25, { hf: [38, -72] }], [17.48, { hf: [66, -62], lean: 14 }, 'o'], [17.64, { hf: [66, -62] }], [17.88, { ...LAP, lean: 8 }],
+  ...talk(17.25, 18.05),
+  [17.9, { brow: 0, smile: 0.2 }],
+  ...turn(18.2, -1, 1),
+  [18.5, { ...LAP }], [18.7, { ...TYPE }], [18.7, { typ: 0 }], [18.85, { typ: 0.4 }],
+  // the fixed report lands on her desk as a paper plane
+  [21.95, { hy: 90, typ: 0.4 }], [22.05, { hy: -20, typ: 0, brow: 0.6 }, 'o'],
+  [22.15, { hy: 90, tilt: 10 }], [22.18, { ...TYPE }],
+  [22.28, { hf: [84, -62], hb: [64, -64], lean: 14, sq: 0.6, brow: 0 }], [22.4, { sq: 0 }],
+  ...slam(22.6),
+  [22.72, { smile: 1 }],
+  [22.95, { hf: [86, -62], tilt: 2 }],
+  // 6. carry the final report to Agent 1
+  [22.98, { swF: 1 }], [23.02, { swF: 0 }],
+  ...stand(23.0, 1310),
+  [23.45, { hf: [34, -64], hb: [-2, 2], lean: 4, tilt: 0 }],
+  ...turn(23.45, 1, -1),
+  ...walk(23.75, 26.1, 1322, MEET[1], 640, 690, 23.8, 24.6),
+  [26.15, { hf: [34, -64] }], [26.36, { hf: [84, -64], lean: 9 }, 'o'], [26.5, { hf: [84, -64] }],
+  [26.72, { hf: [30, -58], hb: [22, -52], lean: 3 }], [26.6, { swF: 1 }],
+  ...talk(26.0, 26.7),
+  [27.2, { smile: 0.6 }], [27.45, { smile: 1 }],
+  ...highFive(28.1),
+  ...cheer(28.25, {}),
+  ...turn(29.2, -1, 1, 0.25),
+  ...walk(29.45, 31.5, MEET[1], 1322, 690, 640, 30.6, 31.5),
+  ...sitDown(31.5, 1310),
+  [31.55, { ...HANG, lean: 4 }], [31.8, { ...LAP, lean: 8 }], [32, { ...TYPE, smile: 0.2, tilt: 2 }],
+  [31.9, { typ: 0 }], [32, { typ: 0.4 }],
+];
+[K1, K2, K3, K4].forEach((k, i) => { CH[i].tr = track(k); CH[i].s = {}; });
+
+/* ---------- story steps and beats ---------- */
+const STEPS = [
+  [0, 'Masuk', 'Permintaan baru masuk. Agent 1 membacanya, berpikir, lalu menulis brief.'],
+  [2.95, 'Brief', 'Agent 1 berjalan membawa brief dan menyerahkannya ke Agent 2.'],
+  [5.8, 'Riset', 'Agent 2 meriset, melempar temuan ke Agent 3, lalu mereka berdiskusi.'],
+  [10.75, 'Bangun', 'Agent 3 menyusun laporan, lalu mengantarnya ke Agent 4.'],
+  [14.45, 'Cek', 'Agent 4 memberi cap REVISI. Agent 3 memperbaiki dan mengirim ulang, lalu dapat cap OK.'],
+  [23.0, 'Setuju', 'Agent 4 mengantar hasil final ke Agent 1. Disetujui, tim merayakan, lalu kembali bekerja.'],
+];
+const BEATS = [
+  [0, 'Amplop jatuh dari kotak MASUK ke meja Agent 1.'],
+  [1.15, 'Agent 1 membaca permintaan: laporan penjualan Q3.'],
+  [2.1, 'Agent 1 menulis brief singkat untuk tim.'],
+  [2.95, 'Agent 1 berdiri dan membawa brief ke meja Agent 2.'],
+  [4.75, 'Brief berpindah tangan. Kabel Agent 1 ke Agent 2 menyala.'],
+  [5.8, 'Agent 2 membaca brief, lalu mencari data.'],
+  [7.8, 'Temuan dilipat jadi pesawat kertas untuk Agent 3.'],
+  [9.15, 'Agent 2 dan Agent 3 berdiskusi lewat jalur diskusi.'],
+  [10.75, 'Agent 3 mengetik cepat sampai laporan 100%.'],
+  [12.4, 'Agent 3 mengantar laporan ke Agent 4.'],
+  [14.45, 'Laporan diterima Agent 4.'],
+  [15.3, 'Agent 4 memeriksa dengan kaca pembesar.'],
+  [16.2, 'Ada yang kurang. Agent 4 memberi cap REVISI.'],
+  [17.25, 'Laporan kembali ke Agent 3 dengan catatan revisi.'],
+  [19.6, 'Agent 3 memperbaiki grafik, lalu mengirimnya lagi.'],
+  [22.6, 'Cap OK. Laporan lolos pemeriksaan.'],
+  [23.0, 'Agent 4 mengabari Agent 1 lewat jalur hasil akhir.'],
+  [23.7, 'Agent 4 mengantar hasil final, Agent 1 datang menjemput.'],
+  [26.4, 'Agent 1 memeriksa dan menyetujui.'],
+  [28.05, 'Tos! Seluruh tim merayakan.'],
+  [29.4, 'Semua kembali ke meja. Permintaan baru segera datang.'],
+];
+const stepAt = (t) => { let i = 0; for (let k = 0; k < STEPS.length; k++) if (t >= STEPS[k][0]) i = k; return i; };
+const beatAt = (t) => { let i = 0; for (let k = 0; k < BEATS.length; k++) if (t >= BEATS[k][0]) i = k; return i; };
+
+/* ---------- communication events along the links: [link, direction, t0, t1] ---------- */
+const EV = [
+  ['l12', 0, 4.95, 5.45], ['l23', 0, 8.42, 9.1], ['l23c', 1, 9.2, 9.75], ['l23c', 0, 9.9, 10.45],
+  ['l34', 0, 13.95, 14.45], ['l43r', 0, 17.3, 17.8], ['l34', 0, 21.44, 22.1], ['l41', 0, 22.65, 23.35],
+];
+const PARTY = [28.1, 29.3]; // the whole network glows while the team celebrates
+const HUB_FLASH = [[0, 0.5, 0.9], [0, 4.95, 5.2], [1, 5.2, 5.5], [1, 8.42, 8.7], [2, 8.85, 9.15], [2, 9.2, 9.45], [1, 9.5, 9.8], [1, 9.9, 10.15], [2, 10.2, 10.5],
+  [2, 13.95, 14.2], [3, 14.2, 14.5], [3, 17.3, 17.55], [2, 17.55, 17.85], [2, 21.44, 21.7], [3, 21.85, 22.15], [3, 22.65, 22.9], [0, 23.1, 23.4]];
+// bystanders glance at whatever is happening: [t0, t1, worldX, actors (not glancing), head tilt]
+const GLANCES = [
+  [0.45, 1.5, 300, [0], 4], [4.55, 5.5, 480, [0, 1], 0], [8.45, 9.3, 780, [1, 2], -8],
+  [13.9, 14.6, 1210, [2, 3], 0], [16.4, 17.6, 1390, [2, 3], 0], [21.45, 22.25, 1250, [2, 3], -4],
+  [22.5, 23.2, 1390, [3], 0], [24.4, 26.0, 760, [0, 3], 0], [26.0, 27.3, 760, [0, 3], 0],
+];
+
+/* ---------- speech & thought bubbles ----------
+   side: 1 right of the head, -1 left of it; up: above the speaker's tag, shifted by dx */
+const BUBBLES = [
+  { who: 0, t0: 1.3, t1: 2.3, text: 'Riset → Bangun → Cek', think: true, side: -1 },
+  { who: 0, t0: 4.7, t1: 5.35, text: 'Ini brief-nya.', side: -1 },
+  { who: 1, t0: 5.3, t1: 5.95, text: 'Siap, kuriset!', side: 1 },
+  { who: 2, t0: 9.2, t1: 9.85, text: 'Datanya dari mana?', side: -1 },
+  { who: 1, t0: 9.9, t1: 10.65, text: 'Sumber 3, sudah kutandai.', side: 1 },
+  { who: 2, t0: 13.85, t1: 14.45, text: 'Sudah jadi!', side: -1 },
+  { who: 3, t0: 14.45, t1: 15.1, text: 'Kucek dulu.', side: 1 },
+  { who: 3, t0: 17.25, t1: 18.05, text: 'Grafik poin 2 kurang.', side: 1 },
+  { who: 2, t0: 18.05, t1: 18.75, text: 'Siap, kuperbaiki!', side: -1 },
+  { who: 3, t0: 26.0, t1: 26.7, text: 'Ini hasil finalnya.', up: true, dx: 30 },
+  { who: 0, t0: 27.15, t1: 27.9, text: 'Disetujui. Kerja bagus!', up: true, dx: 50 },
+  { who: 1, t0: 28.3, t1: 29.0, text: 'Mantap!', up: true, dx: -10 },
+  { who: 2, t0: 28.4, t1: 29.1, text: 'Hore!', up: true, dx: 10 },
+];
+BUBBLES.forEach((b) => {
+  b.g = grp('', Lui);
+  if (b.think) b.dots = [el('circle', { class: 'k-bubble', r: 5 }, b.g), el('circle', { class: 'k-bubble', r: 8 }, b.g)];
+  b.path = el('path', { class: 'k-bubble' }, b.g);
+  b.txt = el('text', { class: 'k-bubble-ink', 'font-size': 20, 'font-weight': 700 }, b.g);
+  b.txt.textContent = b.text;
+  b.g.setAttribute('opacity', 0);
+  b.w = 0;
+});
+function measureBubbles() { BUBBLES.forEach((b) => { try { b.w = b.txt.getComputedTextLength(); } catch (e) { b.w = b.text.length * 10.5; } if (!b.w) b.w = b.text.length * 10.5; }); }
+
+/* ---------- screen callouts: an enlarged view of what is on a monitor while someone works ---------- */
+const CALLOUTS = [
+  { who: 0, t0: 0.6, t1: 2.25, title: 'Permintaan baru', rows: [['Laporan penjualan Q3', 0], ['Tenggat: Jumat', 0]] },
+  { who: 1, t0: 7.25, t1: 8.1, title: 'Riset: penjualan Q3', rows: [['Data kuartal 3', 7.45], ['Tren per wilayah', 7.6], ['Sumber 3', 7.75]], ticks: true },
+  { who: 2, t0: 11.25, t1: 12.35, title: 'Menyusun laporan_q3', bar: [11.3, 12.15, 0] },
+  { who: 3, t0: 15.4, t1: 16.3, title: 'Cek laporan', rows: [['Data', 15.6], ['Grafik poin 2', 16.1, true], ['Format', 15.9]], ticks: true },
+  { who: 2, t0: 20.2, t1: 20.98, title: 'Revisi grafik poin 2', bar: [20.27, 20.85, 0.62] },
+];
+CALLOUTS.forEach((c) => {
+  const x = SX[c.who] + 184, h = 34 + (c.rows ? c.rows.length * 16 : 22), top = 398 - h, w = 176, X = x - w / 2;
+  c.cx = x; c.cy = 404; c.top = top;
+  let inner = `<path class="k-callout" d="M${X + 8} ${top} H${X + w - 8} Q${X + w} ${top} ${X + w} ${top + 8} V${top + h - 8} Q${X + w} ${top + h} ${X + w - 8} ${top + h} H${x - 2} L${x - 12} ${top + h + 8} L${x - 14} ${top + h} H${X + 8} Q${X} ${top + h} ${X} ${top + h - 8} V${top + 8} Q${X} ${top} ${X + 8} ${top} Z"/>
+    <rect class="k-a${c.who + 1}" x="${X + 1.3}" y="${top + 1.3}" width="${w - 2.6}" height="7" rx="3"/>
+    <text class="k-callout-ink" x="${X + 10}" y="${top + 25}" font-size="13" font-weight="800">${c.title}</text>`;
+  if (c.rows) c.rows.forEach((r, k) => {
+    const y = top + 44 + k * 16;
+    inner += `<g class="cr" opacity="${r[1] ? 0 : 1}"><text class="k-callout-ink" x="${X + (c.ticks ? 26 : 10)}" y="${y}" font-size="12" font-weight="600">${r[0]}</text>`;
+    if (c.ticks) inner += r[2] ? `<path d="M${X + 11} ${y - 9} l7 7 M${X + 18} ${y - 9} l-7 7" style="stroke:var(--rev);stroke-width:2.6;stroke-linecap:round;fill:none"/>`
+      : `<path d="M${X + 10} ${y - 4.5} l3 3 l6 -7" style="stroke:var(--ok);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;fill:none"/>`;
+    inner += '</g>';
+  });
+  if (c.bar) inner += `<rect class="k-callout-dim" x="${X + 10}" y="${top + 36}" width="${w - 62}" height="10" rx="5"/><rect class="k-pk cbar" x="${X + 10}" y="${top + 36}" width="0" height="10" rx="5"/>
+    <text class="k-callout-ink cpct" x="${X + w - 10}" y="${top + 45}" text-anchor="end" font-size="13" font-weight="800" style="font-family:var(--f-mono)">0%</text>`;
+  c.g = grp('', Lui, inner);
+  c.g.setAttribute('opacity', 0);
+  c.rowsEl = [...c.g.querySelectorAll('.cr')];
+  c.barEl = c.g.querySelector('.cbar'); c.pctEl = c.g.querySelector('.cpct'); c.barW = w - 62;
+});
+
+/* ---------- props ---------- */
+const DOCPATH = 'M-20 -14 h12 l4 -4 h10 l2 4 h12 v28 h-40 z';
+const PLANE = (fillA, fillB) => `<path d="M-21 -3 L23 0 L-21 7 L-13 1 Z" style="fill:var(${fillA});stroke:var(--paper-line);stroke-width:1.2;stroke-linejoin:round"/><path d="M-13 1 L23 0 L-17 -10 Z" style="fill:var(${fillB});stroke:var(--paper-line);stroke-width:1.2;stroke-linejoin:round"/>`;
+function prop(html, layer) { const g = grp('', layer || Ldesk, html); g.setAttribute('opacity', 0); return { g, layer: layer || Ldesk, parts: {} }; }
+const P = {
+  env: prop(`<g class="v-env"><rect class="k-env" x="-18" y="-12" width="36" height="24" rx="2" style="stroke:var(--env-line);stroke-width:1.5"/><path class="k-env-s" d="M-18 -12 L0 2 L18 -12"/><circle class="k-rev" cx="0" cy="1" r="3.4"/></g>
+    <g class="v-letter"><rect class="k-paper" x="-14" y="-18" width="28" height="36" rx="1.5" style="stroke:var(--paper-line);stroke-width:1.2"/><path class="k-paper-s" d="M-9 -10 h18 M-9 -4 h13 M-9 2 h18 M-9 8 h10"/></g>`),
+  brief: prop(`<g class="v-folder"><path class="k-folder2" d="${DOCPATH}"/><rect class="k-paper" x="-16" y="-16" width="32" height="10" rx="1"/><rect class="k-folder" x="-20" y="-10" width="40" height="25" rx="2"/><rect class="k-paper" x="-14" y="-5" width="28" height="13" rx="1"/><text x="0" y="0.5" text-anchor="middle" font-size="5.5" font-weight="800" class="k-board-ink">BRIEF</text><path class="v-scrib" d="M-11 4 q2 -2.5 4 0 t4 0 t4 0 t4 0 t4 0" style="stroke:var(--res);fill:none;stroke-width:1.3" stroke-dasharray="30" stroke-dashoffset="30"/></g>
+    <g class="v-book"><rect class="k-folder2" x="-28" y="-19" width="56" height="38" rx="2"/><rect class="k-paper" x="-26" y="-17" width="25" height="34"/><rect class="k-paper" x="1" y="-17" width="25" height="34"/><path class="k-paper-s" d="M-22 -9 h17 M-22 -3 h13 M-22 3 h17 M5 -9 h17 M5 -3 h15 M5 3 h10"/><g class="v-page"><rect class="k-paper" x="0" y="-17" width="25" height="34" style="stroke:var(--paper-line);stroke-width:1"/><path class="k-paper-s" d="M4 -9 h15 M4 -3 h11"/></g></g>`),
+  sheet: prop(`<g class="v-sheet"><rect class="k-paper" x="-14" y="-18" width="28" height="36" rx="1.5" style="stroke:var(--paper-line);stroke-width:1.2"/><rect class="k-a2" x="-9" y="2" width="4" height="10"/><rect class="k-a2" x="-3" y="-3" width="4" height="15"/><rect class="k-a2" x="3" y="5" width="4" height="7"/><path class="k-paper-s" d="M-9 -12 h18 M-9 -7 h12"/></g>
+    <g class="v-plane">${PLANE('--paper', '--scr-dim')}</g>`),
+  doc: prop(`<g class="v-doc"><path class="k-res2" d="${DOCPATH}"/><rect class="k-paper" x="-16" y="-16" width="32" height="10" rx="1"/><rect class="k-res" x="-20" y="-10" width="40" height="25" rx="2"/><rect class="k-paper" x="-13" y="-5" width="26" height="9" rx="1"/><text x="0" y="1.6" text-anchor="middle" font-size="6" font-weight="800" class="k-board-ink">HASIL</text>
+      <g class="v-rev"><g transform="rotate(-14)"><rect x="-17" y="3" width="34" height="11" rx="2" style="fill:var(--paper);stroke:var(--rev);stroke-width:2"/><text x="0" y="11.5" text-anchor="middle" font-size="8" font-weight="800" class="k-rev">REVISI</text></g></g>
+      <g class="v-ok"><circle cx="11" cy="7" r="9" style="fill:var(--paper);stroke:var(--ok);stroke-width:2.2"/><text x="11" y="10" text-anchor="middle" font-size="8" font-weight="800" class="k-ok">OK</text></g></g>
+    <g class="v-plane">${PLANE('--res', '--res-2')}</g>`),
+  mag: prop(`<line x1="0" y1="0" x2="9" y2="11" style="stroke:var(--mon);stroke-width:6;stroke-linecap:round"/><circle cx="15" cy="19" r="10" style="fill:var(--scr);fill-opacity:.4;stroke:var(--mon);stroke-width:4"/>`),
+  stamp: prop(`<rect class="k-desk-edge" x="-6.5" y="-27" width="13" height="16" rx="6"/><rect class="k-metal" x="-3.5" y="-12" width="7" height="6"/><rect class="k-mon" x="-11.5" y="-7" width="23" height="7" rx="1.5"/><rect class="v-ink k-rev" x="-11.5" y="-1" width="23" height="2.6"/>`),
+  pen: prop(`<path d="M0 -15 L0 9" style="stroke:var(--res);stroke-width:3.6;stroke-linecap:round"/><path d="M0 9 L0 13" style="stroke:var(--mon);stroke-width:2;stroke-linecap:round"/>`, Lhand),
+  mug: prop(`<path class="k-mug" d="M-9 -21 h18 v17 a4 4 0 0 1 -4 4 h-10 a4 4 0 0 1 -4 -4 z"/><path d="M9 -16 a5.5 5.5 0 0 1 0 11" style="fill:none;stroke:var(--mug3);stroke-width:3"/><rect class="k-a3" x="-9" y="-15" width="18" height="4" opacity=".55"/>`),
+};
+for (const k in P) P[k].g.querySelectorAll('[class^="v-"]').forEach((n) => { P[k].parts[n.getAttribute('class').split(' ')[0].slice(2)] = n; });
+const steam = [el('path', { class: 'k-steam' }, Ldesk), el('path', { class: 'k-steam' }, Ldesk)];
+
+/* ---------- effects ---------- */
+function bigLabel(text, cls) {
+  return grp('', Lfx, `<g transform="rotate(-8)"><rect x="-82" y="-30" width="164" height="60" rx="10" style="fill:var(--paper);stroke:var(--${cls});stroke-width:6"/><text x="0" y="13" text-anchor="middle" font-size="36" font-weight="800" letter-spacing="2" class="k-${cls}">${text}</text></g>`);
+}
+const bang = (cls) => grp('', Lfx, `<circle r="17" class="${cls}"/><text y="10" text-anchor="middle" font-size="28" font-weight="800" class="k-paper">!</text>`);
+const FX = {
+  rev: bigLabel('REVISI', 'rev'), ok: bigLabel('OK', 'ok'),
+  bang4: bang('k-rev'), bang1: bang('k-a1'),
+  sweat: grp('', Lfx, `<path d="M0 -9 Q7 2 0 6 Q-7 2 0 -9 Z" style="fill:var(--sky-top);stroke:var(--paper);stroke-width:1.5"/>`),
+  burst: grp('', Lfx, Array.from({ length: 8 }, (_, k) => { const a = k * 45 * D2R; return `<line x1="${f1(Math.cos(a) * 22)}" y1="${f1(Math.sin(a) * 12)}" x2="${f1(Math.cos(a) * 36)}" y2="${f1(Math.sin(a) * 20)}" style="stroke:var(--pkt);stroke-width:4;stroke-linecap:round"/>`; }).join('')),
+  hi5: grp('', Lfx, Array.from({ length: 10 }, (_, k) => { const a = (k * 36 - 90) * D2R; return `<line x1="${f1(Math.cos(a) * 20)}" y1="${f1(Math.sin(a) * 20)}" x2="${f1(Math.cos(a) * (k % 2 ? 30 : 40))}" y2="${f1(Math.sin(a) * (k % 2 ? 30 : 40))}" style="stroke:var(--pkt);stroke-width:5;stroke-linecap:round"/>`; }).join('')),
+  conf: grp('', Lfx),
+};
+Object.values(FX).forEach((g) => g.setAttribute('opacity', 0));
+const CONF = [];
+(function confetti() {
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const cls = ['k-a1', 'k-a2', 'k-a3', 'k-a4', 'k-pk', 'k-ok'];
+  for (let k = 0; k < 72; k++) {
+    const e = el('rect', { class: cls[k % cls.length], x: -5, y: -3, width: 10, height: 6, rx: 1.5 }, FX.conf);
+    CONF.push({ e, x: 200 + rnd() * 1200, y0: -20 - rnd() * 160, vx: (rnd() - 0.5) * 140, sp: 240 + rnd() * 160, rs: (rnd() - 0.5) * 900, ph: rnd() * 6.28, delay: rnd() * 0.35 });
+  }
+})();
+
+/* ---------- posing a character for time t ----------
+   Turning around: the flip group only narrows to 90% width and changes sign at the midpoint.
+   Limb joints are foreshortened along x by |f| instead, so arms and legs swing toward the
+   viewer while the face turns to the front (yaw 0), and the body never collapses to a line. */
+const STRIDE = 196;
+const BLINK = [3.7, 4.3, 3.1, 4.9];
+const HLAG = 0.045; // hands trail the body slightly (overlapping action)
+function glance(c, t) {
+  const s = c.s, sg = s.f < 0 ? -1 : 1, hx = s.x + 20 * sg;
+  const able = clamp((s.sit - 0.7) / 0.3) * (1 - clamp(s.talk / 0.3)) * clamp(1 - Math.abs(s.hy - 90) / 20);
+  if (able <= 0) return;
+  let gw = 0, gy = 90, gt = 0;
+  for (const G of GLANCES) {
+    if (G[3].includes(c.n - 1)) continue;
+    const d = Math.abs(G[2] - hx);
+    if (d < 90) continue;
+    const dl = d / 2400, w = E.s(win(t, G[0] + dl, G[1] + dl, 0.28));
+    if (w > gw) { gw = w; gy = (G[2] - hx) * sg > 0 ? 68 : -38; gt = G[4]; }
+  }
+  gw *= able;
+  if (gw > 0) { s.hy = lerp(s.hy, gy, gw); s.tilt += gt * gw; s.typ *= 1 - 0.85 * gw; }
+}
+function poseChar(c, t, T) {
+  const s = c.s, n = c.n;
+  for (const k in c.tr) s[k] = sample(c.tr[k], t);
+  let tl = t - HLAG; if (tl < 0) tl += L;
+  s.hf = sample(c.tr.hf, tl); s.hb = sample(c.tr.hb, tl);
+  glance(c, t);
+  const u = 1 - clamp(s.sit);
+  const kHip = E.io(clamp((u - 0.15) / 0.85));
+  let f = s.f;
+  if (s.sit > 0.98 && Math.abs(f) > 0.98) f *= 1 - 0.03 * (0.5 + 0.5 * Math.sin(T * 0.8 + n * 2.1));
+  const sg = f < 0 ? -1 : 1, af = Math.min(1, Math.abs(f));
+  const m = 0.9 + 0.1 * af, fs = sg * m, g = af / m, spread = (1 - af) * 17;
+  const phase = (sg < 0 ? -s.x : s.x) / STRIDE;
+  // the hip is highest at mid-stance and lowest when both feet are down
+  const bob = s.wk * (3 + 4 * (1 + Math.cos(4 * Math.PI * phase)) / 2);
+  const hipY = lerp(560, s.fy - 126, kHip) + bob - s.jump;
+  const br = Math.sin(T * 2 * Math.PI / 4 + n * 1.3);
+  const x = s.x + u * (1 - s.wk) * 1.4 * Math.sin(T * 1.3 + n);
+  const lean = (s.lean + 24 * Math.sin(Math.PI * u) + s.wk * 4 + br * 0.6) * af;
+  c.fDraw = f; c.x = x; c.hipY = hipY; c.fs = fs;
+  setT(c.root, `translate(${f1(x)},${f1(hipY)})`);
+  setT(c.flip, `scale(${f2(fs)},1)`);
+  const rl = `rotate(${f1(lean)})`;
+  setT(c.tb, rl); setT(c.torso, rl); setT(c.tf, rl);
+  setT(c.body, `scale(1,${(1 + 0.012 * br).toFixed(3)})`);
+  const sdo = f2(clamp((af - 0.3) / 0.35));
+  if (c._sd !== sdo) { c.sd.setAttribute('opacity', sdo); c.fd.setAttribute('opacity', f2(1 - sdo)); c._sd = sdo; }
+  const tilt = (s.tilt + s.nod * 7 * Math.sin(T * 2 * Math.PI * 2.4) + 1.2 * Math.sin(T * 0.7 + n * 2)) * af;
+  setT(c.head, `translate(0,${f1(-92 - 1.1 * br)}) rotate(${f1(tilt)}) scale(${f2(1 / m)},1)`);
+  // legs: IK in the side plane, then joints foreshortened along x by the turn
+  const groundRel = s.fy - 8 - hipY;
+  for (let side = 0; side < 2; side++) {
+    const leg = side ? c.lb : c.lf;
+    let lx = lerp(side ? 60 : 72, side ? -5 : 7, E.io(clamp(u / 0.5)));
+    let ly = Math.min(groundRel, 117);
+    let toe = 0;
+    if (s.wk > 0.001) {
+      const ph = frac(phase + (side ? 0.5 : 0)), H = STRIDE / 4;
+      let wx, lift = 0;
+      if (ph < 0.5) wx = H - (ph / 0.5) * 2 * H;
+      else { const v = (ph - 0.5) / 0.5; wx = -H + E.s(v) * 2 * H; lift = Math.sin(Math.PI * v) * 17; toe = -Math.sin(Math.PI * v) * 12; }
+      lx = lerp(lx, wx, s.wk); ly -= lift * s.wk; toe *= s.wk;
+    }
+    const r = ik(0, 0, lx, ly, TH, SH, 1);
+    const kx = TH * Math.sin(r[0]) * g, ky = TH * Math.cos(r[0]), fx = r[2] * g, fy = r[3];
+    const a1 = Math.atan2(kx, ky), l1 = Math.hypot(kx, ky), a2 = Math.atan2(fx - kx, fy - ky), l2 = Math.hypot(fx - kx, fy - ky);
+    setT(leg.thigh, `translate(${f1((side ? -3 : 2) + (side ? -0.7 : 0.7) * spread)},0) rotate(${f1(-a1 * R2D)})`);
+    setA(leg.l1, 'y2', f1(l1));
+    setT(leg.shin, `translate(0,${f1(l1)}) rotate(${f1(-(a2 - a1) * R2D)})`);
+    setA(leg.l2, 'y2', f1(l2));
+    setT(leg.foot, `translate(0,${f1(l2)}) rotate(${f1(a2 * R2D + toe)}) scale(${f2(0.4 + 0.6 * g)},1)`);
+  }
+  // arms: hand targets in body space, mapped through the lean, IK, then foreshortened
+  const shY = -84 - br;
+  for (let side = 0; side < 2; side++) {
+    const arm = side ? c.ab : c.af, key = side ? 'hb' : 'hf', sw = side ? s.swB : s.swF;
+    let tx = s[key][0], ty = s[key][1];
+    if (s.typ > 0.001) {
+      const ph = T * (s.typ > 1 ? 10 : 6.5) * 2 * Math.PI + (side ? Math.PI : 0) + n;
+      ty -= Math.min(s.typ, 1.4) * 3.4 * Math.max(0, Math.sin(ph)); tx += s.typ * 1.6 * Math.sin(ph * 0.5);
+    }
+    if (!side && s.wr > 0.001) { tx += s.wr * 6 * Math.sin(T * 2 * Math.PI * 3.1); ty += s.wr * 2.4 * Math.sin(T * 2 * Math.PI * 7.3); }
+    if (s.cheer > 0.01) { ty += s.cheer * 6 * Math.sin(T * 2 * Math.PI * 3 + side * 2); }
+    if (s.wk > 0.001 && sw > 0.001) {
+      const a = 22 * D2R * Math.cos(2 * Math.PI * phase) * (side ? 1 : -1);
+      const w = s.wk * sw; tx = lerp(tx, Math.sin(a) * 82 + 4, w); ty = lerp(ty, shY + Math.cos(a) * 82, w);
+    }
+    const q = rot([tx, ty], -lean);
+    const r = ik(0, shY, q[0], q[1], UA, FA, -1);
+    const ex = UA * Math.sin(r[0]) * g, ey = UA * Math.cos(r[0]), hx = r[2] * g, hy = r[3] - shY;
+    const a1 = Math.atan2(ex, ey), l1 = Math.hypot(ex, ey), a2 = Math.atan2(hx - ex, hy - ey), l2 = Math.hypot(hx - ex, hy - ey);
+    const shX = (side ? -2 : 2) + (side ? -1 : 1) * spread;
+    setT(arm.ua, `translate(${f1(shX)},${f1(shY)}) rotate(${f1(-a1 * R2D)})`);
+    setA(arm.l1, 'y2', f1(l1));
+    setT(arm.fa, `translate(0,${f1(l1)}) rotate(${f1(-(a2 - a1) * R2D)})`);
+    setA(arm.l2, 'y2', f1(Math.max(0, l2 - 4)));
+    setT(arm.hand, `translate(0,${f1(l2)})`);
+    const p = rot([shX + hx, shY + hy], lean);
+    const W = side ? c.hbW : c.hfW;
+    W[0] = x + fs * p[0]; W[1] = hipY + p[1];
+  }
+  const th = s.thumb > 0.5 ? 1 : 0;
+  if (c._th !== th) { c.af.thumb.setAttribute('opacity', th); c._th = th; }
+  // face (2.5D head turn: features slide around the skull with the yaw; yaw goes to 0 mid-turn)
+  const psi = s.hy * af * D2R, sp = Math.sin(psi), cp = Math.cos(psi), R = c.R, n4 = n === 4;
+  setA(c.face, 'cx', f1(0.40 * R * sp)); setA(c.face, 'cy', n4 ? 4 : 5);
+  setA(c.face, 'rx', f1(R * (0.92 - 0.12 * Math.abs(sp)))); setA(c.face, 'ry', f1(R * (n4 ? 0.95 : 0.88)));
+  const earX = [];
+  for (let k = 0; k < 2; k++) {
+    const a = psi + (k ? 1 : -1) * Math.PI / 2;
+    earX[k] = 0.9 * 31 * Math.sin(a);
+    const e = c.ears[k];
+    setA(e, 'cx', f1(earX[k])); setA(e, 'cy', 3);
+    setA(e, 'opacity', n4 ? 0 : f2(clamp((Math.cos(a) + 0.35) / 0.3)));
+  }
+  const bp = (T + n * 1.37) % BLINK[n - 1];
+  const blink = bp < 0.14 ? Math.max(0.08, Math.abs(Math.cos(bp / 0.14 * Math.PI))) : 1;
+  const sq = clamp(s.sq + s.cheer * 0.5);
+  const eyeX = [], eyeV = [], eyeRx = [];
+  for (let k = 0; k < 2; k++) {
+    const a = psi + (k ? 1 : -1) * 30 * D2R, ca = Math.cos(a);
+    const ex = 0.84 * R * Math.sin(a), vis = clamp((ca + 0.12) / 0.3), rx = 3.4 * (0.55 + 0.45 * Math.max(0, ca));
+    eyeX[k] = ex; eyeV[k] = vis; eyeRx[k] = rx;
+    const e = c.eyes[k];
+    setA(e, 'cx', f1(ex)); setA(e, 'cy', -2); setA(e, 'rx', f2(rx)); setA(e, 'ry', f2(4.4 * blink * (1 - 0.55 * sq))); setA(e, 'opacity', f2(vis));
+    const by = -11 - s.brow * 3.5, tw = s.smile < -0.1 ? (k ? -1 : 1) * 2 : 0;
+    setA(c.brows[k], 'd', `M${f1(ex - 5 * rx / 3.4)} ${f1(by + tw)} Q${f1(ex)} ${f1(by - 2.6)} ${f1(ex + 5 * rx / 3.4)} ${f1(by - tw)}`);
+    setA(c.brows[k], 'opacity', f2(vis));
+    const ca2 = Math.cos(psi + (k ? 1 : -1) * 52 * D2R);
+    setA(c.cheeks[k], 'cx', f1(0.7 * R * Math.sin(psi + (k ? 1 : -1) * 52 * D2R))); setA(c.cheeks[k], 'cy', 9);
+    setA(c.cheeks[k], 'opacity', f2(clamp(ca2 / 0.4) * (0.6 + 0.4 * s.smile)));
+  }
+  setA(c.nose, 'cx', f1(0.97 * R * sp)); setA(c.nose, 'cy', 5); setA(c.nose, 'rx', f2(3.4 + 1 * Math.abs(sp)));
+  const mx = 0.86 * R * sp, my = 16, mw = 3 + 5.5 * Math.max(0, cp);
+  const open = s.talk * (0.3 + 0.7 * Math.abs(Math.sin(T * 14 + n * 1.7))) + s.cheer * 0.85;
+  const sm = s.smile;
+  setA(c.mouth, 'd', `M${f1(mx - mw)} ${my} Q${f1(mx)} ${f1(my + 2 + sm * 5 + open * 10)} ${f1(mx + mw)} ${my} Q${f1(mx)} ${f1(my + sm * 1.5 - open * 1.5)} ${f1(mx - mw)} ${my} Z`);
+  setT(c.fr, `translate(${f1(0.3 * R * sp)},0)`);
+  setT(c.hb, `translate(${f1(-0.22 * R * sp)},0)`);
+  if (c.hs) {
+    const vi = Math.cos(psi - Math.PI / 2) >= Math.cos(psi + Math.PI / 2) ? 0 : 1, ex = earX[vi];
+    setA(c.hs.band, 'd', `M${f1(earX[0])} -2 C${f1(earX[0])} -48 ${f1(earX[1])} -48 ${f1(earX[1])} -2`);
+    setA(c.hs.cup, 'x', f1(ex - 6));
+    setA(c.hs.mic, 'd', `M${f1(ex)} 8 Q${f1(ex + 2 * sp)} 24 ${f1(mx - 5 * sp)} ${my + 2}`);
+    setA(c.hs.tip, 'cx', f1(mx - 5 * sp)); setA(c.hs.tip, 'cy', my + 2);
+  }
+  if (c.gl) {
+    for (let k = 0; k < 2; k++) {
+      const gg = c.gl.l[k];
+      setA(gg, 'cx', f1(eyeX[k])); setA(gg, 'cy', -2); setA(gg, 'rx', f2(7.4 * eyeRx[k] / 3.4)); setA(gg, 'opacity', f2(eyeV[k]));
+    }
+    const both = eyeV[0] > 0.5 && eyeV[1] > 0.5, vi = eyeV[0] >= eyeV[1] ? 0 : 1;
+    setA(c.gl.br, 'd', both ? `M${f1(eyeX[0] + 7 * eyeRx[0] / 3.4)} -3 Q${f1((eyeX[0] + eyeX[1]) / 2)} -6 ${f1(eyeX[1] - 7 * eyeRx[1] / 3.4)} -3`
+      : `M${f1(eyeX[vi] - Math.sign(sp || 1) * 6)} -3 L${f1(earX[vi === 0 ? 0 : 1] + Math.sign(sp || 1) * 2)} 0`);
+  }
+  if (c.brim) { setA(c.brim, 'cx', f1(30 * sp)); setA(c.brim, 'cy', -9); setA(c.brim, 'rx', f1(26 - 12 * Math.abs(sp))); setA(c.brim, 'ry', f1(4.5 + 2 * Math.max(0, cp))); }
+  // world-space head for tags & bubbles
+  const hc = rot([0, -124 - 1.1 * br], lean);
+  c.headW[0] = x + fs * hc[0]; c.headW[1] = hipY + hc[1];
+  setA(c.shadow, 'cx', f1(x + fs * 34 * s.sit)); setA(c.shadow, 'cy', f1(s.fy + 2));
+  setA(c.shadow, 'rx', f1(30 + 16 * s.sit - s.jump * 0.6)); setA(c.shadow, 'opacity', f2(1 - s.jump / 40));
+}
+// chairs: the base stays put, the seat and back swivel with the sitter and settle at a 3/4 angle when empty
+function poseChair(i) {
+  const c = CH[i], ch = CHAIRS[i], u = 1 - clamp(c.s.sit);
+  const k = E.io(clamp(u * 1.4));
+  const cx = SX[i] - 24 * E.o(clamp(u * 1.6));
+  const cf = lerp(c.fDraw, 0.62, k), a = Math.abs(cf);
+  setT(ch.base, `translate(${f1(cx)},0)`);
+  setA(ch.seat, 'x', f1(cx + 2 * cf - 40));
+  const bw = 19 + 46 * (1 - a);
+  setA(ch.back, 'x', f1(cx - 42.5 * cf - bw / 2)); setA(ch.back, 'width', f1(bw));
+  setA(ch.stem, 'd', `M${f1(cx - 24 * cf)} 569 Q${f1(cx - 40 * cf)} 560 ${f1(cx - 40 * cf)} 528`);
+}
+
+/* ---------- props along the story ---------- */
+const FLAT = 0.5, DS = 1.15;
+function place(p, x, y, r, sx, sy, op, layer) {
+  if (layer && p.layer !== layer) { layer.appendChild(p.g); p.layer = layer; }
+  setT(p.g, `translate(${f1(x)},${f1(y)}) rotate(${f1(r || 0)}) scale(${f2(sx == null ? 1 : sx)},${f2(sy == null ? 1 : sy)})`);
+  const o = op == null ? 1 : f2(op);
+  if (p.op !== o) { p.g.setAttribute('opacity', o); p.op = o; }
+}
+function hide(p) { if (p.op !== 0) { p.g.setAttribute('opacity', 0); p.op = 0; } }
+function vis(p, part, on) { const n = p.parts[part]; const v = on ? '' : 'none'; if (n._d !== v) { n.style.display = v; n._d = v; } }
+const fOf = (i) => (CH[i].s.f < 0 ? -1 : 1);
+const MID = (i) => [(CH[i].hfW[0] + CH[i].hbW[0]) / 2, (CH[i].hfW[1] + CH[i].hbW[1]) / 2];
+function qb(a, c, b, k) { const m = 1 - k; return [m * m * a[0] + 2 * m * k * c[0] + k * k * b[0], m * m * a[1] + 2 * m * k * c[1] + k * k * b[1]]; }
+function qbAngle(a, c, b, k) { const dx = 2 * (1 - k) * (c[0] - a[0]) + 2 * k * (b[0] - c[0]), dy = 2 * (1 - k) * (c[1] - a[1]) + 2 * k * (b[1] - c[1]); return Math.atan2(dy, dx) * R2D; }
+// where a prop sits when held: [x, y, rotation, scaleX, scaleY]
+function grip(i, ox, oy, r, sc, flip, back) {
+  const h = back ? CH[i].hbW : CH[i].hfW, f = fOf(i);
+  return [h[0] + f * ox, h[1] + oy, (r || 0) * f, (sc || DS) * (flip ? f : 1), sc || DS];
+}
+const putAt = (p, a, op) => place(p, a[0], a[1], a[2], a[3], a[4], op, Lhand);
+const held = (p, i, ox, oy, r, sc, flip, back) => putAt(p, grip(i, ox, oy, r, sc, flip, back));
+const onDesk = (x, sc) => [x, 498, 0, sc || DS, (sc || DS) * FLAT];
+const desk = (p, x, op, sc) => place(p, x, 498, 0, sc || DS, (sc || DS) * FLAT, op, Ldesk);
+// blend between two placements (a hand-off, or setting something down)
+function blend(p, A, B, k, layer) {
+  k = E.io(clamp(k));
+  place(p, lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k), lerp(A[3], B[3], k), lerp(A[4], B[4], k), 1, layer || Lhand);
+}
+const midGrip = (i, oy) => { const m = MID(i); return [m[0] + 6 * fOf(i), m[1] + (oy || -8), 0, 1.1, 1.1]; };
+
+function updateProps(t, T) {
+  // envelope from the MASUK chute -> opened letter -> left on the desk
+  const env = P.env;
+  if (t >= 31.75 || t < 2.15) {
+    const letter = t >= 1.18 && t < 31.75;
+    vis(env, 'env', !letter); vis(env, 'letter', letter);
+    if (t >= 31.75) { const k = E.o(span(t, 31.75, 32)); place(env, 300, 70 + 26 * k, 90, 1.1, 1.1, 1, Ldesk); }
+    else if (t < 0.5) { const k = t / 0.5; place(env, 300 + 9 * Math.sin(k * Math.PI * 2), lerp(96, 498, E.i(k)), 90 * (1 - E.o(k)) + 16 * Math.sin(k * 10) * (1 - k), 1.1, lerp(1.1, 1.1 * FLAT, E.i(k)), 1, Lhand); }
+    else if (t < 0.72) { const k = span(t, 0.5, 0.72); place(env, 300, 498 - 10 * Math.sin(Math.PI * k) * (1 - 0.4 * k), 0, 1.1, 1.1 * FLAT * (1 + 0.25 * Math.sin(Math.PI * k)), 1, Lhand); }
+    else if (t < 0.98) desk(env, 300, 1, 1.1);
+    else if (!letter) held(env, 0, 6, -4, -10, 1.1);
+    else if (t < 1.95) putAt(env, midGrip(0, -10));
+    else blend(env, midGrip(0, -10), onDesk(262, 1.05), span(t, 1.95, 2.12), Ldesk);
+  } else if (t < 31.7) { vis(env, 'env', 0); vis(env, 'letter', 1); desk(env, 262, 1 - span(t, 31.3, 31.7), 1.05); }
+  else hide(env);
+  // brief: slid out, written on, carried to Agent 2, read as a booklet, left on her desk
+  const br = P.brief;
+  if (t >= 2.12 && t < 31.4) {
+    const book = t >= 6.25 && t < 7.05;
+    vis(br, 'folder', !book); vis(br, 'book', book);
+    br.parts.scrib.setAttribute('stroke-dashoffset', f1(30 * (1 - span(t, 2.38, 2.85))));
+    if (t < 2.3) desk(br, lerp(266, 305, E.o(span(t, 2.12, 2.3))));
+    else if (t < 3.0) desk(br, 305);
+    else if (t < 3.1) blend(br, onDesk(305), grip(0, 8, -2, 0), span(t, 3.0, 3.1));
+    else if (t < 5.12) held(br, 0, 8, -2, 0);
+    else if (t < 5.26) blend(br, grip(0, 8, -2, 0), grip(1, 8, -2, 0), span(t, 5.12, 5.26));
+    else if (t < 6.25) held(br, 1, 8, -2, 0);
+    else if (t < 7.05) {
+      let pk = 1;
+      if (t >= 6.5 && t < 6.8) pk = Math.cos(Math.PI * E.io(span(t, 6.5, 6.8)));
+      br.parts.page.setAttribute('transform', `scale(${f2(pk)},1)`);
+      putAt(br, midGrip(1));
+    } else if (t < 7.18) blend(br, midGrip(1), onDesk(665), span(t, 7.05, 7.18), Ldesk);
+    else desk(br, 665, 1 - span(t, 31.0, 31.4));
+  } else hide(br);
+  // findings sheet -> paper plane (Agent 2 to Agent 3)
+  const sh = P.sheet;
+  if (t >= 7.8 && t < 12.35) {
+    let plane = false;
+    if (t < 7.95) { const m = MID(1); place(sh, m[0], m[1] - 6, 0, DS * Math.max(0.01, E.back(span(t, 7.8, 7.95))), DS, 1, Lhand); }
+    else if (t < 8.2) {
+      const k = span(t, 7.95, 8.2), m = MID(1); plane = k >= 0.5;
+      place(sh, m[0], m[1] - 6, plane ? -20 : 0, plane ? Math.max(0.01, (k - 0.5) * 2) : Math.max(0.01, 1 - 1.6 * k), plane ? Math.max(0.01, (k - 0.5) * 2) : 1, 1, Lhand);
+    } else if (t < 8.42) { plane = true; held(sh, 1, 4, -6, -24, 1, true, true); }
+    else if (t < 9.1) {
+      plane = true;
+      const k = span(t, 8.42, 9.1), A = [654, 432], h = CH[2].hfW, B = [h[0] - 4, h[1] - 6], Cc = [770, 250], p = qb(A, Cc, B, k);
+      place(sh, p[0], p[1], qbAngle(A, Cc, B, k) + 7 * Math.sin(k * 14), 1, 1, 1, Lhand);
+    } else if (t < 11.0) { plane = true; held(sh, 2, 4, -6, -16, 1, true); }
+    else if (t < 11.14) blend(sh, grip(2, 6, -4, 0), onDesk(1031), span(t, 11.0, 11.14), Ldesk);
+    else desk(sh, 1031, 1 - span(t, 12.2, 12.35));
+    vis(sh, 'sheet', !plane); vis(sh, 'plane', plane);
+  } else hide(sh);
+  // the report (Agent 3 -> 4 -> back to 3 -> plane -> 4 -> walked to Agent 1)
+  const dc = P.doc;
+  if (t >= 12.25 && t < 32) {
+    let plane = false;
+    const rev = t >= 16.52 && t < 20.85 ? 1 - span(t, 20.6, 20.85) : 0;
+    const jig = (a) => (t >= a && t < a + 0.12 ? 3 * Math.abs(Math.sin(span(t, a, a + 0.12) * Math.PI * 3)) : 0);
+    if (t < 12.45) desk(dc, 1030, 1, DS * Math.max(0.01, E.back(span(t, 12.25, 12.4))));
+    else if (t < 14.32) held(dc, 2, 8, -2, 0);
+    else if (t < 14.44) blend(dc, grip(2, 8, -2, 0), grip(3, 8, -2, 0), span(t, 14.32, 14.44));
+    else if (t < 15.15) held(dc, 3, 8, -2, 0);
+    else if (t < 15.27) blend(dc, grip(3, 8, -2, 0), onDesk(1395), span(t, 15.15, 15.27), Ldesk);
+    else if (t < 16.88) place(dc, 1395, 498 - jig(16.52), 0, DS, DS * FLAT, 1, Ldesk);
+    else if (t < 16.98) blend(dc, onDesk(1395), grip(3, 8, -2, 0), span(t, 16.88, 16.98));
+    else if (t < 17.62) held(dc, 3, 8, -2, 0);
+    else if (t < 17.74) blend(dc, grip(3, 8, -2, 0), grip(2, 8, -2, 0), span(t, 17.62, 17.74));
+    else if (t < 20.0) held(dc, 2, 8, -2, 0);
+    else if (t < 20.12) blend(dc, grip(2, 8, -2, 0), onDesk(1030), span(t, 20.0, 20.12), Ldesk);
+    else if (t < 20.95) desk(dc, 1030);
+    else if (t < 21.2) {
+      const k = span(t, 20.95, 21.2), m = MID(2); plane = k >= 0.5;
+      place(dc, m[0], m[1] - 6, plane ? -20 : 0, plane ? Math.max(0.01, (k - 0.5) * 2) : DS * Math.max(0.01, 1 - 1.6 * k), plane ? Math.max(0.01, (k - 0.5) * 2) : DS, 1, Lhand);
+    } else if (t < 21.44) { plane = true; held(dc, 2, 4, -6, -24, 1, true, true); }
+    else if (t < 22.1) {
+      plane = true;
+      // the last third passes behind Agent 4's head (she sits between Agent 3 and her desk), so it is drawn under the characters
+      const k = span(t, 21.44, 22.1), A = [1017, 432], Cc = [1200, 286], B = [1392, 488], p = qb(A, Cc, B, k);
+      place(dc, p[0], p[1], qbAngle(A, Cc, B, k) + 7 * Math.sin(k * 14) * (1 - k), 1, 1, 1, k < 0.64 ? Lhand : Ldesk);
+    } else if (t < 22.25) { plane = true; const k = E.o(span(t, 22.1, 22.25)); place(dc, 1392 + 10 * k, 488 + 8 * k, 8 * (1 - k), 1, lerp(1, 0.7, k), 1, Ldesk); }
+    else if (t < 22.95) place(dc, 1395, 498 - jig(22.6), 0, DS * Math.max(0.01, t < 22.35 ? span(t, 22.25, 22.35) : 1), DS * FLAT, 1, Ldesk);
+    else if (t < 23.05) blend(dc, onDesk(1395), grip(3, 8, -2, 0), span(t, 22.95, 23.05));
+    else if (t < 26.38) held(dc, 3, 8, -2, 0);
+    else if (t < 26.5) blend(dc, grip(3, 8, -2, 0), grip(0, 8, -2, 0), span(t, 26.38, 26.5));
+    else if (t < 26.62) held(dc, 0, 8, -2, 0);
+    else if (t < 26.78) blend(dc, grip(0, 8, -2, 0), midGrip(0, -6), span(t, 26.62, 26.78));
+    else if (t < 27.18) putAt(dc, midGrip(0, -6));
+    else if (t < 27.34) blend(dc, midGrip(0, -6), grip(0, 6, -2, 0, DS, false, true), span(t, 27.18, 27.34));
+    else if (t < 29.17) held(dc, 0, 6, -2, 0, DS, false, true);
+    else if (t < 29.3) blend(dc, grip(0, 6, -2, 0, DS, false, true), grip(0, 8, -2, 0), span(t, 29.17, 29.3));
+    else if (t < 31.72) held(dc, 0, 8, -2, 0);
+    else if (t < 31.84) blend(dc, grip(0, 8, -2, 0), onDesk(300), span(t, 31.72, 31.84), Ldesk);
+    else desk(dc, 300, 1 - span(t, 31.84, 31.98));
+    vis(dc, 'doc', !plane); vis(dc, 'plane', plane);
+    dc.parts.rev.setAttribute('opacity', f2(rev));
+    vis(dc, 'ok', t >= 22.6);
+  } else hide(dc);
+  // magnifier, stamp, pen, mug
+  if (t >= 15.38 && t < 16.24) { const h = CH[3].hfW; place(P.mag, h[0], h[1], 0, fOf(3), 1, 1, Lhand); }
+  else place(P.mag, 1410, 488, -52, 1, 1, 1, Ldesk);
+  const st = P.stamp;
+  if ((t >= 16.32 && t < 16.76) || (t >= 22.4 && t < 22.84)) { const h = CH[3].hfW; place(st, h[0], h[1] + 20, 0, 1, 1, 1, Lhand); }
+  else place(st, 1358, 504, 0, 1, 1, 1, Ldesk);
+  st.parts.ink.setAttribute('class', t >= 20 ? 'v-ink k-ok' : 'v-ink k-rev');
+  if (t >= 2.34 && t < 2.88) { const h = CH[0].hfW; place(P.pen, h[0] + 2, h[1] - 2, 25, 1, 1, 1, Lhand); } else hide(P.pen);
+  const mg = P.mug;
+  let mugX = SX[2] + 88, mugY = 504, mugUp = true;
+  if (t >= 6.25 && t < 7.15) { const h = CH[2].hfW, f = fOf(2); mugX = h[0] - 12 * f; mugY = h[1] + 10; mugUp = false; place(mg, mugX, mugY, -32 * win(t, 6.45, 6.95, 0.15) * f, 1, 1, 1, Lhand); }
+  else place(mg, mugX, mugY, 0, 1, 1, 1, Ldesk);
+  for (let k = 0; k < 2; k++) {
+    let d = '';
+    for (let j = 0; j < 5; j++) {
+      const y = mugY - 25 - j * 8, xx = mugX - 5 - j * 1.6 + (k ? 3 : -3) + 3 * Math.sin(T * 3 + j * 1.1 + k * 2);
+      d += (j ? ' L' : 'M') + f1(xx) + ' ' + f1(y);
+    }
+    steam[k].setAttribute('d', d);
+    steam[k].setAttribute('opacity', mugUp ? f2(0.35 + 0.25 * Math.sin(T * 2 + k)) : 0);
+  }
+}
+
+/* ---------- monitors, links, ambient ---------- */
+const BASE_SCROLL = (196 - 26 * (0.85 + 0.58)) / L;
+const ovl = (t, a, b) => clamp(t, a, b) - a;
+function progress(t) {
+  if (t < 11.3) return 0;
+  if (t < 12.15) return span(t, 11.3, 12.15);
+  if (t < 17.62) return 1;
+  if (t < 20.27) return lerp(1, 0.62, span(t, 17.62, 17.9));
+  if (t < 20.85) return lerp(0.62, 1, span(t, 20.27, 20.85));
+  if (t < 31.4) return 1;
+  return 1 - span(t, 31.4, 31.8);
+}
+function updateScreens(t, T) {
+  const reset = 1 - span(t, 31.4, 31.8);
+  const m1 = MON[0];
+  const nk = t >= 0.5 && t < 3.2 ? E.back(span(t, 0.5, 0.7)) * (1 - span(t, 2.9, 3.2)) : 0;
+  setT(m1.note, `translate(${SX[0] + 158},440) scale(${f2(Math.max(0.001, nk))}) translate(${-(SX[0] + 158)},-440)`);
+  const pk = t >= 23.3 && t < 31.6 ? E.back(span(t, 23.3, 23.5)) * (1 - span(t, 31.3, 31.6)) : 0;
+  setT(m1.ping, `translate(${SX[0] + 158},440) scale(${f2(Math.max(0.001, pk))}) translate(${-(SX[0] + 158)},-440)`);
+  [5.2, 9.1, 14.4, 22.6].forEach((ts, k) => m1.dots[k].setAttribute('opacity', f2(t >= ts ? Math.min(span(t, ts, ts + 0.25), reset) : 0)));
+  // approval reaches every screen through the network
+  MON.forEach((m, i) => m.ok.setAttribute('opacity', f2(win(t, 27.4 + i * 0.08, 31.3, 0.18))));
+  const m2 = MON[1];
+  m2.q.setAttribute('width', f1(62 * span(t, 7.22, 7.45) * reset));
+  m2.rows.forEach((r, k) => r.setAttribute('opacity', f2(span(t, 7.45 + 0.1 * k, 7.55 + 0.1 * k) * reset)));
+  m2.hi.setAttribute('opacity', f2(win(t, 7.75, 8.45)));
+  const m3 = MON[2];
+  const sc = BASE_SCROLL * t + 26 * (ovl(t, 11.3, 12.15) + ovl(t, 20.27, 20.85));
+  setT(m3.code, `translate(0,${f1(-(sc % 49))})`);
+  const pr = progress(t);
+  m3.bar.setAttribute('width', f1(90 * pr));
+  m3.bar.setAttribute('class', pr > 0.999 ? 'k-ok' : (t > 17.6 && t < 20.27 ? 'k-rev' : 'k-pk'));
+  const m4 = MON[3];
+  m4.scan.setAttribute('opacity', f2(win(t, 15.45, 16.15, 0.1) * 0.7));
+  m4.scan.setAttribute('y', f1(409 + 14 + 50 * frac((t - 15.45) / 0.45)));
+  [15.6, 22.35, 15.9, 16.0].forEach((ts, k) => m4.ticks[k].setAttribute('opacity', f2(t >= ts ? reset : 0)));
+  m4.x.setAttribute('opacity', t >= 16.12 && t < 22.35 ? 1 : 0);
+  for (let i = 0; i < 4; i++) {
+    const g = $('glow' + i);
+    g.style.opacity = `calc(var(--scr-glow-op) * ${f2(0.85 + 0.15 * Math.sin(T * 7.3 + i * 2) * Math.sin(T * 2.1 + i))})`;
+  }
+}
+function updateLinks(t, T) {
+  const party = win(t, PARTY[0], PARTY[1], 0.2);
+  for (const k in LINKS) {
+    const Lk = LINKS[k];
+    let ev = null;
+    for (const e of EV) if (e[0] === k && t >= e[2] - 0.05 && t <= e[3] + 0.4) { ev = e; break; }
+    if (!ev && party <= 0) { if (Lk._on) { Lk.hot.setAttribute('opacity', 0); Lk.pk.setAttribute('opacity', 0); Lk._on = false; } continue; }
+    Lk._on = true;
+    const len = Lk.len;
+    let kk, dir, op, pop;
+    if (ev) {
+      const [, d0, t0, t1] = ev; dir = d0; kk = E.s(span(t, t0, t1));
+      op = win(t, t0 - 0.05, t1 + 0.4, 0.1) * 0.95; pop = win(t, t0, t1, 0.08);
+    } else { dir = 0; kk = frac((t - PARTY[0]) / 0.9 + k.length * 0.17); op = party * 0.85; pop = party; }
+    Lk.hot.setAttribute('stroke-dasharray', ev ? `${f1(len)} ${f1(len)}` : 'none');
+    Lk.hot.setAttribute('stroke-dashoffset', ev ? f1((dir ? -1 : 1) * len * (1 - kk)) : 0);
+    Lk.hot.setAttribute('opacity', f2(op));
+    const p = Lk.hot.getPointAtLength(dir ? len * (1 - kk) : len * kk);
+    setT(Lk.pk, `translate(${f1(p.x)},${f1(p.y)}) scale(${f2(1 + 0.15 * Math.sin(T * 20))})`);
+    Lk.pk.setAttribute('opacity', f2(pop));
+  }
+  HUB.forEach((h, i) => {
+    let on = party > 0.5 ? 1 : 0;
+    for (const e of HUB_FLASH) if (e[0] === i && t >= e[1] && t < e[2]) on = 1;
+    const o = on ? 1 : 0.35 + 0.65 * (Math.sin(T * (3 + i) + i * 2) > 0.6 ? 1 : 0);
+    h.led.setAttribute('opacity', f2(o)); h.led.setAttribute('r', on ? 4.6 : 3.2);
+  });
+  $('chuteLight').setAttribute('opacity', f2(0.3 + 0.7 * Math.max(win(t, 31.55, 32, 0.1), win(t, -0.1, 0.35, 0.1))));
+}
+const clouds = $('clouds'), floorPlant = $('floorPlant'), shelfPlant = $('shelfPlant'), boardNote = $('boardNote');
+function updateAmbient(t, T) {
+  setT($('hMin'), `rotate(${f1((T / L) * 360)})`);
+  setT($('hHour'), `rotate(${f1(300 + (T / L) * 30)})`);
+  setT($('hSec'), `rotate(${Math.floor(T) * 6})`);
+  setT(clouds, `translate(${f1(600 + ((T * 6) % 340))},122)`);
+  setT(floorPlant, `rotate(${f2(2.2 * Math.sin(T * 0.9))} 503 594)`);
+  setT(shelfPlant, `rotate(${f2(3 * Math.sin(T * 1.1 + 1))} 1136 182)`);
+  // the task card on the whiteboard follows the work: RISET -> BANGUN -> CEK -> done
+  const X0 = 1284, X1 = 1340, X2 = 1417;
+  let nx = X0, ny = 135, no = 1;
+  if (t >= 9.1) { const k = E.io(span(t, 9.1, 9.6)); nx = lerp(X0, X1, k); ny = 135 - 14 * Math.sin(Math.PI * k); }
+  if (t >= 14.4) { const k = E.io(span(t, 14.4, 14.85)); nx = lerp(X1, X2, k); ny = 135 - 14 * Math.sin(Math.PI * k); }
+  if (t >= 22.6) { const k = E.io(span(t, 22.6, 23.1)); nx = X2; ny = lerp(135, 120, k); no = 1 - k; }
+  if (t >= 31.55) { nx = X0; ny = 135; no = span(t, 31.55, 31.95); }
+  setT(boardNote, `translate(${f1(nx)},${f1(ny)}) rotate(${f1(-3 + 6 * (nx - X0) / (X2 - X0))})`);
+  boardNote.setAttribute('opacity', f2(no));
+}
+function updateFx(t, T) {
+  const pop = (g, t0, t1, x, y) => {
+    const a = win(t, t0, t1, 0.16);
+    if (a <= 0) { g.setAttribute('opacity', 0); return; }
+    const s = Math.max(0.01, E.back(span(t, t0, t0 + 0.2)));
+    setT(g, `translate(${f1(x)},${f1(y)}) scale(${f2(s)})`); g.setAttribute('opacity', f2(a));
+  };
+  const lx = Math.min(1494, VIEW[1] - 100), ly = camMode ? 282 : 352;
+  pop(FX.rev, 16.52, 17.2, lx, ly);
+  pop(FX.ok, 22.6, 23.3, lx, ly);
+  const h4 = CH[3].headW, f4 = fOf(3);
+  pop(FX.bang4, 16.2, 16.7, h4[0] + f4 * 44, h4[1] - 30);
+  const h1 = CH[0].headW;
+  if (t < 2) pop(FX.bang1, 0.42, 0.95, h1[0] + 46, h1[1] - 34);
+  else pop(FX.bang1, 23.35, 23.85, h1[0] + 46, h1[1] - 34);
+  const h3 = CH[2].headW, f3 = fOf(2), sk = frac((t - 20.27) / 0.3);
+  if (t >= 20.27 && t < 20.87) { setT(FX.sweat, `translate(${f1(h3[0] - f3 * 32)},${f1(h3[1] - 14 + 18 * E.i(sk))}) scale(1.2)`); FX.sweat.setAttribute('opacity', f2(clamp((1 - sk) / 0.35))); }
+  else FX.sweat.setAttribute('opacity', 0);
+  let bo = 0, bs = 1;
+  for (const b of [16.52, 22.6]) if (t >= b && t < b + 0.22) { const k = span(t, b, b + 0.22); bo = 1 - k; bs = 0.6 + 0.8 * k; }
+  setT(FX.burst, `translate(1396,500) scale(${f2(bs)})`); FX.burst.setAttribute('opacity', f2(bo));
+  if (t >= 28.06 && t < 28.36) {
+    const k = span(t, 28.06, 28.36), a = CH[0].hfW, b = CH[3].hfW;
+    setT(FX.hi5, `translate(${f1((a[0] + b[0]) / 2)},${f1((a[1] + b[1]) / 2 - 6)}) scale(${f2(0.6 + 0.8 * E.o(k))})`); FX.hi5.setAttribute('opacity', f2(1 - k));
+  } else FX.hi5.setAttribute('opacity', 0);
+  if (t >= 28.06 && t < 29.75) {
+    FX.conf.setAttribute('opacity', f2(clamp((29.75 - t) / 0.35)));
+    for (const c of CONF) {
+      const tau = Math.max(0, t - 28.06 - c.delay);
+      const y = c.y0 + c.sp * tau + 110 * tau * tau, x = c.x + c.vx * tau + 16 * Math.sin(tau * 6 + c.ph);
+      setT(c.e, `translate(${f1(x)},${f1(y)}) rotate(${f1(c.rs * tau)}) scale(1,${f2(Math.cos(tau * 9 + c.ph))})`);
+    }
+  } else FX.conf.setAttribute('opacity', 0);
+}
+
+/* ---------- name tags, bubbles and screen callouts ---------- */
+function bubblePath(x, y, w, h, r, tail) {
+  return `M${f1(x + r)} ${f1(y)} H${f1(x + w - r)} Q${f1(x + w)} ${f1(y)} ${f1(x + w)} ${f1(y + r)} V${f1(y + h - r)} Q${f1(x + w)} ${f1(y + h)} ${f1(x + w - r)} ${f1(y + h)}`
+    + (tail ? ` H${f1(tail[0] + 9)} L${f1(tail[2])} ${f1(tail[3])} L${f1(tail[0] - 9)} ${f1(y + h)}` : '')
+    + ` H${f1(x + r)} Q${f1(x)} ${f1(y + h)} ${f1(x)} ${f1(y + h - r)} V${f1(y + r)} Q${f1(x)} ${f1(y)} ${f1(x + r)} ${f1(y)} Z`;
+}
+const TAGS = [0, 1, 2, 3].map(() => ({ x: 0, y: 0, ax: 0 }));
+function layoutTags(US) {
+  const W = 132 * US, H = 46 * US, GAP = 6, lim = W / 2 - 18 * US;
+  CH.forEach((c, i) => { const g = TAGS[i]; g.ax = c.headW[0]; g.x = g.ax; g.y = c.headW[1] - 70 - 22 * (US - 1); g.top = g.y - 22 * US; });
+  for (let it = 0; it < 3; it++) {
+    for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) {
+      const a = TAGS[i], b = TAGS[j];
+      const oy = H + GAP - Math.abs(a.y - b.y);
+      let ox = W + GAP - Math.abs(a.x - b.x);
+      if (ox <= 0 || oy <= 0) continue;
+      const d = a.x <= b.x ? -1 : 1;
+      a.x = a.ax + clamp(a.x + d * ox / 2 - a.ax, -lim, lim);
+      b.x = b.ax + clamp(b.x - d * ox / 2 - b.ax, -lim, lim);
+      ox = W + GAP - Math.abs(a.x - b.x);
+      if (ox > 0) { const up = a.y <= b.y ? a : b; up.y -= oy * clamp(ox / 24); }
+    }
+  }
+  CH.forEach((c, i) => {
+    const g = TAGS[i];
+    g.top = g.y - 22 * US; g.bot = g.y + 30 * US; g.l = g.x - W / 2; g.r = g.x + W / 2;
+    setT(c.tag, `translate(${f1(g.x)},${f1(g.y)}) scale(${US})`);
+    setT(c.ptr, `translate(${f1(clamp((g.ax - g.x) / US, -46, 46))},0)`);
+  });
+}
+function updateUI(t) {
+  // the full scene drawn narrow (reduced motion, paused) gets larger tags so the names stay readable (about 10px)
+  const US = camMode ? 1.3 : stageW > 0 && stageW < 700 ? clamp(880 / stageW, 1, 2.4) : 1, BS = camMode ? 1.2 : 1;
+  layoutTags(US);
+  for (const b of BUBBLES) {
+    const op = win(t, b.t0, b.t1, 0.12);
+    if (op <= 0) { if (b._on) { b.g.setAttribute('opacity', 0); b._on = false; } continue; }
+    b._on = true;
+    const [hx, hy] = CH[b.who].headW, side = b.side || 0, tg = TAGS[b.who];
+    const sc = (0.55 + 0.45 * E.back(clamp((t - b.t0) / 0.22))) * BS;
+    const V0 = VIEW[0] + 6, V1 = VIEW[1] - 6;
+    let ox, oy;
+    if (b.think) {
+      const w = b.w + 44, h = 50;
+      ox = side > 0 ? tg.r + 9 : tg.l - 9; oy = tg.y + 6;
+      let x0 = side > 0 ? ox - 20 : ox + 20 - w;
+      // keep the bubble inside the view at its final scale (it grows out of the first dot)
+      x0 = clamp(x0, ox - (ox - V0) / BS, ox + (V1 - ox) / BS - w);
+      const top = tg.top - h - 24;
+      b.path.setAttribute('d', bubblePath(x0, top, w, h, 25));
+      setA(b.dots[0], 'cx', f1(ox)); setA(b.dots[0], 'cy', f1(oy));
+      setA(b.dots[1], 'cx', f1(ox + side * 12)); setA(b.dots[1], 'cy', f1(tg.top - 10));
+      setA(b.txt, 'x', f1(x0 + w / 2)); setA(b.txt, 'y', f1(top + 32)); setA(b.txt, 'text-anchor', 'middle');
+    } else {
+      const w = b.w + 30, h = 42;
+      // a: where the bubble grows from (its tail base), measured from its left edge
+      const a = b.up ? w / 2 : side > 0 ? 20 : w - 20;
+      let x0 = b.up ? hx + b.dx - w / 2 : side > 0 ? tg.r + 8 : tg.l - 8 - w;
+      x0 = clamp(x0, V0 + a * (BS - 1), V1 - a - (w - a) * BS);
+      const top0 = b.up ? tg.top - h - 18 : hy - 86;
+      let top = top0;
+      // never sit on a name tag: rise above any tag it overlaps (an up bubble already clears its own tag,
+      // but a neighbour who stands up can lift theirs into it)
+      for (const o of TAGS) {
+        if (b.up && o === tg) continue;
+        const px = Math.min(x0 + w, o.r + 4) - Math.max(x0, o.l - 4);
+        if (px > 0 && top + h > o.top - 4 && top < o.bot) top = lerp(top, Math.min(top, o.top - h - 8), clamp(px / 14));
+      }
+      ox = x0 + a; oy = top + h;
+      // the tail points at the speaker's mouth, or at their tag once the bubble has risen above it
+      const lifted = b.up ? 1 : clamp((top0 - top) / 40);
+      const bx = b.up ? clamp(tg.x, x0 + 22, x0 + w - 22) : ox;
+      const tx = lerp(hx + side * 40, clamp(tg.x, x0 + 14, x0 + w - 14), lifted), ty = lerp(hy - 32, tg.top - 3, lifted);
+      const dx = tx - bx, dy = ty - (top + h), dl = Math.hypot(dx, dy) || 1, Lt = Math.min(dl, 52);
+      const tail = [bx, top + h, bx + dx / dl * Lt, top + h + Math.max(8, dy / dl * Lt)];
+      b.path.setAttribute('d', bubblePath(x0, top, w, h, 12, tail));
+      setA(b.txt, 'x', f1(x0 + w / 2)); setA(b.txt, 'y', f1(top + 28)); setA(b.txt, 'text-anchor', 'middle');
+    }
+    setT(b.g, `translate(${f1(ox)},${f1(oy)}) scale(${f2(sc)}) translate(${f1(-ox)},${f1(-oy)})`);
+    b.g.setAttribute('opacity', f2(op));
+  }
+  for (const c of CALLOUTS) {
+    const a = win(t, c.t0, c.t1, 0.15);
+    if (a <= 0) { if (c._on) { c.g.setAttribute('opacity', 0); c._on = false; } continue; }
+    c._on = true;
+    const S = camMode ? 1.15 : 1, s = (0.7 + 0.3 * E.back(clamp((t - c.t0) / 0.22))) * S, tg = TAGS[c.who];
+    let dx = Math.max(0, tg.r + 6 - (c.cx - 88 * S));
+    dx = Math.min(dx, VIEW[1] - 6 - (c.cx + 88 * S));
+    // if there is no room beside the tags (narrow camera), rise above them
+    const Lx = c.cx + dx - 88 * S, Rx = c.cx + dx + 88 * S, bTop = c.cy - (c.cy - c.top) * S, bBot = c.cy - 6 * S;
+    let lift = 0;
+    for (const o of TAGS) {
+      const px = Math.min(Rx, o.r + 4) - Math.max(Lx, o.l - 4);
+      if (px > 0 && bBot > o.top - 4 && bTop < o.bot) lift = Math.max(lift, (bBot - (o.top - 6)) * clamp(px / 12));
+    }
+    setT(c.g, `translate(${f1(c.cx + dx)},${f1(c.cy - lift)}) scale(${f2(s)}) translate(${-c.cx},${-c.cy})`);
+    c.g.setAttribute('opacity', f2(a));
+    if (c.rows) c.rows.forEach((r, k) => { if (r[1]) c.rowsEl[k].setAttribute('opacity', f2(span(t, r[1], r[1] + 0.12))); });
+    if (c.bar) {
+      const p = lerp(c.bar[2], 1, span(t, c.bar[0], c.bar[1]));
+      c.barEl.setAttribute('width', f1(c.barW * p));
+      c.barEl.setAttribute('class', p > 0.999 ? 'k-ok cbar' : c.bar[2] > 0 ? 'k-rev cbar' : 'k-pk cbar');
+      c.pctEl.textContent = Math.round(p * 100) + '%';
+    }
+  }
+}
+
+/* ---------- narrow screens: a square camera that follows the action ---------- */
+const CAM = [[0, 400, 780], [2.95, 400, 780], [3.6, 450, 780], [5.6, 450, 780], [6.3, 620, 780], [7.8, 620, 780], [8.3, 770, 780], [10.7, 770, 780],
+  [11.2, 980, 780], [12.4, 980, 780], [13.1, 1150, 780], [24.1, 1150, 780], [25.1, 900, 960], [26.1, 765, 800], [29.3, 765, 800], [31.3, 420, 780], [32, 400, 780]];
+function camAt(t) {
+  for (let i = 1; i < CAM.length; i++) if (t < CAM[i][0]) {
+    const a = CAM[i - 1], b = CAM[i], k = E.io((t - a[0]) / (b[0] - a[0]));
+    return [lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
+  }
+  return [400, 780];
+}
+const stage = $('stage');
+let camMode = false, stageW = 0;
+const VIEW = [0, 1600];
+const FULL_VB = '0 10 1600 760';
+function checkCam() {
+  const w = stage.clientWidth;
+  stageW = w;
+  const m = w > 0 && w < 700 && !(reduce && !playing);
+  if (m !== camMode) { camMode = m; stage.classList.toggle('cam', m); if (!m) svg.setAttribute('viewBox', FULL_VB); }
+}
+
+/* ---------- master clock & controls ---------- */
+const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let T = 0, playing = !reduce, speed = 1, last = null, dirty = true, curStep = -1, curBeat = -1;
+const order = [0, 1, 2, 3];
+function render(T) {
+  const t = ((T % L) + L) % L;
+  CH.forEach((c) => poseChar(c, t, T));
+  for (let i = 0; i < 4; i++) poseChair(i);
+  const ord = [0, 1, 2, 3].sort((a, b) => (CH[a].s.fy - CH[b].s.fy) || (a - b));
+  if (ord.join() !== order.join()) { ord.forEach((i) => Lchars.appendChild(CH[i].root)); ord.forEach((v, k) => (order[k] = v)); }
+  if (camMode) {
+    const [cx, w] = camAt(t), h = w;
+    VIEW[0] = cx - w / 2; VIEW[1] = cx + w / 2;
+    svg.setAttribute('viewBox', `${f1(cx - w / 2)} ${f1(390 - h / 2)} ${f1(w)} ${f1(h)}`);
+  } else { VIEW[0] = 0; VIEW[1] = 1600; }
+  updateProps(t, T);
+  updateScreens(t, T);
+  updateLinks(t, T);
+  updateAmbient(t, T);
+  updateFx(t, T);
+  updateUI(t);
+  // narration + step track
+  const si = stepAt(t);
+  if (si !== curStep) {
+    curStep = si;
+    $('cap-step').textContent = `Langkah ${si + 1} dari 6`;
+    $('cap-text').textContent = STEPS[si][2];
+    STEP_BTN.forEach((b, k) => { b.classList.toggle('now', k === si); b.classList.toggle('done', k < si); if (k === si) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+  }
+  const bi = beatAt(t);
+  if (bi !== curBeat) { curBeat = bi; $('cap-beat').textContent = BEATS[bi][1]; }
+  const end = si < 5 ? STEPS[si + 1][0] : L;
+  STEP_BAR.forEach((b, k) => { b.style.transform = `scaleX(${k === si ? f2(span(t, STEPS[si][0], end)) : k < si ? 1 : 0})`; });
+}
+const STEP_BTN = [], STEP_BAR = [];
+STEPS.forEach((s, k) => {
+  const li = document.createElement('li');
+  const b = document.createElement('button');
+  b.type = 'button'; b.id = `step-${k + 1}`;
+  b.setAttribute('aria-label', `Langkah ${k + 1}: ${s[2]}`);
+  b.innerHTML = `<span class="no">${k + 1}</span><span class="lbl">${s[1]}</span><span class="bar"></span>`;
+  b.addEventListener('click', () => { T = s[0] + 0.01; dirty = true; });
+  li.appendChild(b); $('track').appendChild(li);
+  STEP_BTN.push(b); STEP_BAR.push(b.querySelector('.bar'));
+  const sl = document.createElement('li'); sl.textContent = s[2]; $('static-list').appendChild(sl);
+});
+const playBtn = $('btn-play');
+function setPlaying(p) {
+  playing = p; last = null; dirty = true;
+  if (typeof checkCam === 'function') checkCam();
+  $('play-label').textContent = p ? 'Pause' : 'Putar';
+  playBtn.setAttribute('aria-label', p ? 'Pause' : 'Putar');
+  $('ico-play').innerHTML = p ? '<rect x="2" y="1.5" width="3.6" height="11" rx="1"/><rect x="8.4" y="1.5" width="3.6" height="11" rx="1"/>' : '<path d="M3 1.5 L12.5 7 L3 12.5 Z"/>';
+}
+playBtn.addEventListener('click', () => setPlaying(!playing));
+$('btn-restart').addEventListener('click', () => { T = 0; dirty = true; setPlaying(true); });
+function setSpeed(v) { speed = v; $('btn-speed-1').setAttribute('aria-pressed', v === 1); $('btn-speed-2').setAttribute('aria-pressed', v === 2); }
+$('btn-speed-1').addEventListener('click', () => setSpeed(1));
+$('btn-speed-2').addEventListener('click', () => setSpeed(2));
+// Space always toggles pause. The play button keeps its native Space press (it toggles itself);
+// on any other button Space must not press that button again, so its default is cancelled on keydown and keyup.
+const spaceOwn = (e) => {
+  if (e.code !== 'Space' && e.key !== ' ') return true;
+  const tg = e.target, tag = tg && tg.tagName;
+  return tg === playBtn || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || !!(tg && tg.isContentEditable);
+};
+document.addEventListener('keydown', (e) => {
+  if (spaceOwn(e)) return;
+  e.preventDefault();
+  if (!e.repeat) setPlaying(!playing);
+});
+document.addEventListener('keyup', (e) => { if (!spaceOwn(e)) e.preventDefault(); });
+if (reduce) { $('static-steps').hidden = false; setPlaying(false); }
+measureBubbles();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measureBubbles(); dirty = true; });
+if (window.ResizeObserver) new ResizeObserver(() => { checkCam(); dirty = true; }).observe(stage);
+checkCam();
+render(T);
+function frame(now) {
+  if (last === null) last = now;
+  const dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (playing) { T += dt * speed; dirty = true; }
+  if (dirty) { dirty = false; render(T); }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+})();
+</script>
