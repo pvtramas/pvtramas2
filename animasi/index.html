@@ -3,135 +3,182 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Kantor Empat Agent</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Layout: one column. Compact masthead, a wide side-view office stage, then a dock with narration, a 6-step track and the playback controls. */
+/* Layout: one column. A masthead with the Putramas lockup, the side-view studio stage, then a dock with narration, a 6-step track and the playback controls.
+   Palette: "warm wood studio" (Japandi). Plaster walls over a limewashed wainscot, light oak, walnut, linen and stone, matte black, sage and deep green; gold (mas) as the single accent.
+   Dark tokens live in tokens-dark.css; build.sh writes the same list into both dark blocks below. */
 :root{
   /* page */
-  --bg:#E2E9EC; --ink:#15202A; --muted:#52626E; --panel:#FFFFFF; --rule:#C6D2D8;
-  --accent:#E3A21A; --accent-soft:#F7DFA6; --accent-ink:#15202A; --focus:#2F6FDB; --btn:#15202A; --btn-ink:#FFFFFF; --btn-2:#FFFFFF; --btn-2-ink:#15202A;
-  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --bg:#E8E4DD; --ink:#1E1B18; --muted:#6A635A; --panel:#F4F1EB; --rule:#D6CFC4; --rule-2:#C8C0B3;
+  --accent:#C18D2B; --accent-soft:#EFE2C4; --accent-ink:#1E1B18; --focus:#2F62C8; --btn:#1E1B18; --btn-ink:#F7F4EF; --btn-2:#F4F1EB; --btn-2-ink:#1E1B18;
+  --logo-ink:#1E1B18; --logo-gold:#B8841F;
+  --f-display:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;
   --f-body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r-sm:6px; --r:9px; --r-lg:14px;
   /* room */
-  --ceil:#EDF2F3; --ceil-line:#CFDCE0; --wall:#CFE0E5; --wall-low:#BDD2D9; --wall-trim:#A6BFC8;
-  --floor:#C8945E; --floor-line:#B07F4F; --base:#7C5B3F; --shade:#1A2630; --shade-op:.15;
-  --sky-top:#77C0EA; --sky-bot:#D2EEF8; --sun:#FFD25E; --cloud:#FFFFFF; --cloud-op:.95; --skyline:#9DC2D2;
-  --win-lit:#FFE29A; --win-lit-op:0; --star-op:0; --frame:#F7FAFB; --sill:#DFEAEE; --sunbeam-op:.22; --sunbeam:#FFF6D6;
-  --desk:#E6D3B3; --desk-edge:#C8AC84; --desk-leg:#4A5864; --drawer:#D8C29D; --drawer-line:#BBA27C;
-  --chair:#2D3B47; --chair-2:#425666; --metal:#8D9BA6; --cab:#9EB3BD; --cab-line:#7E96A2;
-  --mon:#25303A; --scr:#F2F8FA; --scr-line:#B6C9D1; --scr-dim:#DCE7EB; --scr-glow-op:.06;
-  --plant:#3E9A68; --plant-2:#2B7A50; --pot:#56707E;
-  --board:#FBFDFD; --board-edge:#AABCC4; --note-1:#FFE07A; --note-2:#9FE0C6; --note-3:#F7B4A2; --board-ink:#41525E;
-  --clock-face:#FFFFFF; --clock-rim:#2D3A45; --clock-hand:#1D2832;
-  --cable:#7E95A1; --cable-op:.6; --hub:#394B58; --led:#59D18A; --link-ink:#5D707C;
-  --tube:#FFFFFF; --tube-op:.45; --tube-edge:#88AAB7; --chute:#394B58; --chute-ink:#FFFFFF;
-  --pkt:#F4B32C; --pkt-glow:#FFD36E; --rev:#D8473A; --ok:#24995A; --chat:#2F6FDB; --callout:#FFFFFF; --callout-edge:#15202A; --callout-ink:#15202A; --callout-dim:#E4ECEF;
-  --paper:#FFFFFF; --paper-line:#B4C1C8; --folder:#F2B134; --folder-2:#D18F22; --res:#3C79D6; --res-2:#2A5DAE; --env:#F8F4EA; --env-line:#C3B79C;
-  --bubble:#FFFFFF; --bubble-edge:#15202A; --bubble-ink:#15202A; --tag:#FFFFFF; --tag-ink:#15202A;
-  --lamp:#3B4955; --lamp-shade:#E9A23B; --lamp-on:0; --glow:#FFD992; --night-op:0;
+  --ceil:#F3EFE8; --ceil-line:#DCD3C6; --wall:#F4EEE5; --wall-low:#EFE7DC; --wash-op:.55; --lime-op:.045;
+  --dado:#E0DDCF; --dado-low:#D6D2C2; --dado-line:#C1BCAA; --groove-op:.55; --rail:#CDAA7F; --rail-hi:#DEC29B; --rail-lo:#A98760;
+  --base:#DFD5C7; --base-top:#C9BAA6;
+  --floor:#D9BB93; --floor-2:#D1B189; --floor-3:#DEC29D; --floor-line:#BE9C72; --shade:#3A2D21; --shade-op:.12; --ao-op:.22; --cove-op:.07; --vig-op:.1;
+  --sky-top:#8EC3DD; --sky-a:#BCD9E6; --sky-b:#EEF0E4; --sun:#FFF4D2; --cloud:#FFFFFF; --cloud-op:.92; --star-op:0;
+  --tree-far:#BDCFB4; --tree-mid:#98B290; --tree-near:#6F8E6B;
+  --frame:#2B2825; --sill:#CDA97C; --sheer:#FFFFFF; --sheer-op:.55; --sunbeam:#FFF3D3; --sunbeam-op:.34;
+  --desk:#D8B88E; --desk-edge:#B9956B; --desk-leg:#2B2825; --drawer:#EEE8DE; --drawer-line:#D8CEC0; --brass:#BF8F3E;
+  --chair:#2B2825; --chair-2:#625A51; --metal:#777067;
+  --mon:#22201E; --scr:#FAF8F4; --scr-line:#CEC6B9; --scr-dim:#ECE6DC; --scr-glow-op:.05;
+  --plant:#88A281; --plant-2:#58765B; --plant-3:#3F5C46; --pot:#DDD5C8; --pot-2:#C2B8A9;
+  --board:#F7F3EC; --board-2:#EFE9DF; --board-edge:#C9A67C; --note-1:#E9B949; --note-2:#C6D4BF; --note-3:#EAD9C5; --board-ink:#5E574E;
+  --clock-face:#F9F6F1; --clock-rim:#B9956B; --clock-hand:#24211E;
+  --cable:#B5A998; --cable-op:.9; --hub:#2B2825; --led:#5FC48A; --tray:#E2DACE; --tray-edge:#CFC5B5;
+  --chute:#2B2825; --chute-ink:#EEE7DC;
+  --pkt:#E3A21F; --pkt-glow:#FFD36E; --rev:#D24A3B; --ok:#2E9A5C; --chat:#3A72D4; --callout:#FFFFFF; --callout-edge:#1F1C19; --callout-ink:#1F1C19; --callout-dim:#ECE7DF;
+  --paper:#FFFFFF; --paper-line:#B6AEA2; --folder:#ECB443; --folder-2:#CC9128; --res:#3C79D6; --res-2:#2A5DAE; --env:#D3E2EF; --env-line:#5D7A95;
+  --plane:#E9F1F9; --plane-2:#B7CBDE; --plane-line:#5A7590; --prop-shade-op:.2;
+  --bubble:#FFFFFF; --bubble-edge:#1F1C19; --bubble-ink:#1F1C19; --tag:#FFFFFF; --tag-ink:#1F1C19;
+  --lamp:#2B2825; --lamp-shade:#34302C; --lamp-in:#C9B9A0; --lamp-on:0; --glow:#FFD58A;
+  --wal:#6B4F3B; --wal-hi:#7B5D47; --wal-lo:#5C4331; --wal-groove:#4B3527;
+  --sign-ink:#F4ECDF; --sign-gold:#E6B658; --sign-ret:#2E2118; --sign-glow:#FFC867; --sign-glow-op:0; --sign-shadow-op:.55; --sign-bar:#BF8F3E;
+  --print-paper:#FBF8F2; --sign-glow-gold:#F2B441;
+  --rug:#ECE3D4; --rug-2:#E4D9C7; --rug-edge:#C9B596; --rug-line:#B8A080; --fringe:#E6DCCB;
+  --fg-leaf:#4B6A4E; --fg-leaf-2:#3B5540; --fg-vein:#6E8D6B; --fg-pot:#D2C8B9; --fg-pot-2:#BCB1A1;
   --mouth:#7A2E2E; --eye:#1B1F24; --blush:#F08A7E;
   /* cast (identical in both themes) */
-  --a1:#2F6FDB; --a2:#17A08B; --a3:#E66A36; --a4:#7357B3;
-  --skin1:#F2C9A4; --skin1b:#DDAA82; --hair1:#2A1D15; --top1:#2B4A7C; --top1b:#203A63; --pants1:#2E3440; --shoe1:#1B1D22; --set1:#20272F; --shirt1:#F4F7FA;
-  --skin2:#C68A5E; --skin2b:#A86F47; --hair2:#191314; --top2:#1F9C8A; --top2b:#177C6E; --pants2:#33395A; --shoe2:#2A1D1B; --glass2:#8C2F3D; --shirt2:#FFFFFF;
-  --skin3:#8A5636; --skin3b:#6E4126; --hair3:#120D0B; --top3:#E66A36; --top3b:#C4552A; --pants3:#3B5F8C; --shoe3:#F2F2F2; --cap3:#263646; --cap3b:#1A2633; --mug3:#F2B134;
-  --skin4:#EBB78E; --skin4b:#D29872; --hijab4:#7357B3; --hijab4b:#5C4495; --top4:#E2B24C; --top4b:#C59533; --pants4:#3A3346; --shoe4:#2B2430;
+  --a1:#3A6FCF; --a2:#1E9885; --a3:#DE6A36; --a4:#7458AE;
+  --skin1:#F2C9A4; --skin1b:#DDAA82; --hair1:#2A1D15; --top1:#2D4876; --top1b:#22385E; --pants1:#2E3440; --shoe1:#1B1D22; --set1:#20272F; --shirt1:#F4F7FA;
+  --skin2:#C68A5E; --skin2b:#A86F47; --hair2:#191314; --top2:#22927F; --top2b:#1A7566; --pants2:#33395A; --shoe2:#2A1D1B; --glass2:#8C2F3D; --shirt2:#FFFFFF;
+  --skin3:#8A5636; --skin3b:#6E4126; --hair3:#120D0B; --top3:#DE6A36; --top3b:#BD552A; --pants3:#3E5E86; --shoe3:#F2F2F2; --cap3:#263646; --cap3b:#1A2633; --mug3:#E9B949;
+  --skin4:#EBB78E; --skin4b:#D29872; --hijab4:#7458AE; --hijab4b:#5C4495; --top4:#DDAE4C; --top4b:#C09233; --pants4:#3A3346; --shoe4:#2B2430;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0D151C; --ink:#E3EBEF; --muted:#9AAAB5; --panel:#16212B; --rule:#2A3946;
-    --accent:#F0B43A; --accent-soft:#4A3A16; --accent-ink:#0D151C; --focus:#79A8FF; --btn:#E3EBEF; --btn-ink:#0D151C; --btn-2:#16212B; --btn-2-ink:#E3EBEF;
-    --ceil:#15212C; --ceil-line:#24323F; --wall:#1F3040; --wall-low:#1A2937; --wall-trim:#2C4153;
-    --floor:#5B4231; --floor-line:#4A3427; --base:#2C2018; --shade:#000000; --shade-op:.32;
-    --sky-top:#08132A; --sky-bot:#1F3561; --sun:#F1EBC9; --cloud:#3A4E70; --cloud-op:.55; --skyline:#14213A;
-    --win-lit:#FFD27A; --win-lit-op:.9; --star-op:.9; --frame:#2D4152; --sill:#263848; --sunbeam-op:0; --sunbeam:#FFF6D6;
-    --desk:#8F7B5F; --desk-edge:#6F5D46; --desk-leg:#25303A; --drawer:#7C6A51; --drawer-line:#64543F;
-    --chair:#2A3A47; --chair-2:#3B4E5D; --metal:#5E6D78; --cab:#3A4E5C; --cab-line:#2D3E4A;
-    --mon:#10171D; --scr:#173E4E; --scr-line:#5592A8; --scr-dim:#22566A; --scr-glow-op:.1;
-    --plant:#2F7C55; --plant-2:#225E40; --pot:#33454F;
-    --board:#C9D3D8; --board-edge:#5D707C; --note-1:#D9BC5C; --note-2:#7FBBA3; --note-3:#CF9282; --board-ink:#2B3A44;
-    --clock-face:#D6DEE2; --clock-rim:#0F171E; --clock-hand:#111A21;
-    --cable:#5E7D8E; --cable-op:.75; --hub:#0F1A22; --led:#62E89A; --link-ink:#8EA6B4;
-    --tube:#9FD6EA; --tube-op:.22; --tube-edge:#4F7889; --chute:#0F1A22; --chute-ink:#D7E2E8;
-    --pkt:#FFC145; --pkt-glow:#FFD36E; --rev:#F0604F; --ok:#3CC173; --chat:#79A8FF; --callout:#F2F6F8; --callout-edge:#05090C; --callout-ink:#15202A; --callout-dim:#D3DEE4;
-    --paper:#F3F6F8; --paper-line:#9FB0B9; --env:#EDE7D8; --env-line:#A89B80;
-    --bubble:#F7FAFB; --bubble-edge:#0D151C; --bubble-ink:#15202A; --tag:#F2F6F8; --tag-ink:#15202A;
-    --lamp:#1B252E; --lamp-shade:#F0B04A; --lamp-on:1; --glow:#FFD58A; --night-op:.18;
+    --bg:#161412; --ink:#EDE7DD; --muted:#A79F93; --panel:#201E1B; --rule:#35302B; --rule-2:#433D36;
+    --accent:#E0B055; --accent-soft:#3F3219; --accent-ink:#161412; --focus:#8EB2FF; --btn:#EDE7DD; --btn-ink:#161412; --btn-2:#201E1B; --btn-2-ink:#EDE7DD;
+    --logo-ink:#EDE7DD; --logo-gold:#E2B254;
+    --ceil:#1A1815; --ceil-line:#2A2622; --wall:#2F2A25; --wall-low:#2B2722; --wash-op:0; --lime-op:.12;
+    --dado:#252520; --dado-low:#20201B; --dado-line:#181814; --groove-op:.5; --rail:#5A4533; --rail-hi:#6E553F; --rail-lo:#3F3024;
+    --base:#27231F; --base-top:#3A342E;
+    --floor:#5A4431; --floor-2:#54402E; --floor-3:#5F4834; --floor-line:#45342A; --shade:#000000; --shade-op:.32; --ao-op:.5; --cove-op:.35; --vig-op:.5;
+    --sky-top:#7FB4D0; --sky-a:#273050; --sky-b:#C48466; --sun:#F4E7C6; --cloud:#5B6180; --cloud-op:.45; --star-op:.85;
+    --tree-far:#46414F; --tree-mid:#2B2B32; --tree-near:#1B1E1D;
+    --frame:#121110; --sill:#5A4431; --sheer:#EAD9BF; --sheer-op:.12; --sunbeam:#FFF3D3; --sunbeam-op:0;
+    --desk:#7A5F46; --desk-edge:#5F4834; --desk-leg:#121110; --drawer:#3A3631; --drawer-line:#2C2925; --brass:#B8893E;
+    --chair:#121110; --chair-2:#3E3A35; --metal:#4C4741;
+    --mon:#121110; --scr:#1D2627; --scr-line:#5E8B86; --scr-dim:#2B3A3A; --scr-glow-op:.12;
+    --plant:#62805D; --plant-2:#425B41; --plant-3:#2E4331; --pot:#58524A; --pot-2:#46413B;
+    --board:#7F786D; --board-2:#756E64; --board-edge:#5C4834; --note-1:#C99C3E; --note-2:#7C8C77; --note-3:#958676; --board-ink:#2A2620;
+    --clock-face:#B3AA9C; --clock-rim:#5F4834; --clock-hand:#141210;
+    --cable:#5C554C; --cable-op:.95; --hub:#0E0D0C; --led:#6EE09A; --tray:#34302B; --tray-edge:#292622;
+    --chute:#0E0D0C; --chute-ink:#D9D1C5;
+    --pkt:#F0B23A; --pkt-glow:#FFD36E; --rev:#EE5E4E; --ok:#3CC173; --chat:#7AA6FF; --callout:#F4F0EA; --callout-edge:#0A0908; --callout-ink:#1F1C19; --callout-dim:#DCD5CB;
+    --paper:#F4F1EC; --paper-line:#A69D90; --folder:#ECB443; --folder-2:#CC9128; --res:#3C79D6; --res-2:#2A5DAE; --env:#EDE7D8; --env-line:#A89B80;
+    --plane:#F4F1EC; --plane-2:#2B3A3A; --plane-line:#A69D90; --prop-shade-op:.34;
+    --bubble:#F8F5F0; --bubble-edge:#0A0908; --bubble-ink:#1F1C19; --tag:#F4F0EA; --tag-ink:#1F1C19;
+    --lamp:#0E0D0C; --lamp-shade:#1A1815; --lamp-in:#FFD58A; --lamp-on:1; --glow:#FFD08A;
+    --wal:#3B2D23; --wal-hi:#463529; --wal-lo:#32261D; --wal-groove:#251B15;
+    --sign-ink:#2A2119; --sign-gold:#5C4321; --sign-ret:#120D0A; --sign-glow:#FFE2B6; --sign-glow-op:.95; --sign-shadow-op:0; --sign-bar:#B8893E;
+    --print-paper:#BFB6A8; --sign-glow-gold:#F7A626;
+    --rug:#4A4038; --rug-2:#453B34; --rug-edge:#37302A; --rug-line:#5A4E43; --fringe:#4E443B;
+    --fg-leaf:#1F2C22; --fg-leaf-2:#18231B; --fg-vein:#2F3E31; --fg-pot:#3A3530; --fg-pot-2:#2C2824;
+    --mouth:#7A2E2E; --eye:#1B1F24; --blush:#F08A7E;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0D151C; --ink:#E3EBEF; --muted:#9AAAB5; --panel:#16212B; --rule:#2A3946;
-  --accent:#F0B43A; --accent-soft:#4A3A16; --accent-ink:#0D151C; --focus:#79A8FF; --btn:#E3EBEF; --btn-ink:#0D151C; --btn-2:#16212B; --btn-2-ink:#E3EBEF;
-  --ceil:#15212C; --ceil-line:#24323F; --wall:#1F3040; --wall-low:#1A2937; --wall-trim:#2C4153;
-  --floor:#5B4231; --floor-line:#4A3427; --base:#2C2018; --shade:#000000; --shade-op:.32;
-  --sky-top:#08132A; --sky-bot:#1F3561; --sun:#F1EBC9; --cloud:#3A4E70; --cloud-op:.55; --skyline:#14213A;
-  --win-lit:#FFD27A; --win-lit-op:.9; --star-op:.9; --frame:#2D4152; --sill:#263848; --sunbeam-op:0; --sunbeam:#FFF6D6;
-  --desk:#8F7B5F; --desk-edge:#6F5D46; --desk-leg:#25303A; --drawer:#7C6A51; --drawer-line:#64543F;
-  --chair:#2A3A47; --chair-2:#3B4E5D; --metal:#5E6D78; --cab:#3A4E5C; --cab-line:#2D3E4A;
-  --mon:#10171D; --scr:#173E4E; --scr-line:#5592A8; --scr-dim:#22566A; --scr-glow-op:.1;
-  --plant:#2F7C55; --plant-2:#225E40; --pot:#33454F;
-  --board:#C9D3D8; --board-edge:#5D707C; --note-1:#D9BC5C; --note-2:#7FBBA3; --note-3:#CF9282; --board-ink:#2B3A44;
-  --clock-face:#D6DEE2; --clock-rim:#0F171E; --clock-hand:#111A21;
-  --cable:#5E7D8E; --cable-op:.75; --hub:#0F1A22; --led:#62E89A; --link-ink:#8EA6B4;
-  --tube:#9FD6EA; --tube-op:.22; --tube-edge:#4F7889; --chute:#0F1A22; --chute-ink:#D7E2E8;
-  --pkt:#FFC145; --pkt-glow:#FFD36E; --rev:#F0604F; --ok:#3CC173; --chat:#79A8FF; --callout:#F2F6F8; --callout-edge:#05090C; --callout-ink:#15202A; --callout-dim:#D3DEE4;
-  --paper:#F3F6F8; --paper-line:#9FB0B9; --env:#EDE7D8; --env-line:#A89B80;
-  --bubble:#F7FAFB; --bubble-edge:#0D151C; --bubble-ink:#15202A; --tag:#F2F6F8; --tag-ink:#15202A;
-  --lamp:#1B252E; --lamp-shade:#F0B04A; --lamp-on:1; --glow:#FFD58A; --night-op:.18;
-  color-scheme:dark;
+    --bg:#161412; --ink:#EDE7DD; --muted:#A79F93; --panel:#201E1B; --rule:#35302B; --rule-2:#433D36;
+    --accent:#E0B055; --accent-soft:#3F3219; --accent-ink:#161412; --focus:#8EB2FF; --btn:#EDE7DD; --btn-ink:#161412; --btn-2:#201E1B; --btn-2-ink:#EDE7DD;
+    --logo-ink:#EDE7DD; --logo-gold:#E2B254;
+    --ceil:#1A1815; --ceil-line:#2A2622; --wall:#2F2A25; --wall-low:#2B2722; --wash-op:0; --lime-op:.12;
+    --dado:#252520; --dado-low:#20201B; --dado-line:#181814; --groove-op:.5; --rail:#5A4533; --rail-hi:#6E553F; --rail-lo:#3F3024;
+    --base:#27231F; --base-top:#3A342E;
+    --floor:#5A4431; --floor-2:#54402E; --floor-3:#5F4834; --floor-line:#45342A; --shade:#000000; --shade-op:.32; --ao-op:.5; --cove-op:.35; --vig-op:.5;
+    --sky-top:#7FB4D0; --sky-a:#273050; --sky-b:#C48466; --sun:#F4E7C6; --cloud:#5B6180; --cloud-op:.45; --star-op:.85;
+    --tree-far:#46414F; --tree-mid:#2B2B32; --tree-near:#1B1E1D;
+    --frame:#121110; --sill:#5A4431; --sheer:#EAD9BF; --sheer-op:.12; --sunbeam:#FFF3D3; --sunbeam-op:0;
+    --desk:#7A5F46; --desk-edge:#5F4834; --desk-leg:#121110; --drawer:#3A3631; --drawer-line:#2C2925; --brass:#B8893E;
+    --chair:#121110; --chair-2:#3E3A35; --metal:#4C4741;
+    --mon:#121110; --scr:#1D2627; --scr-line:#5E8B86; --scr-dim:#2B3A3A; --scr-glow-op:.12;
+    --plant:#62805D; --plant-2:#425B41; --plant-3:#2E4331; --pot:#58524A; --pot-2:#46413B;
+    --board:#7F786D; --board-2:#756E64; --board-edge:#5C4834; --note-1:#C99C3E; --note-2:#7C8C77; --note-3:#958676; --board-ink:#2A2620;
+    --clock-face:#B3AA9C; --clock-rim:#5F4834; --clock-hand:#141210;
+    --cable:#5C554C; --cable-op:.95; --hub:#0E0D0C; --led:#6EE09A; --tray:#34302B; --tray-edge:#292622;
+    --chute:#0E0D0C; --chute-ink:#D9D1C5;
+    --pkt:#F0B23A; --pkt-glow:#FFD36E; --rev:#EE5E4E; --ok:#3CC173; --chat:#7AA6FF; --callout:#F4F0EA; --callout-edge:#0A0908; --callout-ink:#1F1C19; --callout-dim:#DCD5CB;
+    --paper:#F4F1EC; --paper-line:#A69D90; --folder:#ECB443; --folder-2:#CC9128; --res:#3C79D6; --res-2:#2A5DAE; --env:#EDE7D8; --env-line:#A89B80;
+    --plane:#F4F1EC; --plane-2:#2B3A3A; --plane-line:#A69D90; --prop-shade-op:.34;
+    --bubble:#F8F5F0; --bubble-edge:#0A0908; --bubble-ink:#1F1C19; --tag:#F4F0EA; --tag-ink:#1F1C19;
+    --lamp:#0E0D0C; --lamp-shade:#1A1815; --lamp-in:#FFD58A; --lamp-on:1; --glow:#FFD08A;
+    --wal:#3B2D23; --wal-hi:#463529; --wal-lo:#32261D; --wal-groove:#251B15;
+    --sign-ink:#2A2119; --sign-gold:#5C4321; --sign-ret:#120D0A; --sign-glow:#FFE2B6; --sign-glow-op:.95; --sign-shadow-op:0; --sign-bar:#B8893E;
+    --print-paper:#BFB6A8; --sign-glow-gold:#F7A626;
+    --rug:#4A4038; --rug-2:#453B34; --rug-edge:#37302A; --rug-line:#5A4E43; --fringe:#4E443B;
+    --fg-leaf:#1F2C22; --fg-leaf-2:#18231B; --fg-vein:#2F3E31; --fg-pot:#3A3530; --fg-pot-2:#2C2824;
+    --mouth:#7A2E2E; --eye:#1B1F24; --blush:#F08A7E;
+    color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;margin:0}
-.page{max-width:1240px;margin-inline:auto;padding-inline:16px;padding-block:12px 14px;display:flex;flex-direction:column;gap:10px}
-.masthead{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:18px;row-gap:2px}
-.masthead h1{font-family:var(--f-display);font-weight:800;font-size:clamp(22px,3.2vw,30px);letter-spacing:-.01em;margin:0;line-height:1.1;text-wrap:balance;display:flex;align-items:center;gap:10px}
-.masthead h1 svg{width:30px;height:20px;flex:none}
-.sub{margin:0;color:var(--muted);min-width:0;flex:1 1 320px}
-.stage{margin:0;position:relative;border-radius:14px;overflow:hidden;background:var(--wall);box-shadow:0 1px 0 var(--rule),0 10px 30px -18px var(--shade)}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;margin:0}
+.sr-defs{position:absolute;width:0;height:0;overflow:hidden}
+.page{max-width:1240px;margin-inline:auto;padding-inline:16px;padding-block:14px 16px;display:flex;flex-direction:column;gap:14px}
+/* masthead: brand lockup | title, then a one-line summary */
+.masthead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.brand{--bh:28px;display:block;flex:none;line-height:0}
+.brand svg{display:inline-block;vertical-align:calc(var(--bh) * -.29);width:auto;height:var(--bh);aspect-ratio:242/48}
+.masthead h1{font-family:var(--f-display);font-weight:800;font-size:clamp(19px,2.3vw,24px);letter-spacing:-.015em;margin:0;line-height:1.2;padding-left:18px;border-left:1px solid var(--rule)}
+.sub{margin:0;color:var(--muted);min-width:0;flex:1 1 300px;font-size:14.5px}
+.stage{margin:0;position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--wall);border:1px solid var(--rule);box-shadow:0 22px 44px -34px var(--shade)}
 .stage svg{display:block;width:100%;height:auto;aspect-ratio:1600/760}
 .stage.cam svg{aspect-ratio:1/1}
-.dock{display:grid;gap:10px}
-.narr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 18px}
-.caption{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:2px 12px;min-width:0;flex:1 1 420px}
-.cap-step{font-family:var(--f-mono);font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:3px 8px;border-radius:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
-.cap-text{font-size:16px;font-weight:700;min-width:0}
-.cap-beat{grid-column:2;font-size:14px;color:var(--muted);min-width:0;min-height:1.45em}
+.dock{display:grid;gap:12px}
+.narr{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.caption{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:3px 12px;min-width:0;flex:1 1 420px}
+.cap-step{font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding-inline:9px;padding-block:3px;border-radius:var(--r-sm);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cap-text{font-size:16px;font-weight:700;min-width:0;line-height:1.4}
+.cap-beat{grid-column:2;font-size:14px;color:var(--muted);min-width:0;min-height:1.5em}
 .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.controls button,.speed button{font:inherit;font-weight:700;font-size:14px;border:1.5px solid var(--btn);border-radius:8px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;min-height:38px}
-#btn-play{background:var(--btn);color:var(--btn-ink);min-width:104px;justify-content:center}
-#btn-restart{background:var(--btn-2);color:var(--btn-2-ink)}
+.controls button,.speed button{font:inherit;font-weight:700;font-size:14px;border:1px solid var(--btn);border-radius:var(--r);padding-inline:15px;padding-block:7px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:40px}
+#btn-play{background:var(--btn);color:var(--btn-ink);min-width:108px;justify-content:center}
+#btn-restart{background:var(--btn-2);color:var(--btn-2-ink);border-color:var(--rule-2)}
 .speed{display:inline-flex}
-.speed button{background:var(--btn-2);color:var(--btn-2-ink);font-family:var(--f-mono);padding:7px 11px;font-variant-numeric:tabular-nums}
-.speed button:first-child{border-radius:8px 0 0 8px}
-.speed button:last-child{border-radius:0 8px 8px 0;margin-left:-1.5px}
-.speed button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.speed button{background:var(--btn-2);color:var(--btn-2-ink);font-family:var(--f-mono);padding-inline:12px;font-variant-numeric:tabular-nums;border-color:var(--rule-2)}
+.speed button:first-child{border-radius:var(--r) 0 0 var(--r)}
+.speed button:last-child{border-radius:0 var(--r) var(--r) 0;margin-left:-1px}
+.speed button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn);position:relative}
 button svg{width:14px;height:14px;fill:currentColor;flex:none}
 button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.track{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
-.track button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:7px;width:100%;position:relative;padding:7px 9px 10px;border-radius:8px;background:var(--panel);color:var(--muted);font-size:13px;font-weight:600;overflow:hidden;border:1px solid var(--rule)}
-.track button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.track .no{font-family:var(--f-mono);font-weight:700;font-size:12px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--bg);color:var(--ink);flex:none;font-variant-numeric:tabular-nums}
+/* step track: six quiet segments, a gold progress line on top of each */
+.track{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.track button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:9px;width:100%;position:relative;padding-top:12px;padding-bottom:1px;color:var(--muted);font-size:13.5px;font-weight:600;border-radius:var(--r-sm)}
+.track button::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;border-radius:2px;background:var(--rule)}
+.track button:hover{color:var(--ink)}
+.track button:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.track .no{font-family:var(--f-mono);font-weight:700;font-size:11.5px;width:22px;height:22px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--panel);color:var(--ink);border:1px solid var(--rule);flex:none;font-variant-numeric:tabular-nums}
 .track .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.track .bar{position:absolute;left:0;bottom:0;height:4px;width:100%;background:var(--accent);transform-origin:left center;transform:scaleX(0)}
-.track button.done .bar{transform:scaleX(1);opacity:.45}
-.track button.now{color:var(--ink);border-color:var(--ink)}
-.track button.now .no{background:var(--accent);color:var(--accent-ink)}
-.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 18px}
-.legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted)}
-.legend li{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.legend svg{width:30px;height:8px;flex:none;overflow:visible}
+.track .bar{position:absolute;left:0;top:0;height:3px;width:100%;border-radius:2px;background:var(--accent);transform-origin:left center;transform:scaleX(0)}
+.track button.done .bar{opacity:.5}
+.track button.now{color:var(--ink)}
+.track button.now .no{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;padding-top:10px;border-top:1px solid var(--rule)}
+.legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:13px;color:var(--muted)}
+.legend li{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.legend svg{width:28px;height:8px;flex:none;overflow:visible}
 .legend line{stroke-width:3.5;stroke-linecap:round}
 .lg-task{stroke:var(--pkt)} .lg-chat{stroke:var(--chat);stroke-dasharray:.5 6} .lg-rev{stroke:var(--rev);stroke-dasharray:7 5} .lg-final{stroke:var(--ok)}
-.static-steps{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding-inline:18px;padding-block:12px 14px}
-.static-steps h2{font-family:var(--f-display);font-size:18px;margin:0 0 6px}
+.static-steps{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-lg);padding-inline:18px;padding-block:14px 16px}
+.static-steps h2{font-family:var(--f-display);font-size:17px;margin:0 0 6px}
 .static-steps ol{margin:0;padding-left:22px;display:grid;gap:4px;max-width:70ch}
 .hint{margin:0;color:var(--muted);font-size:13px}
-.hint kbd{font-family:var(--f-mono);font-size:12px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--panel);color:var(--ink)}
+.hint kbd{font-family:var(--f-mono);font-size:11.5px;border:1px solid var(--rule-2);border-bottom-width:2px;border-radius:var(--r-sm);padding-inline:6px;padding-block:0;background:var(--panel);color:var(--ink)}
 @media (max-width:720px){
+  .page{padding-block:14px 22px;gap:14px}
+  .masthead{column-gap:12px}
+  .brand{--bh:21px}
+  .masthead h1{font-size:18px;padding-left:12px}
+  .sub{flex-basis:100%;font-size:14px}
+  .track{gap:6px}
   .track .lbl{display:none}
-  .track button{justify-content:center;padding:7px 4px 10px}
+  .track button{justify-content:center}
   .cap-text{font-size:15px}
   .caption{grid-template-columns:minmax(0,1fr)}
   .cap-step{justify-self:start}
@@ -139,26 +186,42 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
   .controls{width:100%}
   #btn-play{flex:1}
 }
+@media (max-width:359px){
+  /* too narrow for logo | title on one line: stack them and drop the divider */
+  .brand{flex:0 0 100%}
+  .masthead h1{border-left:0;padding-left:0}
+}
+/* brand: colors come from tokens so the same symbols work on the page, on the wall sign, on the glass and at night */
+.pm-ink{fill:var(--logo-ink);stroke:var(--pm-halo,none);stroke-width:var(--pm-hw,0);stroke-linejoin:round}
+.pm-gold{fill:var(--logo-gold);stroke:var(--pm-halo-g,var(--pm-halo,none));stroke-width:var(--pm-hw,0);stroke-linejoin:round}
+.pm-w-ink{fill:none;stroke:var(--logo-ink);stroke-width:var(--logo-sw,3.4);stroke-linejoin:miter;stroke-miterlimit:2}
+.pm-w-gold{fill:none;stroke:var(--logo-gold);stroke-width:var(--logo-sw,3.4);stroke-linejoin:miter;stroke-miterlimit:2}
 /* scene paint */
 #scene text{font-family:var(--f-body)}
-.k-ceil{fill:var(--ceil)} .k-ceil-line{fill:var(--ceil-line)} .k-wall{fill:var(--wall)} .k-wall-low{fill:var(--wall-low)} .k-trim{fill:var(--wall-trim)}
-.k-floor{fill:var(--floor)} .k-floor-line{stroke:var(--floor-line);stroke-width:2;fill:none} .k-base{fill:var(--base)}
+.k-ceil{fill:var(--ceil)} .k-ceil-line{fill:var(--ceil-line)} .k-wall{fill:url(#gWall)} .k-dado{fill:url(#gDado)} .k-lime{fill:url(#gLime);opacity:var(--lime-op)} .k-groove{stroke:var(--dado-line);stroke-width:1.4;fill:none;opacity:var(--groove-op)}
+.k-rail{fill:var(--rail)} .k-rail-hi{fill:var(--rail-hi)} .k-rail-lo{fill:var(--rail-lo)} .k-base{fill:var(--base)} .k-base-top{fill:var(--base-top)}
+.k-floor{fill:var(--floor)} .k-floor2{fill:var(--floor-2)} .k-floor3{fill:var(--floor-3)} .k-floor-line{stroke:var(--floor-line);stroke-width:1.3;fill:none;opacity:.65} .k-joint{stroke:var(--floor-line);stroke-width:1.3;fill:none;opacity:.5}
+.k-ao{fill:url(#gAO);opacity:var(--ao-op)} .k-vig{fill:url(#gVig);opacity:var(--vig-op)} .k-cove{fill:url(#gCove);opacity:var(--cove-op)} .k-fade{fill:url(#gFade);opacity:var(--ao-op)}
 .k-shade{fill:var(--shade);opacity:var(--shade-op)}
-.k-frame{fill:var(--frame)} .k-sill{fill:var(--sill)} .k-sun{fill:var(--sun)} .k-cloud{fill:var(--cloud);opacity:var(--cloud-op)} .k-skyline{fill:var(--skyline)}
-.k-winlit{fill:var(--win-lit);opacity:var(--win-lit-op)} .k-star{fill:var(--sun);opacity:var(--star-op)} .k-beam{fill:var(--sunbeam);opacity:var(--sunbeam-op)}
-.k-desk{fill:var(--desk)} .k-desk-edge{fill:var(--desk-edge)} .k-leg{fill:var(--desk-leg)} .k-drawer{fill:var(--drawer)} .k-drawer-line{stroke:var(--drawer-line);stroke-width:2;fill:none}
+.k-frame{fill:var(--frame)} .k-sill{fill:var(--sill)} .k-sun{fill:var(--sun)} .k-cloud{fill:var(--cloud);opacity:var(--cloud-op)}
+.k-tree1{fill:var(--tree-far)} .k-tree2{fill:var(--tree-mid)} .k-tree3{fill:var(--tree-near)} .k-branch{stroke:var(--tree-near);stroke-width:2.4;stroke-linecap:round;fill:none}
+.k-star{fill:var(--sun);opacity:var(--star-op)} .k-beam{fill:url(#gBeam);opacity:var(--sunbeam-op)} .k-glare{fill:var(--sheer);opacity:calc(var(--sheer-op) * .35)}
+.k-sheer{fill:var(--sheer);opacity:var(--sheer-op)} .k-sheer-fold{stroke:var(--shade);stroke-width:1.2;fill:none;opacity:.08} .k-wash{fill:url(#gWash);opacity:var(--wash-op)} .k-curtain-rod{fill:var(--frame)}
+.k-desk{fill:var(--desk)} .k-desk-edge{fill:var(--desk-edge)} .k-leg{fill:var(--desk-leg)} .k-drawer{fill:var(--drawer)} .k-drawer-line{stroke:var(--drawer-line);stroke-width:2;fill:none} .k-brass{fill:var(--brass)}
 .k-chair{fill:var(--chair)} .k-chair2{fill:var(--chair-2)} .k-chair-s{stroke:var(--chair);fill:none;stroke-linecap:round} .k-metal{fill:var(--metal)}
-.k-cab{fill:var(--cab)} .k-cab-line{stroke:var(--cab-line);stroke-width:2;fill:none}
 .k-mon{fill:var(--mon)} .k-scr{fill:var(--scr)} .k-scr-line{fill:var(--scr-line)} .k-scr-dim{fill:var(--scr-dim)} .k-scr-glow{fill:var(--glow);opacity:var(--scr-glow-op)}
-.k-plant{fill:var(--plant)} .k-plant2{fill:var(--plant-2)} .k-pot{fill:var(--pot)}
-.k-board{fill:var(--board);stroke:var(--board-edge);stroke-width:4} .k-n1{fill:var(--note-1)} .k-n2{fill:var(--note-2)} .k-n3{fill:var(--note-3)} .k-board-ink{fill:var(--board-ink)} .k-board-s{stroke:var(--board-ink);fill:none;stroke-width:2;stroke-linecap:round}
-.k-clock{fill:var(--clock-face);stroke:var(--clock-rim);stroke-width:6} .k-clock-hand{stroke:var(--clock-hand);stroke-linecap:round} .k-clock-tick{stroke:var(--clock-rim);stroke-width:3;stroke-linecap:round}
-.k-cable{stroke:var(--cable);opacity:var(--cable-op);fill:none;stroke-width:4;stroke-linecap:round}
-.k-cable-chat{stroke:var(--chat);opacity:.55;fill:none;stroke-width:3.5;stroke-dasharray:1 9;stroke-linecap:round}
-.k-cable-rev{stroke:var(--rev);opacity:.45;fill:none;stroke-width:3;stroke-dasharray:10 8;stroke-linecap:round}
-.k-tray{stroke:var(--tube-edge);fill:none;stroke-width:14;stroke-linecap:round;stroke-linejoin:round;opacity:.55}
-.k-cable-final{stroke:var(--ok);opacity:.5;fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
-.k-hub{fill:var(--hub)} .k-led{fill:var(--led)} .k-link-ink{fill:var(--link-ink)}
+.k-plant{fill:var(--plant)} .k-plant2{fill:var(--plant-2)} .k-plant3{fill:var(--plant-3)} .k-stem{stroke:var(--plant-2);fill:none;stroke-width:2;stroke-linecap:round} .k-pot{fill:var(--pot)} .k-pot2{fill:var(--pot-2)}
+.k-board{fill:url(#gBoard);stroke:var(--board-edge);stroke-width:6} .k-n1{fill:var(--note-1)} .k-n2{fill:var(--note-2)} .k-n3{fill:var(--note-3)} .k-board-ink{fill:var(--board-ink)} .k-board-s{stroke:var(--board-ink);fill:none;stroke-width:2;stroke-linecap:round}
+.k-board-head{fill:var(--board-ink);font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;opacity:.75}
+.k-clock{fill:var(--clock-face);stroke:var(--clock-rim);stroke-width:4} .k-clock-hand{stroke:var(--clock-hand);stroke-linecap:round} .k-clock-tick{stroke:var(--clock-hand);stroke-width:2.2;stroke-linecap:round;opacity:.7}
+.k-clock-sec{stroke:var(--accent);fill:none} .k-clock-pin{fill:var(--accent)}
+.k-cable{stroke:var(--cable);opacity:var(--cable-op);fill:none;stroke-width:3.5;stroke-linecap:round}
+.k-cable-chat{stroke:var(--chat);opacity:.4;fill:none;stroke-width:3;stroke-dasharray:1 9;stroke-linecap:round}
+.k-cable-rev{stroke:var(--rev);opacity:.34;fill:none;stroke-width:2.6;stroke-dasharray:10 8;stroke-linecap:round}
+.k-tray{stroke:var(--tray);fill:none;stroke-width:12;stroke-linecap:round;stroke-linejoin:round}
+.k-tray-edge{stroke:var(--tray-edge);fill:none;stroke-width:1.5;stroke-linejoin:round}
+.k-cable-final{stroke:var(--ok);opacity:.38;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.k-hub{fill:var(--hub)} .k-led{fill:var(--led)}
 .k-pkt{fill:var(--pkt)} .k-pkt-glow{fill:var(--pkt-glow)}
 .k-hot{stroke:var(--pkt);fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
 .k-hot-chat{stroke:var(--chat);fill:none;stroke-width:5;stroke-linecap:round}
@@ -167,14 +230,25 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .k-chat{fill:var(--chat)}
 .k-callout{fill:var(--callout);stroke:var(--callout-edge);stroke-width:2.5;stroke-linejoin:round}
 .k-callout-ink{fill:var(--callout-ink)} .k-callout-dim{fill:var(--callout-dim)}
-.k-chute{fill:var(--chute)} .k-chute-ink{fill:var(--chute-ink)}
+.k-chute{fill:var(--chute)} .k-chute-ink{fill:var(--chute-ink);font-family:var(--f-mono)}
 .k-paper{fill:var(--paper)} .k-paper-line{fill:var(--paper-line)} .k-paper-s{stroke:var(--paper-line);fill:none;stroke-width:1.5}
-.k-folder{fill:var(--folder)} .k-folder2{fill:var(--folder-2)} .k-res{fill:var(--res)} .k-res2{fill:var(--res-2)} .k-env{fill:var(--env)} .k-env-s{stroke:var(--env-line);fill:none;stroke-width:1.6}
+.k-folder{fill:var(--folder)} .k-folder2{fill:var(--folder-2)} .k-res{fill:var(--res)} .k-res2{fill:var(--res-2)} .k-env{fill:var(--env)} .k-env-s{stroke:var(--env-line);fill:none;stroke-width:1.6} .k-prop-shade{fill:var(--shade);opacity:var(--prop-shade-op)}
 .k-rev{fill:var(--rev)} .k-rev-s{stroke:var(--rev);fill:none} .k-ok{fill:var(--ok)} .k-ok-s{stroke:var(--ok);fill:none}
 .k-bubble{fill:var(--bubble);stroke:var(--bubble-edge);stroke-width:3;stroke-linejoin:round} .k-bubble-ink{fill:var(--bubble-ink)}
 .k-tag{fill:var(--tag)} .k-tag-ink{fill:var(--tag-ink)}
-.k-lamp{fill:var(--lamp)} .k-lamp-s{stroke:var(--lamp);fill:none;stroke-width:5;stroke-linecap:round} .k-lamp-shade{fill:var(--lamp-shade)} .k-glow{fill:var(--glow);opacity:calc(var(--lamp-on) * .34)} .k-bulb{fill:var(--glow);opacity:var(--lamp-on)}
-.k-night{fill:var(--shade);opacity:var(--night-op)}
+.k-lamp{fill:var(--lamp)} .k-lamp-s{stroke:var(--lamp);fill:none;stroke-width:1.6} .k-lamp-shade{fill:var(--lamp-shade)} .k-lamp-in{fill:var(--lamp-in)}
+.k-bulb{fill:var(--glow);opacity:var(--lamp-on)} .k-halo{fill:url(#gHalo);opacity:var(--lamp-on)} .k-cone{fill:url(#gLampCone);opacity:calc(var(--lamp-on) * .16)}
+.k-floor-pool{fill:url(#gHalo);opacity:calc(var(--lamp-on) * .55)} .k-desk-pool{fill:url(#gHalo);opacity:calc(var(--lamp-on) * .9)}
+.k-wal{fill:var(--wal)} .k-wal-hi{fill:var(--wal-hi)} .k-wal-lo{fill:var(--wal-lo)} .k-wal-groove{fill:var(--wal-groove)} .k-wal-sheen{fill:url(#gSheen)}
+.k-sign-bar{fill:var(--sign-bar)} .k-sign-wash{fill:url(#gSignWash);opacity:var(--sign-glow-op)}
+.sign-face{--logo-ink:var(--sign-ink);--logo-gold:var(--sign-gold);--logo-sw:3.4}
+.sign-ret{--logo-ink:var(--sign-ret);--logo-gold:var(--sign-ret);--logo-sw:3.4}
+.sign-shadow{--logo-ink:var(--shade);--logo-gold:var(--shade);--logo-sw:3.6;opacity:var(--sign-shadow-op)}
+.sign-glow{--logo-ink:var(--sign-glow);--logo-gold:var(--sign-glow-gold);--pm-halo:var(--sign-glow);--pm-halo-g:var(--sign-glow-gold);--pm-hw:5;--logo-sw:8;opacity:var(--sign-glow-op)}
+.print{--logo-ink:var(--frame);--logo-gold:var(--brass)} .k-print{fill:var(--print-paper)}
+.k-rope{stroke:var(--pot-2);stroke-width:1.3;fill:none} .k-flute{stroke:var(--desk-edge);stroke-width:1.6;fill:none;opacity:.7} .k-tray-hang{fill:var(--tray-edge)}
+.k-rug{fill:var(--rug)} .k-rug2{fill:var(--rug-2)} .k-rug-s{stroke:var(--rug-line);fill:none;stroke-width:1.6} .k-rug-edge{fill:var(--rug-edge)} .k-weave{stroke:var(--rug-line);stroke-width:1;fill:none;opacity:.22} .k-rug-band{stroke:var(--rug-line);stroke-width:2;fill:none;opacity:.7} .k-fringe{stroke:var(--fringe);stroke-width:1.6;fill:none;stroke-linecap:round}
+.k-fg{fill:var(--fg-leaf)} .k-fg2{fill:var(--fg-leaf-2)} .k-fg-vein{stroke:var(--fg-vein);fill:none;stroke-width:1.6;stroke-linecap:round;opacity:.7} .k-fg-stem{stroke:var(--fg-leaf-2);stroke-width:2.6;fill:none;stroke-linecap:round} .k-fg-pot{fill:var(--fg-pot)} .k-fg-pot2{fill:var(--fg-pot-2)}
 .k-mouth{fill:var(--mouth);stroke:var(--mouth);stroke-width:1.4;stroke-linejoin:round} .k-eye{fill:var(--eye)} .k-blush{fill:var(--blush);opacity:.32}
 .k-ink{fill:var(--ink)}
 .limb{fill:none;stroke-linecap:round}
@@ -190,14 +264,48 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .k-a1{fill:var(--a1)} .k-a2{fill:var(--a2)} .k-a3{fill:var(--a3)} .k-a4{fill:var(--a4)} .k-pk{fill:var(--pkt)}
 @media (prefers-reduced-motion: reduce){ .track .bar{transition:none} }
 </style>
+<svg class="sr-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Putramas brand, defined once. Original placeholder artwork: a P whose ink stem carries a gold bowl cut like a setting sun ("mas" = gold),
+         and a monoline wordmark, PUTRA in ink and MAS in gold. Swap the real artwork into these two symbols and every use updates
+         (page header, wall sign, framed print). -->
+    <symbol id="putramas-mark" viewBox="0 0 48 48">
+      <rect class="pm-ink" x="9.5" y="5" width="11" height="38" rx="1.6"/>
+      <path class="pm-gold" d="M23 5 H26 A12.5 12.5 0 0 1 37.97 13.9 H23 Z M23 15.7 H38.37 A12.5 12.5 0 0 1 37.54 22.3 H23 Z M23 24.1 H36.62 A12.5 12.5 0 0 1 26 30 H23 Z"/>
+    </symbol>
+    <!-- wordmark letters sit on cap line y=0 and baseline y=21; the diagonal feet (R leg, both A's) run past the baseline and are cut flat by pm-base -->
+    <clipPath id="pm-base" clipPathUnits="userSpaceOnUse"><rect x="-8" y="-12" width="198" height="33"/></clipPath>
+    <symbol id="putramas-word" viewBox="0 -5 182 31">
+      <g class="pm-w-ink">
+        <path d="M1.7 21 V1.7 H9 A5.4 5.4 0 0 1 9 12.5 H1.7"/>
+        <path d="M24 0 V13 A6.4 6.4 0 0 0 36.8 13 V0"/>
+        <path d="M44.6 1.7 H60 M52.3 1.7 V21"/>
+        <g clip-path="url(#pm-base)">
+          <path d="M67.9 21 V1.7 H75.2 A5.4 5.4 0 0 1 75.2 12.5 H67.9 M74.4 12.5 L83.67 23.6"/>
+          <path d="M88.95 23.6 L98.2 .64 L107.45 23.6 M93.2 14.2 H103.2"/>
+        </g>
+      </g>
+      <g class="pm-w-gold">
+        <path d="M114.4 21 V.8 L123.2 14.6 L132 .8 V21"/>
+        <path clip-path="url(#pm-base)" d="M139.15 23.6 L148.4 .64 L157.65 23.6 M143.4 14.2 H153.4"/>
+        <path d="M177.4 4.32 Q175 1.4 170.8 1.4 Q165.2 1.4 165.2 5.64 Q165.2 9.04 171.2 10.17 Q178 11.49 178 14.88 Q178 19.6 171.6 19.6 Q166.6 19.6 164.4 16.39"/>
+      </g>
+    </symbol>
+    <symbol id="putramas-logo" viewBox="0 0 242 48">
+      <use href="#putramas-mark" width="48" height="48"/>
+      <use href="#putramas-word" x="60" y="8.1" width="182" height="31"/>
+    </symbol>
+  </defs>
+</svg>
 <div class="page">
   <header class="masthead">
-    <h1><svg viewBox="0 0 30 20" aria-hidden="true"><path d="M4 10 L12 4 L19 15 L26 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/><circle cx="4" cy="10" r="3.4" class="k-a1"/><circle cx="12" cy="4" r="3.4" class="k-a2"/><circle cx="19" cy="15" r="3.4" class="k-a3"/><circle cx="26" cy="9" r="3.4" class="k-a4"/></svg>Kantor Empat Agent</h1>
+    <span class="brand"><svg viewBox="0 0 242 48" role="img" aria-label="Putramas"><use href="#putramas-logo"/></svg></span>
+    <h1>Kantor Empat Agent</h1>
     <p class="sub">Empat agent bekerja seperti satu tim kantor: tugas mengalir dari Agent 1 ke 2, 3, dan 4, lalu kembali.</p>
   </header>
   <figure class="stage" id="stage">
     <svg id="scene" viewBox="0 10 1600 760" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="scene-desc">
-      <desc id="scene-desc">Kantor tampak samping dengan empat meja berderet. Agent 1 sampai Agent 4 duduk di meja masing-masing dan terhubung kabel jaringan. Mereka saling mengantar berkas, berdiskusi, merevisi, lalu bertemu di tengah ruangan untuk merayakan hasil akhir.</desc>
+      <desc id="scene-desc">Studio kantor Putramas tampak samping: dinding plester hangat di atas panel kayu, lantai kayu oak, jendela besar bertirai linen, dan panel kayu walnut dengan huruf PUTRAMAS. Agent 1 sampai Agent 4 duduk di meja masing-masing dan terhubung kabel jaringan. Mereka saling mengantar berkas, berdiskusi, merevisi, lalu bertemu di atas karpet di tengah ruangan untuk merayakan hasil akhir.</desc>
     </svg>
   </figure>
   <section class="dock" aria-label="Narasi dan kontrol">
@@ -215,10 +323,10 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
     <ol class="track" id="track" aria-label="Enam langkah alur kerja"></ol>
     <div class="foot">
       <ul class="legend" aria-label="Arti kabel jaringan">
-        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-task" x1="2" y1="4" x2="28" y2="4"/></svg>Tugas maju</li>
-        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-chat" x1="2" y1="4" x2="28" y2="4"/></svg>Diskusi</li>
-        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-rev" x1="2" y1="4" x2="28" y2="4"/></svg>Revisi</li>
-        <li><svg viewBox="0 0 30 8" aria-hidden="true"><line class="lg-final" x1="2" y1="4" x2="28" y2="4"/></svg>Hasil akhir</li>
+        <li><svg viewBox="0 0 28 8" aria-hidden="true"><line class="lg-task" x1="2" y1="4" x2="26" y2="4"/></svg>Tugas maju</li>
+        <li><svg viewBox="0 0 28 8" aria-hidden="true"><line class="lg-chat" x1="2" y1="4" x2="26" y2="4"/></svg>Diskusi</li>
+        <li><svg viewBox="0 0 28 8" aria-hidden="true"><line class="lg-rev" x1="2" y1="4" x2="26" y2="4"/></svg>Revisi</li>
+        <li><svg viewBox="0 0 28 8" aria-hidden="true"><line class="lg-final" x1="2" y1="4" x2="26" y2="4"/></svg>Hasil akhir (Agent 4 ke Agent 1)</li>
       </ul>
       <p class="hint"><kbd>Spasi</kbd> untuk jeda atau lanjut. Klik langkah untuk melompat.</p>
     </div>
@@ -287,140 +395,250 @@ const setA = (e, k, v) => e.setAttribute(k, v);
 const f1 = (n) => Math.round(n * 10) / 10;
 const f2 = (n) => Math.round(n * 100) / 100;
 
+
 /* ---------- defs & layers ---------- */
 const defs = el('defs', null, svg);
+// The wall runs on the desk rhythm: a pendant over every desk (SX + 240). The window, the Putramas sign and the task board
+// sit centred in the three bays between the pendant shades (shade edges at 478|797, 843|1162, 1208|1462 where the 4 -> 1
+// raceway drops), with 20-30 units of plaster on each side, above an oak rail at hub height (y 300).
+const PEND = SX.map((x) => x + 240);
+const WIN = { x: 518, y: 84, w: 240, h: 156 };             // window frame (bay 1, light comes from here)
+const SIGN = { x: 873, y: 78, w: 260, h: 152 };            // walnut slat panel with the logo (bay 2)
+const BOARD = { x: 1232, y: 86, w: 206, h: 142 };          // task board (bay 3), three equal columns
+const BCOL = [0, 1, 2].map((k) => BOARD.x + BOARD.w * (k + 0.5) / 3);   // column centres: RISET, BANGUN, CEK
+// clouds drift left to right behind the glass; each one wraps on its own while it is hidden past the frame
+const CLOUD = { x0: WIN.x - 24, span: WIN.w + 52 };
+const NY = 150;                                            // task card rest height on the board (its hop stays below the column labels)
 defs.innerHTML = `
-<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky-top)"/><stop offset="1" style="stop-color:var(--sky-bot)"/></linearGradient>
-<linearGradient id="gBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sunbeam);stop-opacity:1"/><stop offset="1" style="stop-color:var(--sunbeam);stop-opacity:0"/></linearGradient>
+<linearGradient id="gWall" gradientUnits="userSpaceOnUse" x1="0" y1="38" x2="0" y2="300"><stop offset="0" style="stop-color:var(--wall)"/><stop offset="1" style="stop-color:var(--wall-low)"/></linearGradient>
+<linearGradient id="gDado" gradientUnits="userSpaceOnUse" x1="0" y1="304" x2="0" y2="600"><stop offset="0" style="stop-color:var(--dado)"/><stop offset="1" style="stop-color:var(--dado-low)"/></linearGradient>
+<linearGradient id="gAO" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--shade);stop-opacity:1"/><stop offset="1" style="stop-color:var(--shade);stop-opacity:0"/></linearGradient>
+<linearGradient id="gCove" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--shade);stop-opacity:1"/><stop offset="1" style="stop-color:var(--shade);stop-opacity:0"/></linearGradient>
+<linearGradient id="gFade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--shade);stop-opacity:.55"/><stop offset="1" style="stop-color:var(--shade);stop-opacity:0"/></linearGradient>
+<linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky-a)"/><stop offset="1" style="stop-color:var(--sky-b)"/></linearGradient>
+<linearGradient id="gBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sunbeam);stop-opacity:1"/><stop offset="1" style="stop-color:var(--sunbeam);stop-opacity:.1"/></linearGradient>
+<linearGradient id="gBoard" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--board)"/><stop offset="1" style="stop-color:var(--board-2)"/></linearGradient>
+<linearGradient id="gSheen" x1="0" y1="0" x2="1" y2=".35"><stop offset="0" style="stop-color:var(--sunbeam);stop-opacity:.16"/><stop offset=".55" style="stop-color:var(--sunbeam);stop-opacity:0"/><stop offset="1" style="stop-color:var(--shade);stop-opacity:.12"/></linearGradient>
+<radialGradient id="gLime"><stop offset="0" style="stop-color:var(--shade);stop-opacity:1"/><stop offset="1" style="stop-color:var(--shade);stop-opacity:0"/></radialGradient>
+<radialGradient id="gWash"><stop offset="0" style="stop-color:var(--sunbeam);stop-opacity:.9"/><stop offset="1" style="stop-color:var(--sunbeam);stop-opacity:0"/></radialGradient>
+<radialGradient id="gVig" gradientUnits="userSpaceOnUse" cx="800" cy="330" r="980"><stop offset=".45" style="stop-color:var(--shade);stop-opacity:0"/><stop offset="1" style="stop-color:var(--shade);stop-opacity:1"/></radialGradient>
 <radialGradient id="gPkt"><stop offset="0" style="stop-color:var(--pkt-glow);stop-opacity:.95"/><stop offset="1" style="stop-color:var(--pkt-glow);stop-opacity:0"/></radialGradient>
-<linearGradient id="gLampCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--glow);stop-opacity:.95"/><stop offset="1" style="stop-color:var(--glow);stop-opacity:.25"/></linearGradient>
-<clipPath id="cWin"><rect x="624" y="89" width="272" height="142"/></clipPath>
+<radialGradient id="gHalo"><stop offset="0" style="stop-color:var(--glow);stop-opacity:.5"/><stop offset=".5" style="stop-color:var(--glow);stop-opacity:.14"/><stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/></radialGradient>
+<radialGradient id="gSignWash"><stop offset="0" style="stop-color:var(--sign-glow);stop-opacity:.34"/><stop offset=".6" style="stop-color:var(--sign-glow);stop-opacity:.1"/><stop offset="1" style="stop-color:var(--sign-glow);stop-opacity:0"/></radialGradient>
+<linearGradient id="gLampCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--glow);stop-opacity:.95"/><stop offset=".7" style="stop-color:var(--glow);stop-opacity:.25"/><stop offset="1" style="stop-color:var(--glow);stop-opacity:0"/></linearGradient>
+<filter id="fGlow" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="4.5"/></filter>
+<filter id="fSoft" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="1.5"/></filter>
+<clipPath id="cWin"><rect x="${WIN.x + 6}" y="${WIN.y + 6}" width="${WIN.w - 12}" height="${WIN.h - 12}"/></clipPath>
 <clipPath id="cSkull"><circle r="31"/></clipPath>
 <clipPath id="cFace4"><circle r="27.5"/></clipPath>
-${SX.map((x, i) => `<clipPath id="cScr${i}"><rect x="${x + 105}" y="409" width="106" height="74" rx="2"/></clipPath>`).join('')}`;
+${SX.map((x, i) => `<clipPath id="cScr${i}"><rect x="${x + 105}" y="409" width="106" height="74" rx="2"/></clipPath><clipPath id="cDesk${i}"><rect x="${x + 38}" y="504" width="214" height="14" rx="3"/></clipPath>`).join('')}`;
 
 const Lbg = grp('', svg), Lshadow = grp('', svg), Ltube = grp('', svg), Lnet = grp('', svg), Lchair = grp('', svg),
   Lfurn = grp('', svg), Ldesk = grp('', svg), Lchars = grp('', svg), Lhand = grp('', svg), Lfront = grp('', svg),
   Lfx = grp('', svg), Lui = grp('', svg);
 
-/* ---------- room ---------- */
+/* ---------- room: a warm wood studio (static, built once) ---------- */
 (function room() {
-  let floorLines = '';
-  [648, 680, 718, 762].forEach((y, k) => {
-    floorLines += `<path class="k-floor-line" d="M-1000 ${y} H2600"/>`;
-    const step = 210 + k * 40;
-    for (let x = -60 + k * 77; x < 1650; x += step) floorLines += `<path class="k-floor-line" d="M${x} ${y} v${[32, 38, 44, 50][k] || 40}"/>`;
-  });
+  // oak floor in gentle perspective: planks run toward the back wall, three tones, staggered joints
+  const VY = -600, kAt = (y) => (y - VY) / (620 - VY), px = (xb, y) => 800 + (xb - 800) * kAt(y);
+  const quad = (cls, xa, xb, ya, yb) => `<polygon class="${cls}" points="${f1(px(xa, ya))},${ya} ${f1(px(xb, ya))},${ya} ${f1(px(xb, yb))},${yb} ${f1(px(xa, yb))},${yb}"/>`;
+  let planks = '', lines = '', joints = '', grooves = '';
+  for (let j = -38; j < 38; j++) {
+    const a = 800 + j * 48, b = a + 48, h = ((j * 37) % 7 + 7) % 7;
+    if (h === 0 || h === 3) planks += quad('k-floor2', a, b, 620, 900);
+    else if (h === 5) planks += quad('k-floor3', a, b, 620, 900);
+    lines += `M${f1(a)} 620 L${f1(px(a, 900))} 900 `;
+    for (const y of [636 + ((j * 53) % 97 + 97) % 97, 742 + ((j * 31) % 83 + 83) % 83]) joints += `M${f1(px(a, y))} ${y} H${f1(px(b, y))} `;
+    grooves += `M${a} 306 V600 `;                          // wainscot boards line up with the floor planks
+  }
+  // window (bay 1): sky, a leafy view, sheer linen on a slim rod
+  const gx = WIN.x + 6, gy = WIN.y + 6, gw = WIN.w - 12, gh = WIN.h - 12, gb = gy + gh, dx = WIN.x - 862;
+  const pw = (gw - 8) / 3, m1 = f1(gx + pw), m2 = f1(gx + 2 * pw + 4);   // mullions: three equal panes
   let stars = '';
-  [[640, 100], [668, 132], [700, 104], [735, 146], [790, 98], [812, 150], [872, 110], [886, 140], [652, 160], [742, 120]].forEach(([x, y], i) => {
-    stars += `<circle class="k-star" cx="${x}" cy="${y}" r="${i % 3 ? 1.6 : 2.2}"/>`;
+  [[884, 98], [906, 122], [930, 102], [968, 132], [1004, 96], [1030, 118], [1062, 104], [1098, 128], [1112, 98]].forEach(([x, y], i) => { stars += `<circle class="k-star" cx="${x + dx}" cy="${y + 6}" r="${i % 3 ? 1.3 : 1.9}"/>`; });
+  const canopy = (cls, base, pts) => `<path class="${cls}" d="M${gx - 4} ${gb + 4} V${base} ${pts.map(([x, y, r]) => `L${x + dx - r} ${y} A${r} ${r} 0 0 1 ${x + dx + r} ${y}`).join(' ')} L${gx + gw + 4} ${base} V${gb + 4} Z"/>`;
+  const leaf = (x, y, r, s = 1, c = 'k-tree3') => `<ellipse class="${c}" cx="${x}" cy="${y}" rx="${7 * s}" ry="${3.4 * s}" transform="rotate(${r} ${x} ${y})"/>`;
+  let branch = `<path class="k-branch" d="M${gx + gw + 4} ${gy + 6} Q${gx + gw - 60} ${gy + 14} ${gx + gw - 104} ${gy + 40}"/>`;
+  [[1118, 92, -20], [1104, 100, 30], [1090, 96, -35], [1078, 106, 25], [1066, 104, -30], [1054, 113, 20], [1043, 112, -40], [1034, 121, 35], [1096, 108, 60], [1070, 116, 55]].forEach(([x, y, r]) => { branch += leaf(x + dx, y + 6, r, 1.05); });
+  const sheer = (x0, w) => {
+    const top = WIN.y - 8, bot = gb + 14;
+    let s = `<path class="k-sheer" d="M${x0} ${top} H${x0 + w} C${x0 + w + 3} ${top + 60} ${x0 + w - 4} ${bot - 50} ${x0 + w + 2} ${bot} Q${x0 + w / 2} ${bot + 5} ${x0 - 2} ${bot} C${x0 + 3} ${bot - 60} ${x0 - 3} ${top + 50} ${x0} ${top} Z"/>`;
+    for (let k = 1; k < 4; k++) { const fx = x0 + (w * k) / 4; s += `<path class="k-sheer-fold" d="M${f1(fx)} ${top + 2} C${f1(fx + 3)} ${top + 60} ${f1(fx - 3)} ${bot - 50} ${f1(fx + (k - 2) * 2)} ${bot - 2}"/>`; }
+    return s;
+  };
+  // daylight through the three panes lands on the boards, sheared toward the viewer and to the right: the sun stands in the
+  // left pane, so beams and every drop shadow (offset down and right) agree on light from the upper left
+  const shear = (x, y) => x + 26 + (y - 646) * 1.05;
+  let beam = '';
+  [[gx, m1], [m1 + 4, m2], [m2 + 4, gx + gw]].forEach(([a, b]) => {
+    beam += `<polygon points="${f1(shear(a, 646))},646 ${f1(shear(b, 646))},646 ${f1(shear(b, 744))},744 ${f1(shear(a, 744))},744"/>`;
   });
-  let sky = '';
-  [[624, 190, 30, 41], [656, 176, 26, 55], [684, 198, 36, 33], [722, 168, 22, 63], [746, 186, 40, 45], [788, 172, 28, 59], [818, 194, 34, 37], [854, 180, 42, 51]].forEach(([x, y, w, h]) => {
-    sky += `<rect class="k-skyline" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
-    for (let wy = y + 8; wy < 226; wy += 12) for (let wx = x + 5; wx < x + w - 6; wx += 9) if ((wx * 7 + wy * 3) % 5 < 2) sky += `<rect class="k-winlit" x="${wx}" y="${wy}" width="4" height="5"/>`;
-  });
+  // clock
   let ticks = '';
-  for (let k = 0; k < 12; k++) { const a = k * 30 * D2R, r1 = k % 3 ? 32 : 28; ticks += `<line class="k-clock-tick" x1="${f1(Math.sin(a) * r1)}" y1="${f1(-Math.cos(a) * r1)}" x2="${f1(Math.sin(a) * 35)}" y2="${f1(-Math.cos(a) * 35)}"/>`; }
-  let books = '';
-  [[968, 26, 'k-a1'], [982, 34, 'k-folder'], [996, 30, 'k-a2'], [1009, 22, 'k-res'], [1020, 36, 'k-a4'], [1034, 28, 'k-a3'], [1047, 31, 'k-cab']].forEach(([x, h, c]) => {
-    books += `<rect class="${c}" x="${x}" y="${200 - h}" width="12" height="${h}" rx="1.5"/>`;
+  for (let k = 0; k < 12; k++) { const a = k * 30 * D2R, r1 = k % 3 ? 23.5 : 20; ticks += `<line class="k-clock-tick" x1="${f1(Math.sin(a) * r1)}" y1="${f1(-Math.cos(a) * r1)}" x2="${f1(Math.sin(a) * 26)}" y2="${f1(-Math.cos(a) * 26)}"/>`; }
+  // walnut slat panel: fine, low-contrast grooves so nothing strobes behind the letters
+  let slats = '';
+  const SN = 18, SP = SIGN.w / SN;
+  for (let i = 0; i < SN; i++) {
+    const x = SIGN.x + i * SP + 0.9;
+    slats += `<rect class="k-wal" x="${f1(x)}" y="${SIGN.y}" width="${f1(SP - 1.8)}" height="${SIGN.h}"/><rect class="k-wal-hi" x="${f1(x)}" y="${SIGN.y}" width="1.3" height="${SIGN.h}"/><rect class="k-wal-lo" x="${f1(x + SP - 3.4)}" y="${SIGN.y}" width="1.6" height="${SIGN.h}"/>`;
+  }
+  // stacked lockup on the sign: mark above the wordmark, both from the shared symbols, centred as one block in the panel
+  // (mark glyph = rows 5..43 of its 48 box, wordmark letters = rows 5..26 of its 31 box)
+  const SC = SIGN.x + SIGN.w / 2, MS = 54, WW = 218, WH = WW * 31 / 182, GAP = 13;
+  const markH = MS * 38 / 48, wordH = WH * 21 / 31, top = SIGN.y + (SIGN.h - markH - GAP - wordH) / 2;
+  const MX = SC - MS / 2, MY = top - MS * 5 / 48, WX = SC - (89.85 * WW / 182), WY = top + markH + GAP - WH * 5 / 31;
+  const lockup = (cls, ox, oy, extra = '') => `<use href="#putramas-mark" class="${cls}" x="${f1(MX + ox)}" y="${f1(MY + oy)}" width="${MS}" height="${MS}"${extra}/><use href="#putramas-word" class="${cls}" x="${f1(WX + ox)}" y="${f1(WY + oy)}" width="${WW}" height="${f1(WH)}"${extra}/>`;
+  // pendants over the desks: matte black domes with a brass rim; at night a soft halo and a short warm cone
+  let pend = '', glows = '';
+  PEND.forEach((p) => {
+    glows += `<ellipse class="k-halo" cx="${p}" cy="182" rx="74" ry="56"/><polygon class="k-cone" points="${p - 16},176 ${p + 16},176 ${p + 66},460 ${p - 66},460"/>`;
+    pend += `<rect class="k-lamp" x="${p - 10}" y="35" width="20" height="5" rx="2"/><path class="k-lamp-s" d="M${p} 40 V146"/>
+      <rect class="k-lamp" x="${p - 3.5}" y="142" width="7" height="8" rx="2"/>
+      <path class="k-lamp-shade" d="M${p - 23} 173 C${p - 23} 157 ${p - 12} 148 ${p} 148 C${p + 12} 148 ${p + 23} 157 ${p + 23} 173 Z"/>
+      <rect class="k-brass" x="${p - 23}" y="171" width="46" height="2.4" rx="1.2"/>
+      <ellipse class="k-lamp-in" cx="${p}" cy="173.6" rx="21" ry="3"/><circle class="k-bulb" cx="${p}" cy="175" r="4.5"/>`;
   });
+  // hanging planter (left wall) and credenza with eucalyptus (left corner)
+  const trail = (pts, s) => pts.map(([x, y, r], k) => `<ellipse class="${k % 2 ? 'k-plant2' : 'k-plant'}" cx="${x}" cy="${y}" rx="${5.4 * s}" ry="${3.3 * s}" transform="rotate(${r} ${x} ${y})"/>`).join('');
+  const euc = [[44, 470, -20], [38, 486, 20], [50, 456, -10], [30, 500, -30], [58, 440, 15], [64, 478, 30], [70, 462, -25], [76, 448, 20], [62, 498, 10], [82, 470, 35], [56, 424, -5], [48, 508, -15]];
+  // linen rug under the meeting spot: bound edge, an inner line, a faint weave and fringe on the short ends
+  const R = { a: 612, b: 988, y0: 656, y1: 724 };
+  let weave = '', fringe = '';
+  for (let y = R.y0 + 9; y < R.y1 - 6; y += 4) weave += `M${f1(px(R.a + 10, y))} ${y} H${f1(px(R.b - 10, y))} `;
+  for (let y = R.y0 + 2; y <= R.y1 - 2; y += 4.5) { fringe += `M${f1(px(R.a, y))} ${f1(y)} l-7 1 M${f1(px(R.b, y))} ${f1(y)} l7 1 `; }
   Lbg.innerHTML = `
-  <rect class="k-ceil" x="-1000" y="-1200" width="3600" height="1236"/>
-  <rect class="k-ceil-line" x="-1000" y="34" width="3600" height="4"/>
-  <rect class="k-wall" x="-1000" y="38" width="3600" height="582"/>
-  <rect class="k-wall-low" x="-1000" y="470" width="3600" height="150"/>
-  <rect class="k-trim" x="-1000" y="466" width="3600" height="6"/>
-  <rect class="k-base" x="-1000" y="604" width="3600" height="16"/>
+  <rect class="k-ceil" x="-1000" y="-1200" width="3600" height="1238"/>
+  <rect class="k-wall" x="-1000" y="38" width="3600" height="266"/>
+  <g class="k-lime">${[[150, 120, 260, 120], [420, 250, 220, 90], [1080, 70, 300, 110], [1390, 260, 240, 90], [760, 280, 200, 70]].map(([cx, cy, rx, ry]) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`).join('')}</g>
+  <rect class="k-dado" x="-1000" y="300" width="3600" height="304"/>
+  <path class="k-groove" d="${grooves}"/>
+  <rect class="k-cove" x="-1000" y="38" width="3600" height="34"/>
+  <rect class="k-ceil-line" x="-1000" y="35" width="3600" height="3"/>
+  <ellipse class="k-wash" cx="${WIN.x + WIN.w / 2}" cy="${WIN.y + WIN.h / 2 + 20}" rx="320" ry="230"/>
+  <rect class="k-fade" x="-1000" y="304" width="3600" height="12"/>
+  <rect class="k-rail" x="-1000" y="295" width="3600" height="9"/><rect class="k-rail-hi" x="-1000" y="295" width="3600" height="1.6"/><rect class="k-rail-lo" x="-1000" y="302.4" width="3600" height="1.6"/>
+  <rect class="k-base" x="-1000" y="600" width="3600" height="20"/><rect class="k-base-top" x="-1000" y="600" width="3600" height="2"/>
   <rect class="k-floor" x="-1000" y="620" width="3600" height="1400"/>
-  ${floorLines}
-  <polygon points="630,240 892,240 1090,700 840,700" fill="url(#gBeam)" class="k-beam"/>
+  ${planks}
+  <path class="k-floor-line" d="${lines}"/>
+  <path class="k-joint" d="${joints}"/>
+  <rect class="k-vig" x="-1000" y="-200" width="3600" height="1200"/>
+  <rect class="k-ao" x="-1000" y="620" width="3600" height="46"/>
   <g>
-    <rect class="k-shade" x="618" y="84" width="296" height="166" rx="6"/>
-    <rect class="k-frame" x="612" y="77" width="296" height="166" rx="6"/>
+    ${quad('k-shade', R.a + 3, R.b + 5, R.y0 + 3, R.y1 + 4)}
+    ${quad('k-rug-edge', R.a, R.b, R.y0, R.y1)}
+    ${quad('k-rug', R.a + 6, R.b - 6, R.y0 + 3, R.y1 - 3)}
+    ${quad('k-rug2', R.a + 20, R.b - 20, R.y0 + 9, R.y1 - 9)}
+    <path class="k-weave" d="${weave}"/>
+    <polygon class="k-rug-s" points="${f1(px(R.a + 14, R.y0 + 7))},${R.y0 + 7} ${f1(px(R.b - 14, R.y0 + 7))},${R.y0 + 7} ${f1(px(R.b - 14, R.y1 - 7))},${R.y1 - 7} ${f1(px(R.a + 14, R.y1 - 7))},${R.y1 - 7}"/>
+    <path class="k-rug-band" d="${[R.a + 34, R.a + 40, R.b - 40, R.b - 34].map((xb) => `M${f1(px(xb, R.y0 + 9))} ${R.y0 + 9} L${f1(px(xb, R.y1 - 9))} ${R.y1 - 9}`).join(' ')}"/>
+    <path class="k-fringe" d="${fringe}"/>
+  </g>
+  <g class="k-beam">${beam}</g>
+  <g>${glows}</g>
+  <g>
+    <rect class="k-shade" x="${WIN.x + 5}" y="${WIN.y + 7}" width="${WIN.w}" height="${WIN.h}" rx="3"/>
+    <rect class="k-frame" x="${WIN.x}" y="${WIN.y}" width="${WIN.w}" height="${WIN.h}" rx="3"/>
     <g clip-path="url(#cWin)">
-      <rect x="624" y="89" width="272" height="142" fill="url(#gSky)"/>
+      <rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="url(#gSky)"/>
       ${stars}
-      <circle class="k-sun" id="sun" cx="846" cy="126" r="19"/>
-      <g id="clouds"><g class="k-cloud"><ellipse cx="0" cy="0" rx="26" ry="10"/><ellipse cx="14" cy="-7" rx="15" ry="11"/><ellipse cx="-12" cy="-4" rx="12" ry="8"/></g><g class="k-cloud" transform="translate(150,30) scale(.7)"><ellipse cx="0" cy="0" rx="26" ry="10"/><ellipse cx="14" cy="-7" rx="15" ry="11"/><ellipse cx="-12" cy="-4" rx="12" ry="8"/></g></g>
-      ${sky}
+      <circle class="k-sun" cx="${f1(gx + pw / 2 + 6)}" cy="${gy + 54}" r="15"/>
+      <g id="cloud0"><g class="k-cloud"><ellipse cx="0" cy="0" rx="24" ry="8"/><ellipse cx="12" cy="-6" rx="13" ry="9"/><ellipse cx="-10" cy="-3" rx="10" ry="7"/></g></g>
+      <g id="cloud1"><g class="k-cloud" transform="scale(.65)"><ellipse cx="0" cy="0" rx="24" ry="8"/><ellipse cx="12" cy="-6" rx="13" ry="9"/><ellipse cx="-10" cy="-3" rx="10" ry="7"/></g></g>
+      ${canopy('k-tree1', gb - 40, [[884, gb - 44, 22], [924, gb - 52, 26], [968, gb - 42, 20], [1006, gb - 50, 24], [1050, gb - 40, 22], [1094, gb - 50, 26], [1126, gb - 42, 18]])}
+      ${canopy('k-tree2', gb - 18, [[872, gb - 20, 18], [904, gb - 26, 20], [944, gb - 18, 16], [1020, gb - 22, 22], [1066, gb - 16, 16], [1104, gb - 24, 20]])}
+      ${branch}
+      <polygon class="k-glare" points="${gx + 18},${gy} ${gx + 40},${gy} ${gx + 6},${gb} ${gx - 16},${gb}"/>
     </g>
-    <rect class="k-frame" x="757" y="89" width="6" height="142"/>
-    <rect class="k-frame" x="624" y="155" width="272" height="5"/>
-    <rect class="k-sill" x="602" y="238" width="316" height="11" rx="3"/>
+    <rect class="k-frame" x="${m1}" y="${gy}" width="4" height="${gh}"/><rect class="k-frame" x="${m2}" y="${gy}" width="4" height="${gh}"/>
+    <rect class="k-frame" x="${gx}" y="${gy + 34}" width="${gw}" height="3.5"/>
+    <rect class="k-shade" x="${WIN.x - 8}" y="${WIN.y + WIN.h + 6}" width="${WIN.w + 16}" height="5" rx="2"/>
+    <rect class="k-sill" x="${WIN.x - 10}" y="${WIN.y + WIN.h - 2}" width="${WIN.w + 20}" height="8" rx="2"/>
+    <rect class="k-curtain-rod" x="${WIN.x - 16}" y="${WIN.y - 10}" width="${WIN.w + 32}" height="2.6" rx="1.3"/>
+    ${sheer(WIN.x - 12, 36)}${sheer(WIN.x + WIN.w - 22, 30)}
   </g>
-  <g transform="translate(505,160)">
-    <circle class="k-shade" cx="5" cy="6" r="42"/>
-    <circle class="k-clock" r="40"/>
+  <g>
+    <rect class="k-shade" x="${SIGN.x + 5}" y="${SIGN.y + 7}" width="${SIGN.w}" height="${SIGN.h}" rx="3"/>
+    <rect class="k-wal-groove" x="${SIGN.x}" y="${SIGN.y}" width="${SIGN.w}" height="${SIGN.h}" rx="3"/>
+    ${slats}
+    <rect class="k-wal-sheen" x="${SIGN.x}" y="${SIGN.y}" width="${SIGN.w}" height="${SIGN.h}" rx="3"/>
+    <ellipse class="k-sign-wash" cx="${SC}" cy="${SIGN.y + SIGN.h / 2 + 4}" rx="150" ry="74"/>
+    ${lockup('sign-glow', 0, 0, ' filter="url(#fGlow)"')}
+    ${lockup('sign-shadow', 3, 5, ' filter="url(#fSoft)"')}
+    ${lockup('sign-ret', 1.1, 1.6)}
+    ${lockup('sign-face', 0, 0)}
+    <rect class="k-sign-bar" x="${SIGN.x + 6}" y="${SIGN.y + SIGN.h}" width="${SIGN.w - 12}" height="2.4" rx="1.2"/>
+  </g>
+  <g>${pend}</g>
+  <g transform="translate(206,150)">
+    <circle class="k-shade" cx="4" cy="6" r="31"/>
+    <circle class="k-clock" r="29"/>
     ${ticks}
-    <line id="hHour" class="k-clock-hand" x1="0" y1="4" x2="0" y2="-19" stroke-width="5.5"/>
-    <line id="hMin" class="k-clock-hand" x1="0" y1="5" x2="0" y2="-29" stroke-width="3.5"/>
-    <line id="hSec" class="k-rev-s" x1="0" y1="7" x2="0" y2="-31" stroke-width="1.6"/>
-    <circle r="3.6" class="k-rev"/>
+    <line id="hHour" class="k-clock-hand" x1="0" y1="3" x2="0" y2="-14" stroke-width="4.2"/>
+    <line id="hMin" class="k-clock-hand" x1="0" y1="4" x2="0" y2="-21" stroke-width="2.8"/>
+    <line id="hSec" class="k-clock-sec" x1="0" y1="6" x2="0" y2="-23" stroke-width="1.4"/>
+    <circle r="2.8" class="k-clock-pin"/>
+  </g>
+  <g id="shelfPlant">
+    <path class="k-rope" d="M92 40 L77 118 M92 40 L107 118 M92 40 V118"/>
+    <circle class="k-lamp" cx="92" cy="40" r="2.6"/>
+    <path class="k-stem" style="stroke-width:1.3" d="M80 142 Q78 176 79 212 M96 146 Q98 190 96 238 M108 140 Q111 160 110 182"/>
+    ${trail([[80, 150, 70], [79, 162, 110], [81, 175, 75], [78, 188, 105], [80, 200, 80], [79, 211, 100]], 1)}
+    ${trail([[96, 156, 80], [97, 170, 100], [95, 184, 70], [97, 198, 110], [95, 212, 75], [97, 225, 105], [96, 238, 85]], 1)}
+    ${trail([[108, 146, 60], [110, 158, 115], [109, 170, 70], [111, 181, 100]], .95)}
+    ${trail([[78, 112, -30], [86, 106, 20], [96, 104, -15], [106, 108, 30], [72, 118, -50], [112, 116, 45], [92, 110, 80]], 1.15)}
+    <path class="k-pot" d="M75 118 H109 L105 142 Q92 150 79 142 Z"/>
+    <rect class="k-pot2" x="73" y="116" width="38" height="5" rx="2.5"/>
   </g>
   <g>
-    <rect class="k-shade" x="964" y="206" width="200" height="8" rx="2"/>
-    <rect class="k-desk-edge" x="958" y="200" width="204" height="8" rx="2"/>
-    <rect class="k-leg" x="980" y="208" width="6" height="14"/><rect class="k-leg" x="1134" y="208" width="6" height="14"/>
-    ${books}
-    <rect class="k-folder2" x="1066" y="176" width="40" height="7" rx="1.5"/><rect class="k-paper" x="1068" y="183" width="36" height="7" rx="1.5"/><rect class="k-res" x="1066" y="190" width="40" height="10" rx="1.5"/>
-    <path class="k-pot" d="M1124 182 h24 l-3 18 h-18 z"/>
-    <g id="shelfPlant"><ellipse class="k-plant" cx="1128" cy="170" rx="7" ry="14" transform="rotate(-28 1136 182)"/><ellipse class="k-plant2" cx="1144" cy="168" rx="7" ry="15" transform="rotate(22 1136 182)"/><ellipse class="k-plant" cx="1136" cy="164" rx="6" ry="16"/></g>
-  </g>
-  <g>
-    <rect class="k-shade" x="1232" y="92" width="228" height="142" rx="4"/>
-    <rect class="k-board" x="1226" y="86" width="226" height="142" rx="4"/>
-    <text class="k-board-ink" x="1252" y="108" font-size="12" font-weight="800" letter-spacing="1.2">RISET</text>
-    <text class="k-board-ink" x="1314" y="108" font-size="12" font-weight="800" letter-spacing="1.2">BANGUN</text>
-    <text class="k-board-ink" x="1400" y="108" font-size="12" font-weight="800" letter-spacing="1.2">CEK</text>
-    <path class="k-board-s" d="M1298 96 v120 M1382 96 v120" opacity=".45"/>
-    <rect class="k-n2" x="1240" y="122" width="24" height="22" rx="2"/><rect class="k-n3" x="1268" y="150" width="24" height="22" rx="2"/>
-    <rect class="k-n2" x="1324" y="150" width="24" height="22" rx="2"/><rect class="k-n3" x="1352" y="178" width="24" height="22" rx="2"/>
-    <rect class="k-n2" x="1392" y="180" width="24" height="22" rx="2"/>
-    <g id="boardNote"><rect class="k-n1" x="-13" y="-12" width="26" height="24" rx="2"/><path class="k-board-s" d="M-7 -3 h14 M-7 3 h9"/></g>
-    <rect class="k-trim" x="1240" y="228" width="198" height="6" rx="2"/>
-  </g>
-  <g>
-    <rect class="k-shade" x="1506" y="118" width="74" height="92" rx="3"/>
-    <rect class="k-desk-edge" x="1500" y="112" width="74" height="92" rx="3"/>
-    <rect class="k-paper" x="1507" y="119" width="60" height="62" rx="1.5"/>
-    <path class="k-plant" d="M1507 181 L1525 154 L1538 168 L1550 150 L1567 181 Z" opacity=".75"/>
-    <circle class="k-a1" cx="1518" cy="138" r="5"/><circle class="k-a2" cx="1531" cy="134" r="5"/><circle class="k-a3" cx="1544" cy="138" r="5"/><circle class="k-a4" cx="1557" cy="134" r="5"/>
-    <text class="k-paper" x="1537" y="196" text-anchor="middle" font-size="9.5" font-weight="800" letter-spacing="1.2">TIM KAMI</text>
-  </g>
-  <g>
-    <rect class="k-shade" x="46" y="110" width="78" height="96" rx="4"/>
-    <rect class="k-paper" x="40" y="104" width="78" height="96" rx="4"/>
-    <path class="k-rev" d="M40 108 a4 4 0 0 1 4 -4 h70 a4 4 0 0 1 4 4 v18 h-78 z"/>
-    <text x="79" y="121" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="1.5" class="k-paper">OKT</text>
-    ${Array.from({ length: 20 }, (_, k) => `<rect class="k-paper-line" x="${48 + (k % 5) * 14}" y="${136 + Math.floor(k / 5) * 14}" width="8" height="6" rx="1"/>`).join('')}
-    <circle class="k-rev-s" cx="80" cy="153" r="8" stroke-width="2.5"/>
-  </g>
-  <g>
-    <rect class="k-shade" x="30" y="522" width="100" height="120" rx="4"/>
-    <rect class="k-cab" x="24" y="516" width="100" height="124" rx="4"/>
-    <path class="k-cab-line" d="M24 556 h100 M24 598 h100"/>
-    <rect class="k-leg" x="60" y="532" width="28" height="5" rx="2.5"/><rect class="k-leg" x="60" y="574" width="28" height="5" rx="2.5"/><rect class="k-leg" x="60" y="616" width="28" height="5" rx="2.5"/>
-    <rect class="k-paper" x="56" y="541" width="36" height="9" rx="1"/>
-    <text x="74" y="548.5" text-anchor="middle" font-size="8" font-weight="800" letter-spacing="1" class="k-board-ink">ARSIP</text>
-  </g>
-  <g>
-    <path class="k-shade" d="M482 641 h52 l14 8 h-60 z"/>
+    <polygon class="k-shade" points="12,640 154,640 182,652 30,652"/>
+    <rect class="k-leg" x="24" y="622" width="5" height="18"/><rect class="k-leg" x="137" y="622" width="5" height="18"/>
+    <rect class="k-desk-edge" x="14" y="566" width="138" height="58" rx="2"/>
+    <rect class="k-desk" x="18" y="571" width="63" height="49" rx="1"/><rect class="k-desk" x="85" y="571" width="63" height="49" rx="1"/>
+    <path class="k-flute" d="${Array.from({ length: 10 }, (_, k) => `M${24 + k * 6} 574 V617 M${91 + k * 6} 574 V617`).join(' ')}"/>
+    <rect class="k-brass" x="75" y="590" width="3" height="12" rx="1.5"/><rect class="k-brass" x="88" y="590" width="3" height="12" rx="1.5"/>
+    <rect class="k-desk" x="11" y="559" width="144" height="8" rx="2"/>
     <g id="floorPlant">
-      <path class="k-plant2" d="M503 594 C 470 560 462 520 470 490 C 486 520 498 556 503 594 Z"/>
-      <path class="k-plant" d="M503 594 C 530 556 548 520 540 486 C 522 516 508 552 503 594 Z"/>
-      <path class="k-plant" d="M503 594 C 486 548 490 490 506 460 C 516 494 512 548 503 594 Z"/>
-      <path class="k-plant2" d="M503 594 C 520 570 552 556 566 540 C 540 540 516 560 503 594 Z"/>
-      <path class="k-plant2" d="M503 594 C 486 572 456 560 440 548 C 466 546 488 562 503 594 Z"/>
+      <path class="k-stem" d="M52 520 Q46 480 56 424 M52 520 Q36 492 30 500 M52 520 Q70 486 82 470 M52 520 Q60 470 76 448"/>
+      ${trail(euc, 1.05)}
     </g>
-    <path class="k-pot" d="M483 588 h40 l-6 52 h-28 z"/>
-    <rect class="k-trim" x="481" y="586" width="44" height="7" rx="2"/>
+    <path class="k-pot" d="M45 560 Q37 541 44 526 Q48 518 46 513 H58 Q56 518 60 526 Q67 541 59 560 Z"/>
+    <g transform="rotate(-3 116 559)">
+      <rect class="k-shade" x="89" y="516" width="60" height="45" rx="1"/>
+      <rect class="k-frame" x="86" y="513" width="60" height="46" rx="1"/>
+      <rect class="k-print" x="89" y="516" width="54" height="40"/>
+      ${(() => { // the full stacked lockup in miniature, so the brand reads in the opening shot on phones too
+        const ms = 18, ww = 44, wh = ww * 31 / 182, mh = ms * 38 / 48, ht = wh * 21 / 31, tp = 516 + (40 - mh - 3 - ht) / 2;
+        return `<use href="#putramas-mark" class="print" x="${f1(116 - ms / 2)}" y="${f2(tp - ms * 5 / 48)}" width="${ms}" height="${ms}"/><use href="#putramas-word" class="print" x="${f2(116 - 89.85 * ww / 182)}" y="${f2(tp + mh + 3 - wh * 5 / 31)}" width="${ww}" height="${f2(wh)}"/>`;
+      })()}
+    </g>
+  </g>
+  <g>
+    <rect class="k-shade" x="${BOARD.x + 5}" y="${BOARD.y + 7}" width="${BOARD.w}" height="${BOARD.h}" rx="4"/>
+    <rect class="k-board" x="${BOARD.x}" y="${BOARD.y}" width="${BOARD.w}" height="${BOARD.h}" rx="4"/>
+    ${['RISET', 'BANGUN', 'CEK'].map((h, k) => `<text class="k-board-head" x="${f1(BCOL[k])}" y="110" text-anchor="middle">${h}</text>`).join('')}
+    <path class="k-board-s" d="M${BOARD.x + 12} 120 H${BOARD.x + BOARD.w - 12}" opacity=".14"/>
+    <path class="k-board-s" d="M${f1(BOARD.x + BOARD.w / 3)} 100 v116 M${f1(BOARD.x + BOARD.w * 2 / 3)} 100 v116" opacity=".16"/>
+    ${[[0, -13, 174, 'k-n2'], [0, 15, 192, 'k-n3'], [1, -16, 182, 'k-n3'], [1, 16, 192, 'k-n2'], [2, -12, 184, 'k-n2']].map(([c, o, y, cls]) => `<rect class="${cls}" x="${f1(BCOL[c] + o - 11)}" y="${y}" width="22" height="20" rx="2"/><circle class="k-brass" cx="${f1(BCOL[c] + o)}" cy="${y + 3}" r="1.8"/>`).join('')}
+    <g id="boardNote"><rect class="k-n1" x="-13" y="-12" width="26" height="24" rx="2"/><path class="k-board-s" d="M-7 -2 h14 M-7 4 h9"/><circle class="k-brass" cx="0" cy="-8.5" r="2"/></g>
+    <rect class="k-desk-edge" x="${BCOL[1] - 81}" y="228" width="162" height="5" rx="2"/>
+    <rect class="k-leg" x="${f1(BCOL[1] - 41)}" y="224" width="18" height="4" rx="2"/><rect class="k-pk" x="${f1(BCOL[1] - 17)}" y="224" width="18" height="4" rx="2"/>
   </g>`;
+
+  // foreground: one low leafy plant framing the front-right corner (stays below the walk lane, outside the action)
+  const fgLeaf = ([x, y, r, s, cls]) => `<path class="k-fg-stem" d="M1592 722 Q${f1((1592 + x) / 2 + 4)} ${f1((722 + y) / 2 + 6)} ${x} ${y}"/><g transform="translate(${x},${y}) rotate(${r}) scale(${s})"><path class="${cls}" d="M0 0 C10 -15 40 -19 64 -3 Q67 0 64 3 C40 19 10 15 0 0 Z"/><path class="k-fg-vein" d="M3 0 Q32 -1.5 61 0"/></g>`;
+  Lfront.insertAdjacentHTML('beforeend', `
+  <g>
+    ${[[1600, 690, -78, .95, 'k-fg'], [1572, 700, -150, .9, 'k-fg2'], [1566, 712, -172, .8, 'k-fg'], [1578, 690, -128, 1, 'k-fg'], [1590, 684, -104, 1.05, 'k-fg2'], [1584, 676, -120, .72, 'k-fg']].map(fgLeaf).join('')}
+    <path class="k-fg-pot" d="M1536 790 C1531 756 1540 728 1552 722 H1640 V790 Z"/>
+    <path class="k-fg-pot2" d="M1552 722 H1640 V731 H1546 Q1547 725 1552 722 Z"/>
+  </g>`);
 })();
 
 /* ---------- network links between the four desks ----------
-   kind: task (amber, work moves forward), chat (blue, dotted), rev (red, dashed), final (green, the 4 -> 1 ceiling run) */
+   kind: task (amber, work moves forward), chat (blue, dotted), rev (red, dashed), final (green, the 4 -> 1 ceiling run).
+   The page legend names each kind, so the scene carries no link labels. */
 const HUB = SX.map((x) => [x + 158, 300]);
 const L41 = `M${HUB[3][0]} 300 V74 Q${HUB[3][0]} 62 ${HUB[3][0] - 12} 62 H${HUB[0][0] + 12} Q${HUB[0][0]} 62 ${HUB[0][0]} 74 V300`;
 const LINKS = {
@@ -434,11 +652,10 @@ const LINKS = {
 const HOT = { task: 'k-hot', chat: 'k-hot-chat', rev: 'k-hot-rev', final: 'k-hot-final' };
 const PK = { task: 'k-pkt', chat: 'k-chat', rev: 'k-rev', final: 'k-ok' };
 (function network() {
-  // the 4 -> 1 run hangs from the ceiling in a cable tray
+  // the 4 -> 1 run hangs from the ceiling in a slim raceway
   el('path', { class: 'k-tray', d: L41 }, Ltube);
   [560, 800, 1040, 1280].forEach((x) => {
-    el('rect', { class: 'k-hub', x: x - 4, y: 37, width: 8, height: 20, rx: 2 }, Ltube);
-    el('rect', { class: 'k-hub', x: x - 10, y: 54, width: 20, height: 5, rx: 2.5 }, Ltube);
+    el('rect', { class: 'k-tray-hang', x: x - 2, y: 37, width: 4, height: 20 }, Ltube);
   });
   for (const k in LINKS) {
     const Lk = LINKS[k];
@@ -448,29 +665,31 @@ const PK = { task: 'k-pkt', chat: 'k-chat', rev: 'k-rev', final: 'k-ok' };
     Lk.pk = grp('', Lnet, `<circle r="18" fill="url(#gPkt)"/><circle r="6.5" class="${PK[Lk.kind]}"/>`);
     Lk.pk.setAttribute('opacity', 0);
   }
-  const label = (x, y, txt, anchor) => { el('text', { class: 'k-link-ink', x, y, 'text-anchor': anchor || 'middle', 'font-size': 14, 'font-weight': 700 }, Lnet).textContent = txt; };
-  label((HUB[1][0] + HUB[2][0]) / 2, 242, 'diskusi');
-  label((HUB[2][0] + HUB[3][0]) / 2, 242, 'revisi');
-  label(990, 90, 'hasil akhir: Agent 4 ke Agent 1', 'start');
-  el('path', { class: 'k-link-ink', d: 'M970 85 l11 -6 v12 z' }, Lnet);
   HUB.forEach(([x, y], i) => {
     el('path', { class: 'k-cable', d: `M${x} ${y + 8} V404`, 'stroke-width': 3 }, Lnet);
-    el('rect', { class: 'k-hub', x: x - 15, y: y - 10, width: 30, height: 20, rx: 5 }, Lnet);
+    el('rect', { class: 'k-hub', x: x - 15, y: y - 10, width: 30, height: 20, rx: 6 }, Lnet);
     HUB[i].led = el('circle', { class: 'k-led', cx: x + 7, cy: y, r: 3.2 }, Lnet);
     el('circle', { class: 'k-led', cx: x - 6, cy: y, r: 2, opacity: .45 }, Lnet);
   });
 })();
 
 /* ---------- the request chute ---------- */
-Lfront.innerHTML = `
+Lfront.insertAdjacentHTML('beforeend', `
   <g>
-    <rect class="k-shade" x="276" y="34" width="56" height="52" rx="6"/>
-    <rect class="k-chute" x="272" y="30" width="56" height="52" rx="6"/>
-    <text class="k-chute-ink" x="300" y="58" text-anchor="middle" font-size="12" font-weight="800" letter-spacing="1.2">MASUK</text>
+    <rect class="k-shade" x="276" y="35" width="56" height="51" rx="7"/>
+    <rect class="k-chute" x="272" y="30" width="56" height="52" rx="7"/>
+    <text class="k-chute-ink" x="300" y="60" text-anchor="middle" font-size="10.5" font-weight="700" letter-spacing="1.4">MASUK</text>
     <rect class="k-pk" x="282" y="74" width="36" height="4" rx="2" id="chuteLight" opacity=".35"/>
-  </g>`;
+  </g>`);
 
 /* ---------- desks, monitors, chairs ---------- */
+// a small object at the right end of each desk, under its pendant (static decor)
+const DESK_DECO = [
+  (x) => `<path class="k-pot" d="M${x + 228} 504 L${x + 226} 489 H${x + 246} L${x + 244} 504 Z"/><ellipse class="k-plant2" cx="${x + 230}" cy="482" rx="7" ry="4" transform="rotate(-35 ${x + 230} 482)"/><ellipse class="k-plant" cx="${x + 242}" cy="480" rx="7" ry="4" transform="rotate(30 ${x + 242} 480)"/><ellipse class="k-plant" cx="${x + 236}" cy="476" rx="3.6" ry="7.5"/>`,
+  (x) => `<rect class="k-wal-lo" x="${x + 214}" y="497" width="36" height="7" rx="1"/><rect class="k-pot2" x="${x + 218}" y="490" width="30" height="7" rx="1"/><path class="k-pot" d="M${x + 228} 490 L${x + 229} 479 H${x + 240} L${x + 241} 490 Z"/>`,
+  (x) => `<path class="k-pot2" d="M${x + 229} 504 L${x + 227} 490 H${x + 245} L${x + 243} 504 Z"/><path class="k-plant2" d="M${x + 231} 491 Q${x + 228} 474 ${x + 232} 462 Q${x + 236} 476 ${x + 235} 491 Z"/><path class="k-plant" d="M${x + 236} 491 Q${x + 236} 470 ${x + 241} 458 Q${x + 244} 474 ${x + 240} 491 Z"/><path class="k-plant3" d="M${x + 239} 491 Q${x + 244} 478 ${x + 248} 472 Q${x + 247} 482 ${x + 243} 491 Z"/>`,
+  (x) => `<path class="k-mon" d="M${x + 229} 504 L${x + 228} 486 H${x + 242} L${x + 241} 504 Z"/><path d="M${x + 232} 486 L${x + 230} 472 M${x + 237} 486 L${x + 239} 470" style="stroke:var(--res);stroke-width:2.4;stroke-linecap:round"/>`,
+];
 const CHAIRS = [], SCR = [];
 SX.forEach((x, i) => {
   const n = i + 1;
@@ -480,22 +699,19 @@ SX.forEach((x, i) => {
     <rect class="k-leg" x="${x + 40}" y="634" width="22" height="6" rx="2"/>
     <rect class="k-drawer" x="${x + 188}" y="516" width="60" height="124" rx="2"/>
     <path class="k-drawer-line" d="M${x + 188} 556 h60 M${x + 188} 598 h60"/>
-    <rect class="k-leg" x="${x + 207}" y="578" width="22" height="4" rx="2"/><rect class="k-leg" x="${x + 207}" y="619" width="22" height="4" rx="2"/>
-    <rect class="k-a${n}" x="${x + 191}" y="522" width="54" height="18" rx="3"/>
+    <rect class="k-brass" x="${x + 207}" y="578" width="22" height="4" rx="2"/><rect class="k-brass" x="${x + 207}" y="619" width="22" height="4" rx="2"/>
+    <rect class="k-a${n}" x="${x + 191}" y="522" width="54" height="18" rx="9"/>
     <text x="${x + 218}" y="535" text-anchor="middle" font-size="10.5" font-weight="800" letter-spacing=".5" class="k-paper">AGENT ${n}</text>
-    <rect class="k-leg" x="${x + 207}" y="544" width="22" height="4" rx="2"/>
+    <rect class="k-brass" x="${x + 207}" y="544" width="22" height="4" rx="2"/>
     <rect class="k-desk" x="${x + 38}" y="504" width="214" height="14" rx="3"/>
     <rect class="k-desk-edge" x="${x + 38}" y="514" width="214" height="4"/>
-    <polygon class="k-glow" points="${x + 214},436 ${x + 240},428 ${x + 268},504 ${x + 160},504" style="fill:url(#gLampCone)"/>
     <rect class="k-mon" x="${x + 58}" y="499" width="42" height="6" rx="2"/>
     <rect class="k-metal" x="${x + 154}" y="484" width="9" height="21"/>
     <rect class="k-metal" x="${x + 136}" y="501" width="45" height="5" rx="2.5"/>
     <rect class="k-mon" x="${x + 100}" y="404" width="116" height="84" rx="7"/>
     <rect class="k-scr" x="${x + 105}" y="409" width="106" height="74" rx="2"/>
-    <ellipse class="k-lamp" cx="${x + 240}" cy="503" rx="12" ry="4"/>
-    <path class="k-lamp-s" d="M${x + 240} 502 L${x + 246} 454 L${x + 230} 426"/>
-    <path class="k-lamp-shade" d="M${x + 216} 420 L${x + 238} 414 L${x + 240} 430 L${x + 222} 440 Z"/>
-    <circle class="k-bulb" cx="${x + 229}" cy="436" r="4.5"/>
+    <ellipse class="k-desk-pool" cx="${x + 240}" cy="504" rx="64" ry="16" clip-path="url(#cDesk${i})"/>
+    ${DESK_DECO[i](x)}
     ${n === 4 ? `<g><rect class="k-desk-edge" x="${x + 249}" y="532" width="22" height="34" rx="2"/><rect class="k-paper" x="${x + 252}" y="537" width="16" height="26"/><rect class="k-metal" x="${x + 254}" y="529" width="12" height="6" rx="2"/><path class="k-paper-s" d="M${x + 255} 545 h10 M${x + 255} 551 h8 M${x + 255} 557 h10"/></g>` : ''}
   `);
   const scr = el('g', { 'clip-path': `url(#cScr${i})` }, Lfurn);
@@ -1036,15 +1252,16 @@ CALLOUTS.forEach((c) => {
 
 /* ---------- props ---------- */
 const DOCPATH = 'M-20 -14 h12 l4 -4 h10 l2 4 h12 v28 h-40 z';
-const PLANE = (fillA, fillB) => `<path d="M-21 -3 L23 0 L-21 7 L-13 1 Z" style="fill:var(${fillA});stroke:var(--paper-line);stroke-width:1.2;stroke-linejoin:round"/><path d="M-13 1 L23 0 L-17 -10 Z" style="fill:var(${fillB});stroke:var(--paper-line);stroke-width:1.2;stroke-linejoin:round"/>`;
+// handed-over paper props carry a small static drop shadow (down-right, like every shadow in the room) so they lift off the wall
+const PLANE = (fillA, fillB, line = '--paper-line') => `<path class="k-prop-shade" transform="translate(2 3)" d="M-21 -3 L23 0 L-21 7 L-13 1 Z M-13 1 L23 0 L-17 -10 Z"/><path d="M-21 -3 L23 0 L-21 7 L-13 1 Z" style="fill:var(${fillA});stroke:var(${line});stroke-width:1.2;stroke-linejoin:round"/><path d="M-13 1 L23 0 L-17 -10 Z" style="fill:var(${fillB});stroke:var(${line});stroke-width:1.2;stroke-linejoin:round"/>`;
 function prop(html, layer) { const g = grp('', layer || Ldesk, html); g.setAttribute('opacity', 0); return { g, layer: layer || Ldesk, parts: {} }; }
 const P = {
-  env: prop(`<g class="v-env"><rect class="k-env" x="-18" y="-12" width="36" height="24" rx="2" style="stroke:var(--env-line);stroke-width:1.5"/><path class="k-env-s" d="M-18 -12 L0 2 L18 -12"/><circle class="k-rev" cx="0" cy="1" r="3.4"/></g>
+  env: prop(`<g class="v-env"><rect class="k-prop-shade" x="-16" y="-9" width="36" height="24" rx="2"/><rect class="k-env" x="-18" y="-12" width="36" height="24" rx="2" style="stroke:var(--env-line);stroke-width:1.5"/><path class="k-env-s" d="M-18 -12 L0 2 L18 -12"/><circle class="k-rev" cx="0" cy="1" r="3.4"/></g>
     <g class="v-letter"><rect class="k-paper" x="-14" y="-18" width="28" height="36" rx="1.5" style="stroke:var(--paper-line);stroke-width:1.2"/><path class="k-paper-s" d="M-9 -10 h18 M-9 -4 h13 M-9 2 h18 M-9 8 h10"/></g>`),
   brief: prop(`<g class="v-folder"><path class="k-folder2" d="${DOCPATH}"/><rect class="k-paper" x="-16" y="-16" width="32" height="10" rx="1"/><rect class="k-folder" x="-20" y="-10" width="40" height="25" rx="2"/><rect class="k-paper" x="-14" y="-5" width="28" height="13" rx="1"/><text x="0" y="0.5" text-anchor="middle" font-size="5.5" font-weight="800" class="k-board-ink">BRIEF</text><path class="v-scrib" d="M-11 4 q2 -2.5 4 0 t4 0 t4 0 t4 0 t4 0" style="stroke:var(--res);fill:none;stroke-width:1.3" stroke-dasharray="30" stroke-dashoffset="30"/></g>
     <g class="v-book"><rect class="k-folder2" x="-28" y="-19" width="56" height="38" rx="2"/><rect class="k-paper" x="-26" y="-17" width="25" height="34"/><rect class="k-paper" x="1" y="-17" width="25" height="34"/><path class="k-paper-s" d="M-22 -9 h17 M-22 -3 h13 M-22 3 h17 M5 -9 h17 M5 -3 h15 M5 3 h10"/><g class="v-page"><rect class="k-paper" x="0" y="-17" width="25" height="34" style="stroke:var(--paper-line);stroke-width:1"/><path class="k-paper-s" d="M4 -9 h15 M4 -3 h11"/></g></g>`),
   sheet: prop(`<g class="v-sheet"><rect class="k-paper" x="-14" y="-18" width="28" height="36" rx="1.5" style="stroke:var(--paper-line);stroke-width:1.2"/><rect class="k-a2" x="-9" y="2" width="4" height="10"/><rect class="k-a2" x="-3" y="-3" width="4" height="15"/><rect class="k-a2" x="3" y="5" width="4" height="7"/><path class="k-paper-s" d="M-9 -12 h18 M-9 -7 h12"/></g>
-    <g class="v-plane">${PLANE('--paper', '--scr-dim')}</g>`),
+    <g class="v-plane">${PLANE('--plane', '--plane-2', '--plane-line')}</g>`),
   doc: prop(`<g class="v-doc"><path class="k-res2" d="${DOCPATH}"/><rect class="k-paper" x="-16" y="-16" width="32" height="10" rx="1"/><rect class="k-res" x="-20" y="-10" width="40" height="25" rx="2"/><rect class="k-paper" x="-13" y="-5" width="26" height="9" rx="1"/><text x="0" y="1.6" text-anchor="middle" font-size="6" font-weight="800" class="k-board-ink">HASIL</text>
       <g class="v-rev"><g transform="rotate(-14)"><rect x="-17" y="3" width="34" height="11" rx="2" style="fill:var(--paper);stroke:var(--rev);stroke-width:2"/><text x="0" y="11.5" text-anchor="middle" font-size="8" font-weight="800" class="k-rev">REVISI</text></g></g>
       <g class="v-ok"><circle cx="11" cy="7" r="9" style="fill:var(--paper);stroke:var(--ok);stroke-width:2.2"/><text x="11" y="10" text-anchor="middle" font-size="8" font-weight="800" class="k-ok">OK</text></g></g>
@@ -1480,21 +1697,23 @@ function updateLinks(t, T) {
   });
   $('chuteLight').setAttribute('opacity', f2(0.3 + 0.7 * Math.max(win(t, 31.55, 32, 0.1), win(t, -0.1, 0.35, 0.1))));
 }
-const clouds = $('clouds'), floorPlant = $('floorPlant'), shelfPlant = $('shelfPlant'), boardNote = $('boardNote');
+const clouds = [$('cloud0'), $('cloud1')], floorPlant = $('floorPlant'), shelfPlant = $('shelfPlant'), boardNote = $('boardNote');
 function updateAmbient(t, T) {
   setT($('hMin'), `rotate(${f1((T / L) * 360)})`);
   setT($('hHour'), `rotate(${f1(300 + (T / L) * 30)})`);
   setT($('hSec'), `rotate(${Math.floor(T) * 6})`);
-  setT(clouds, `translate(${f1(600 + ((T * 6) % 340))},122)`);
-  setT(floorPlant, `rotate(${f2(2.2 * Math.sin(T * 0.9))} 503 594)`);
-  setT(shelfPlant, `rotate(${f2(3 * Math.sin(T * 1.1 + 1))} 1136 182)`);
+  // each cloud wraps separately, only while it is outside the glass (span = glass + both cloud widths)
+  setT(clouds[0], `translate(${f1(CLOUD.x0 + ((((T * 6) % CLOUD.span) + CLOUD.span) % CLOUD.span))},${WIN.y + 38})`);
+  setT(clouds[1], `translate(${f1(CLOUD.x0 + ((((T * 6 + CLOUD.span * 0.55) % CLOUD.span) + CLOUD.span) % CLOUD.span))},${WIN.y + 60})`);
+  setT(floorPlant, `rotate(${f2(1.4 * Math.sin(T * 0.9))} 52 518)`);
+  setT(shelfPlant, `rotate(${f2(1.5 * Math.sin(T * 0.8 + 1))} 92 40)`);
   // the task card on the whiteboard follows the work: RISET -> BANGUN -> CEK -> done
-  const X0 = 1284, X1 = 1340, X2 = 1417;
-  let nx = X0, ny = 135, no = 1;
-  if (t >= 9.1) { const k = E.io(span(t, 9.1, 9.6)); nx = lerp(X0, X1, k); ny = 135 - 14 * Math.sin(Math.PI * k); }
-  if (t >= 14.4) { const k = E.io(span(t, 14.4, 14.85)); nx = lerp(X1, X2, k); ny = 135 - 14 * Math.sin(Math.PI * k); }
-  if (t >= 22.6) { const k = E.io(span(t, 22.6, 23.1)); nx = X2; ny = lerp(135, 120, k); no = 1 - k; }
-  if (t >= 31.55) { nx = X0; ny = 135; no = span(t, 31.55, 31.95); }
+  const X0 = f1(BCOL[0]), X1 = f1(BCOL[1]), X2 = f1(BCOL[2]);   // column centres under RISET, BANGUN, CEK
+  let nx = X0, ny = NY, no = 1;
+  if (t >= 9.1) { const k = E.io(span(t, 9.1, 9.6)); nx = lerp(X0, X1, k); ny = NY - 14 * Math.sin(Math.PI * k); }
+  if (t >= 14.4) { const k = E.io(span(t, 14.4, 14.85)); nx = lerp(X1, X2, k); ny = NY - 14 * Math.sin(Math.PI * k); }
+  if (t >= 22.6) { const k = E.io(span(t, 22.6, 23.1)); nx = X2; ny = lerp(NY, NY - 15, k); no = 1 - k; }
+  if (t >= 31.55) { nx = X0; ny = NY; no = span(t, 31.55, 31.95); }
   setT(boardNote, `translate(${f1(nx)},${f1(ny)}) rotate(${f1(-3 + 6 * (nx - X0) / (X2 - X0))})`);
   boardNote.setAttribute('opacity', f2(no));
 }
